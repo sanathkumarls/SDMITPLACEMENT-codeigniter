@@ -1,5 +1,6 @@
 package com.sanathls.sdmitplacement;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -48,8 +49,8 @@ public class Signup extends AppCompatActivity {
     }
 
     public void already_a_user(View view) {
-        Intent intent=new Intent(this,Login.class);
-        startActivity(intent);
+
+        super.onBackPressed();
     }
 
     public void register(View view) {
@@ -68,7 +69,7 @@ public class Signup extends AppCompatActivity {
         if(user_password.equals(user_repassword))
         {
             //Toast.makeText(this,"Name : "+user_name+"\nEmail : "+user_email+"\nUSN : "+user_usn+"\nPhone : "+user_phone+"\nPassword : "+user_password,Toast.LENGTH_LONG).show();
-            SignupTask signupTask=new SignupTask(this);
+            SignupTask signupTask=new SignupTask(this,this);
             signupTask.execute(user_name,user_email,user_usn,user_phone,user_password,user_token,user_device);
         }
         else
@@ -88,10 +89,12 @@ class SignupTask extends AsyncTask<String,String,String>
 
     String baseurl="http://192.168.43.85/placement/";
     Context ctx;
+    Activity activity;
 
-    SignupTask(Context ctx)
+    SignupTask(Context ctx,Activity activity)
     {
         this.ctx=ctx;
+        this.activity=activity;
     }
 
 
@@ -193,6 +196,7 @@ class SignupTask extends AsyncTask<String,String,String>
                     intent.putExtra("user_email",user_email);
                     intent.putExtra("user_otp",user_otp);
                     ctx.startActivity(intent);
+                    activity.finish();
                 }
                 else
                 {

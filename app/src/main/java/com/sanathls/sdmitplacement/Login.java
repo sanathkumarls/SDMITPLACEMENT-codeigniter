@@ -38,7 +38,7 @@ public class Login extends AppCompatActivity {
         email=useremail.getText().toString();
         password=userpassword.getText().toString();
 
-        Toast.makeText(this,"Email : "+email+"\nPassword : "+password,Toast.LENGTH_LONG).show();
+        //Toast.makeText(this,"Email : "+email+"\nPassword : "+password,Toast.LENGTH_LONG).show();
     }
 
     public void signup(View view) {
