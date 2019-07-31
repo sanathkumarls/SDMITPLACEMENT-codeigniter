@@ -29,8 +29,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import javax.net.ssl.HttpsURLConnection;
-
 public class Signup extends AppCompatActivity {
 
     EditText name,email,usn,phone,password,repassword;
@@ -191,6 +189,8 @@ class SignupTask extends AsyncTask<String,String,String>
                     String user_otp=jsonObject.getString("user_otp");
 
                     Intent intent=new Intent(ctx,Otp.class);
+                    intent.putExtra("user_name",user_name);
+                    intent.putExtra("user_email",user_email);
                     intent.putExtra("user_otp",user_otp);
                     ctx.startActivity(intent);
                 }
