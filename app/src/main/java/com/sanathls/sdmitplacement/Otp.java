@@ -32,11 +32,7 @@ public class Otp extends AppCompatActivity {
 
         tv_email.setText(user_email);
 
-        entered_otp=et1.getText().toString();
-        entered_otp+=et2.getText().toString();
-        entered_otp+=et3.getText().toString();
 
-        entered_otp+=et4.getText().toString();
 
 
 
@@ -47,6 +43,10 @@ public class Otp extends AppCompatActivity {
     public void register(View view) {
 
 
+        entered_otp=et1.getText().toString();
+        entered_otp+=et2.getText().toString();
+        entered_otp+=et3.getText().toString();
+        entered_otp+=et4.getText().toString();
         if(entered_otp.equals(user_otp))
         {
             Toast.makeText(this,"matched",Toast.LENGTH_LONG).show();
