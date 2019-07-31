@@ -35,6 +35,7 @@ public class Otp extends AppCompatActivity {
         entered_otp=et1.getText().toString();
         entered_otp+=et2.getText().toString();
         entered_otp+=et3.getText().toString();
+
         entered_otp+=et4.getText().toString();
 
 
