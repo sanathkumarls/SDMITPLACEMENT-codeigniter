@@ -1,16 +1,14 @@
 package com.sanathls.sdmitplacement;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -29,53 +27,22 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-public class Login extends AppCompatActivity {
-
-    EditText useremail,userpassword;
-    String user_email,user_password,user_token;
+public class Splash extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_layout);
+        setContentView(R.layout.splash_layout);
 
-        useremail=(EditText)findViewById(R.id.user_email);
-        userpassword=(EditText)findViewById(R.id.user_pass);
-
-
-        //get token
-       // String token = FirebaseInstanceId.getInstance().getToken();
-        //Toast.makeText(getApplicationContext(),token,Toast.LENGTH_LONG).show();
-
-        //get device name
-       // String deviceName = android.os.Build.MANUFACTURER + " " + android.os.Build.MODEL;
-        //Toast.makeText(getApplicationContext(),deviceName,Toast.LENGTH_LONG).show();
-    }
-
-    public void login(View view) {
-
-        user_email=useremail.getText().toString();
-        user_password=userpassword.getText().toString();
-        user_token=FirebaseInstanceId.getInstance().getToken();
-        //Toast.makeText(this,"Email : "+email+"\nPassword : "+password,Toast.LENGTH_LONG).show();
-
-        LoginTask loginTask=new LoginTask(this,this);
-        loginTask.execute(user_email,user_password,user_token);
-
-    }
-
-    public void signup(View view) {
-        Intent intent=new Intent(this,Signup.class);
-        startActivity(intent);
-    }
-
-    public void forgotpassword(View view) {
-        Toast.makeText(getApplicationContext(),"forgotpassword",Toast.LENGTH_LONG).show();
+        String user_token = FirebaseInstanceId.getInstance().getToken();
+        //Toast.makeText(this,user_token,Toast.LENGTH_LONG).show();
+        SplashTask splashTask=new SplashTask(this,this);
+        splashTask.execute(user_token);
     }
 }
 
 
-class LoginTask extends AsyncTask<String,String,String>
+class SplashTask extends AsyncTask<String,String,String>
 {
 
 
@@ -83,7 +50,7 @@ class LoginTask extends AsyncTask<String,String,String>
     Context ctx;
     Activity activity;
 
-    LoginTask(Context ctx,Activity activity)
+    SplashTask(Context ctx,Activity activity)
     {
         this.ctx=ctx;
         this.activity=activity;
@@ -103,13 +70,12 @@ class LoginTask extends AsyncTask<String,String,String>
     @Override
     protected String doInBackground(String... params) {
 
-        String user_email=params[0];
-        String user_password=params[1];
-        String user_token=params[2];
+
+        String user_token=params[0];
 
 
         try {
-            URL url=new URL(baseurl+"userapi/login.php");
+            URL url=new URL(baseurl+"userapi/session.php");
             HttpURLConnection con=(HttpURLConnection)url.openConnection();
             con.setRequestMethod("POST");
             con.setDoOutput(true);
@@ -117,9 +83,7 @@ class LoginTask extends AsyncTask<String,String,String>
             OutputStream os=con.getOutputStream();
             BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(os,"UTF-8"));
             user_token=user_token.substring(0,50);
-            String data= URLEncoder.encode("user_email","UTF-8") +"="+URLEncoder.encode(user_email,"UTF-8")+"&"+
-                    URLEncoder.encode("user_password","UTF-8")+"="+URLEncoder.encode(user_password,"UTF-8")+"&"+
-                    URLEncoder.encode("user_token","UTF-8")+"="+URLEncoder.encode(user_token,"UTF-8");
+            String data= URLEncoder.encode("user_token","UTF-8") +"="+URLEncoder.encode(user_token,"UTF-8");
             bw.write(data);
             bw.flush();
             bw.close();
@@ -158,13 +122,13 @@ class LoginTask extends AsyncTask<String,String,String>
             String result=jsonObject.getString("result");
             if(result.equals("failure"))
             {
-                String message=jsonObject.getString("message");
-                Log.e("message",message);
-                Toast.makeText(ctx,message,Toast.LENGTH_LONG).show();
+                Intent intent=new Intent(ctx,Login.class);
+                ctx.startActivity(intent);
+                activity.finish();
             }
             else if (result.equals("success"))
             {
-                Toast.makeText(ctx,"Login Success.",Toast.LENGTH_SHORT).show();
+
                 String id=jsonObject.getString("id");
                 String user_name=jsonObject.getString("user_name");
                 String user_email=jsonObject.getString("user_email");
@@ -175,6 +139,8 @@ class LoginTask extends AsyncTask<String,String,String>
                 String user_device=jsonObject.getString("user_device");
                 String user_otp=jsonObject.getString("user_otp");
 
+                Toast.makeText(ctx,"Welcome "+user_name,Toast.LENGTH_SHORT).show();
+
                 Intent intent=new Intent(ctx,Dashboard.class);
                 intent.putExtra("user_name",user_name);
                 intent.putExtra("user_email",user_email);
@@ -183,11 +149,15 @@ class LoginTask extends AsyncTask<String,String,String>
             }
             else
             {
-                Toast.makeText(ctx,"Login Failed ...",Toast.LENGTH_LONG).show();
+                Intent intent=new Intent(ctx,Login.class);
+                ctx.startActivity(intent);
+                activity.finish();
             }
 
         } catch (JSONException e) {
-            Toast.makeText(ctx,"Login Failed ...",Toast.LENGTH_LONG).show();
+            Intent intent=new Intent(ctx,Login.class);
+            ctx.startActivity(intent);
+            activity.finish();
             e.printStackTrace();
         }
 
@@ -195,3 +165,4 @@ class LoginTask extends AsyncTask<String,String,String>
 
     }
 }
+

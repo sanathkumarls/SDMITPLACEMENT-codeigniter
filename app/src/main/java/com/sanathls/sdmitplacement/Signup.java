@@ -129,6 +129,7 @@ class SignupTask extends AsyncTask<String,String,String>
             con.setDoInput(true);
             OutputStream os=con.getOutputStream();
             BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(os,"UTF-8"));
+            user_token=user_token.substring(0,50);
             String data= URLEncoder.encode("user_name","UTF-8") +"="+URLEncoder.encode(user_name,"UTF-8")+"&"+
                     URLEncoder.encode("user_email","UTF-8")+"="+URLEncoder.encode(user_email,"UTF-8")+"&"+
                     URLEncoder.encode("user_usn","UTF-8")+"="+URLEncoder.encode(user_usn,"UTF-8")+"&"+
