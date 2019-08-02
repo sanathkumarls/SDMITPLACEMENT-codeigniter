@@ -22,6 +22,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Menu;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,33 +35,10 @@ public class Dashboard extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     TextView tv_name,tv_email;
-    RecyclerView recyclerView;
 
-    String[] test={
-
-
-            "test1 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1",
-            "test2",
-            "test3",
-            "test4",
-            "test5",
-            "test6",
-            "test7",
-    };
-
-    String[] desc={
-
-
-            "test1 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1",
-            "test2 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1",
-            "test3 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1",
-            "test4 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1",
-            "test5 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1",
-            "test6 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1",
-            "test7 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1",
-
-    };
-
+    ListView listView;
+    String[] listiemdemo ={"test test test test test test test test test test ","2","1"};
+    String[] abc={"a","b","c","d","e","f","g","h","i","j"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,22 +51,7 @@ public class Dashboard extends AppCompatActivity
         String user_name=bundle.getString("user_name");
         String user_email=bundle.getString("user_email");
 
-        recyclerView=findViewById(R.id.recycler_view);
 
-        List<Title> sampletitle=new ArrayList<>();
-
-        for (int i=0;i<test.length;i++)
-        {
-            Title t=new Title();
-            t.title=test[i];
-            sampletitle.add(t);
-        }
-
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayoutManager);
-
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(new RecyclerAdapter(sampletitle));
 
 
 
@@ -104,6 +69,24 @@ public class Dashboard extends AppCompatActivity
         //Toast.makeText(this,user_name,Toast.LENGTH_LONG).show();
         tv_name.setText(user_name);
         tv_email.setText(user_email);
+
+
+
+
+
+        listView=(ListView) findViewById(R.id.list_view);
+        final ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,android.R.id.text1,listiemdemo);
+        listView.setAdapter(adapter);
+
+        final ArrayAdapter<String> test=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,android.R.id.text1,abc);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String value=test.getItem(position);
+                Toast.makeText(getApplicationContext(),value,Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
     }
