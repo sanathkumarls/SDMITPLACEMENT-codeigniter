@@ -30,7 +30,8 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/name"
                 android:src="@drawable/ic_left_arrow"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:onClick="go_back"/>
 
         </LinearLayout>
 
@@ -95,7 +96,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/et_one"
+                android:id="@+id/et1"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
@@ -114,7 +115,7 @@
                 android:background="@drawable/backgroundbg"></View>
 
             <EditText
-                android:id="@+id/et_two"
+                android:id="@+id/et2"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
@@ -133,7 +134,7 @@
                 android:background="@drawable/backgroundbg"></View>
 
             <EditText
-                android:id="@+id/et_three"
+                android:id="@+id/et3"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
@@ -152,7 +153,7 @@
                 android:background="@drawable/backgroundbg"></View>
 
             <EditText
-                android:id="@+id/et_four"
+                android:id="@+id/et4"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"

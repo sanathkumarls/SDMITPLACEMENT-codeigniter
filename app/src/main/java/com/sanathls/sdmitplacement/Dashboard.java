@@ -1,10 +1,15 @@
 package com.sanathls.sdmitplacement;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.util.Log;
 import android.view.View;
 
 import androidx.core.view.GravityCompat;
@@ -28,6 +33,20 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,8 +56,6 @@ public class Dashboard extends AppCompatActivity
     TextView tv_name,tv_email;
 
     ListView listView;
-    String[] listiemdemo ={"test test test test test test test test test test ","2","1"};
-    String[] abc={"a","b","c","d","e","f","g","h","i","j"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +67,11 @@ public class Dashboard extends AppCompatActivity
         Bundle bundle=getIntent().getExtras();
         String user_name=bundle.getString("user_name");
         String user_email=bundle.getString("user_email");
+
+        listView=(ListView) findViewById(R.id.list_view);
+
+        NotificationsTask notifications=new NotificationsTask(this,this,listView);
+        notifications.execute(user_email);
 
 
 
@@ -72,10 +94,7 @@ public class Dashboard extends AppCompatActivity
 
 
 
-
-
-        listView=(ListView) findViewById(R.id.list_view);
-        final ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,android.R.id.text1,listiemdemo);
+        /*final ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,android.R.id.text1,listiemdemo);
         listView.setAdapter(adapter);
 
         final ArrayAdapter<String> test=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,android.R.id.text1,abc);
@@ -86,7 +105,7 @@ public class Dashboard extends AppCompatActivity
                 String value=test.getItem(position);
                 Toast.makeText(getApplicationContext(),value,Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
 
 
     }
@@ -139,3 +158,144 @@ public class Dashboard extends AppCompatActivity
         return true;
     }
 }
+
+class NotificationsTask extends AsyncTask<String,String,String>
+{
+
+
+    String baseurl="http://192.168.43.85/placement/";
+    Context ctx;
+    Activity activity;
+    ListView listView;
+
+    NotificationsTask(Context ctx,Activity activity,ListView listView)
+    {
+        this.ctx=ctx;
+        this.activity=activity;
+        this.listView=listView;
+    }
+
+
+
+    @Override
+    protected void onPreExecute() {
+
+//waiting dialog
+
+
+
+    }
+
+    @Override
+    protected String doInBackground(String... params) {
+
+        String user_email=params[0];
+
+
+        try {
+            URL url=new URL(baseurl+"userapi/notifications.php");
+            HttpURLConnection con=(HttpURLConnection)url.openConnection();
+            con.setRequestMethod("POST");
+            con.setDoOutput(true);
+            con.setDoInput(true);
+            OutputStream os=con.getOutputStream();
+            BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(os,"UTF-8"));
+            String data= URLEncoder.encode("user_email","UTF-8") +"="+URLEncoder.encode(user_email,"UTF-8");
+            bw.write(data);
+            bw.flush();
+            bw.close();
+            os.close();
+            InputStream is=con.getInputStream();
+            BufferedReader br=new BufferedReader(new InputStreamReader(is,"iso-8859-1"));
+            String response="",line="";
+            while((line=br.readLine()) != null)
+            {
+                response+=line;
+            }
+            br.close();
+            is.close();
+            con.disconnect();
+            return response;
+
+        } catch (MalformedURLException e) {
+            Log.e("malformedurl",e.toString());
+        } catch (IOException e) {
+            Log.e("ioexcetion",e.toString());
+        }
+
+
+        return "failure";
+
+
+    }
+
+    @Override
+    protected void onPostExecute(String response) {
+
+        //Toast.makeText(ctx,response,Toast.LENGTH_LONG).show();
+        Log.e("Response",response);
+        try {
+            JSONObject jsonObject=new JSONObject(response);
+            String result=jsonObject.getString("result");
+            if(result.equals("failure"))
+            {
+                String message=jsonObject.getString("message");
+                Log.e("message",message);
+                Toast.makeText(ctx,message,Toast.LENGTH_LONG).show();
+            }
+            else if (result.equals("success"))
+            {
+                //Toast.makeText(this,"Login Success.",Toast.LENGTH_SHORT).show();
+                String arraysize=jsonObject.getString("size");
+                int size=Integer.parseInt(arraysize);
+
+                String[] title=new String[size],description = new String[size],link = new String[size];
+
+                for(int i=0;i<size;i++)
+                {
+                    title[i]=jsonObject.getString("title"+i);
+                    description[i]=jsonObject.getString("description"+i);
+                    link[i]=jsonObject.getString("link"+i);
+                }
+
+                final ArrayAdapter<String> titleadapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,title);
+                listView.setAdapter(titleadapter);
+
+                final ArrayAdapter<String> descriptionadapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,description);
+
+                final ArrayAdapter<String> linkadapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,link);
+
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        String current_title=titleadapter.getItem(position);
+                        String current_description=descriptionadapter.getItem(position);
+                        String current_link=linkadapter.getItem(position);
+                        //Toast.makeText(ctx,current_description+"\n"+current_link,Toast.LENGTH_SHORT).show();
+                        Intent intent=new Intent(ctx, Notification.class);
+                        intent.putExtra("current_title",current_title);
+                        intent.putExtra("current_description",current_description);
+                        intent.putExtra("current_link",current_link);
+                        ctx.startActivity(intent);
+
+
+                    }
+                });
+
+
+            }
+            else
+            {
+                Toast.makeText(ctx,"No Notifications",Toast.LENGTH_LONG).show();
+            }
+
+        } catch (JSONException e) {
+            Toast.makeText(ctx,"No Notifications",Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+
+
+
+    }
+}
+

@@ -82,7 +82,16 @@ class SplashTask extends AsyncTask<String,String,String>
             con.setDoInput(true);
             OutputStream os=con.getOutputStream();
             BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(os,"UTF-8"));
-            user_token=user_token.substring(0,50);
+            try
+            {
+                user_token=user_token.substring(0,50);
+            }
+            catch (Exception e)
+            {
+                Log.e("token error",e.toString());
+                return "failure";
+            }
+
             String data= URLEncoder.encode("user_token","UTF-8") +"="+URLEncoder.encode(user_token,"UTF-8");
             bw.write(data);
             bw.flush();

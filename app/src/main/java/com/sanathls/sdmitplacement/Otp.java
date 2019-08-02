@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -45,10 +47,10 @@ public class Otp extends AppCompatActivity {
         user_otp=bundle.getString("user_otp");
 
 
-        et1=(EditText)findViewById(R.id.et_one);
-        et2=(EditText)findViewById(R.id.et_two);
-        et3=(EditText)findViewById(R.id.et_three);
-        et4=(EditText)findViewById(R.id.et_four);
+        et1=(EditText)findViewById(R.id.et1);
+        et2=(EditText)findViewById(R.id.et2);
+        et3=(EditText)findViewById(R.id.et3);
+        et4=(EditText)findViewById(R.id.et4);
         tv_email=(TextView)findViewById(R.id.tv_email);
 
         btn_verify=(Button)findViewById(R.id.bt_verify);
@@ -56,7 +58,10 @@ public class Otp extends AppCompatActivity {
         tv_email.setText(user_email);
 
 
-
+        et1.addTextChangedListener(new GenericTextWatcher(et1));
+        et2.addTextChangedListener(new GenericTextWatcher(et2));
+        et3.addTextChangedListener(new GenericTextWatcher(et3));
+        et4.addTextChangedListener(new GenericTextWatcher(et4));
 
 
     }
@@ -87,6 +92,59 @@ public class Otp extends AppCompatActivity {
             finish();
         }
     }
+
+
+    /**
+     * automatic moving text on verification
+     */
+
+    public class GenericTextWatcher implements TextWatcher {
+        private View view;
+
+        private GenericTextWatcher(View view) {
+            this.view = view;
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            // TODO Auto-generated method stub
+            String text = editable.toString();
+            switch (view.getId()) {
+
+                case R.id.et1:
+                    if (text.length() == 1)
+                        et2.requestFocus();
+                    break;
+                case R.id.et2:
+                    if (text.length() == 1)
+                        et3.requestFocus();
+                    else
+                        et1.requestFocus();
+                    break;
+                case R.id.et3:
+                    if (text.length() == 1)
+                        et4.requestFocus();
+                    else
+                        et2.requestFocus();
+                    break;
+                case R.id.et4:
+                    if (text.length() == 0)
+                        et3.requestFocus();
+                    break;
+            }
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+            // TODO Auto-generated method stub
+        }
+
+        @Override
+        public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+            // TODO Auto-generated method stub
+        }
+    }
+
 
 
 }
@@ -172,6 +230,8 @@ class OtpTask extends AsyncTask<String,String,String>
             else if (result.equals("success"))
             {
                 Toast.makeText(ctx,"Verification Success.",Toast.LENGTH_LONG).show();
+                Intent intent=new Intent(ctx,Splash.class);
+                ctx.startActivity(intent);
                 activity.finish();
             }
             else
