@@ -75,6 +75,7 @@ public class Signup extends AppCompatActivity {
 
 
 
+
         if(user_password.equals(user_repassword))
         {
             //Toast.makeText(this,"Name : "+user_name+"\nEmail : "+user_email+"\nUSN : "+user_usn+"\nPhone : "+user_phone+"\nPassword : "+user_password,Toast.LENGTH_LONG).show();
