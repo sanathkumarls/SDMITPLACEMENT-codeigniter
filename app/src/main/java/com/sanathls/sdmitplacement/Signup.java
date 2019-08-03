@@ -50,7 +50,16 @@ public class Signup extends AppCompatActivity {
 
     public void already_a_user(View view) {
 
-        super.onBackPressed();
+        Intent intent=new Intent(this,Login.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent=new Intent(this,Login.class);
+        startActivity(intent);
+        finish();
     }
 
     public void register(View view) {
