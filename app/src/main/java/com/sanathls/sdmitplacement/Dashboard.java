@@ -87,24 +87,11 @@ public class Dashboard extends AppCompatActivity
         View header = navigationView.getHeaderView(0);
        tv_name = (TextView) header.findViewById(R.id.tv_user_name);
         tv_email = (TextView) header.findViewById(R.id.tv_user_email);
-        //Toast.makeText(this,user_name,Toast.LENGTH_LONG).show();
+        Toast.makeText(this,user_name,Toast.LENGTH_SHORT).show();
         tv_name.setText(user_name);
         tv_email.setText(user_email);
 
 
-
-        /*final ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,android.R.id.text1,listiemdemo);
-        listView.setAdapter(adapter);
-
-        final ArrayAdapter<String> test=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,android.R.id.text1,abc);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String value=test.getItem(position);
-                Toast.makeText(getApplicationContext(),value,Toast.LENGTH_SHORT).show();
-            }
-        });*/
 
 
     }

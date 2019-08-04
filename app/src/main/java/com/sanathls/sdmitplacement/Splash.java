@@ -153,7 +153,6 @@ class SplashTask extends AsyncTask<String,String,String>
                 String user_device=jsonObject.getString("user_device");
                 String user_otp=jsonObject.getString("user_otp");
 
-                Toast.makeText(ctx,"Welcome "+user_name,Toast.LENGTH_SHORT).show();
 
                 Intent intent=new Intent(ctx,Dashboard.class);
                 intent.putExtra("user_name",user_name);
