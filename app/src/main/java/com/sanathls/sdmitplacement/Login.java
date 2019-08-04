@@ -1,6 +1,7 @@
 package com.sanathls.sdmitplacement;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -43,6 +44,7 @@ public class Login extends AppCompatActivity {
         userpassword=(EditText)findViewById(R.id.user_pass);
 
 
+
         //get token
        // String token = FirebaseInstanceId.getInstance().getToken();
         //Toast.makeText(getApplicationContext(),token,Toast.LENGTH_LONG).show();
@@ -59,8 +61,27 @@ public class Login extends AppCompatActivity {
         user_token=FirebaseInstanceId.getInstance().getToken();
         //Toast.makeText(this,"Email : "+email+"\nPassword : "+password,Toast.LENGTH_LONG).show();
 
-        LoginTask loginTask=new LoginTask(this,this);
-        loginTask.execute(user_email,user_password,user_token);
+
+
+
+
+        if(!user_email.equals("") && !user_password.equals(""))
+        {
+
+            ProgressDialog progressDialog=new ProgressDialog(this);
+            progressDialog.setTitle("Logging in");
+            progressDialog.setMessage("Please Wait");
+            progressDialog.show();
+
+            LoginTask loginTask=new LoginTask(this,this,progressDialog);
+            loginTask.execute(user_email,user_password,user_token);
+        }
+        else
+        {
+            Toast.makeText(this,"Fill All Fields",Toast.LENGTH_LONG).show();
+        }
+
+
 
     }
 
@@ -83,13 +104,15 @@ class LoginTask extends AsyncTask<String,String,String>
     String baseurl="http://192.168.43.85/placement/";
     Context ctx;
     Activity activity;
+    ProgressDialog progressDialog;
 
-    LoginTask(Context ctx,Activity activity)
+    LoginTask(Context ctx,Activity activity,ProgressDialog progressDialog)
     {
         this.ctx=ctx;
         this.activity=activity;
+        this.progressDialog=progressDialog;
     }
-
+    //ProgressDialog progressDialog=new ProgressDialog(ctx);
 
 
     @Override
@@ -97,6 +120,9 @@ class LoginTask extends AsyncTask<String,String,String>
 
 //waiting dialog
 
+        //progressDialog.setTitle("Logging in");
+        //progressDialog.setMessage("Please Wait");
+        //progressDialog.show();
 
 
     }
@@ -151,6 +177,8 @@ class LoginTask extends AsyncTask<String,String,String>
 
     @Override
     protected void onPostExecute(String response) {
+
+        progressDialog.cancel();
 
         //Toast.makeText(ctx,response,Toast.LENGTH_LONG).show();
         Log.e("Response",response);

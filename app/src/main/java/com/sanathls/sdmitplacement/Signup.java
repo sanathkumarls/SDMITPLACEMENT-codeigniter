@@ -1,6 +1,7 @@
 package com.sanathls.sdmitplacement;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -76,10 +77,17 @@ public class Signup extends AppCompatActivity {
 
 
 
+
         if(user_password.equals(user_repassword))
         {
             //Toast.makeText(this,"Name : "+user_name+"\nEmail : "+user_email+"\nUSN : "+user_usn+"\nPhone : "+user_phone+"\nPassword : "+user_password,Toast.LENGTH_LONG).show();
-            SignupTask signupTask=new SignupTask(this,this);
+
+            ProgressDialog progressDialog=new ProgressDialog(this);
+            progressDialog.setTitle("Registering...");
+            progressDialog.setMessage("Please Wait");
+            progressDialog.show();
+
+            SignupTask signupTask=new SignupTask(this,this,progressDialog);
             signupTask.execute(user_name,user_email,user_usn,user_phone,user_password,user_token,user_device);
         }
         else
@@ -100,21 +108,19 @@ class SignupTask extends AsyncTask<String,String,String>
     String baseurl="http://192.168.43.85/placement/";
     Context ctx;
     Activity activity;
+    ProgressDialog progressDialog;
 
-    SignupTask(Context ctx,Activity activity)
+    SignupTask(Context ctx,Activity activity,ProgressDialog progressDialog)
     {
         this.ctx=ctx;
         this.activity=activity;
+        this.progressDialog=progressDialog;
     }
 
 
 
     @Override
     protected void onPreExecute() {
-
-//waiting dialog
-
-
 
     }
 
@@ -179,6 +185,7 @@ class SignupTask extends AsyncTask<String,String,String>
     protected void onPostExecute(String response) {
 
             //Toast.makeText(ctx,response,Toast.LENGTH_LONG).show();
+            progressDialog.cancel();
             Log.e("Response",response);
             try {
                 JSONObject jsonObject=new JSONObject(response);

@@ -3,6 +3,7 @@ package com.sanathls.sdmitplacement;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -29,6 +30,8 @@ import java.net.URLEncoder;
 
 public class Splash extends AppCompatActivity {
 
+    ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +39,13 @@ public class Splash extends AppCompatActivity {
 
         String user_token = FirebaseInstanceId.getInstance().getToken();
         //Toast.makeText(this,user_token,Toast.LENGTH_LONG).show();
-        SplashTask splashTask=new SplashTask(this,this);
+
+        progressDialog=new ProgressDialog(this);
+        progressDialog.setTitle("Loading...");
+        progressDialog.setMessage("Please Wait");
+        progressDialog.show();
+
+        SplashTask splashTask=new SplashTask(this,this,progressDialog);
         splashTask.execute(user_token);
     }
 }
@@ -49,21 +58,19 @@ class SplashTask extends AsyncTask<String,String,String>
     String baseurl="http://192.168.43.85/placement/";
     Context ctx;
     Activity activity;
+    ProgressDialog progressDialog;
 
-    SplashTask(Context ctx,Activity activity)
+    SplashTask(Context ctx,Activity activity,ProgressDialog progressDialog)
     {
         this.ctx=ctx;
         this.activity=activity;
+        this.progressDialog=progressDialog;
     }
 
 
 
     @Override
     protected void onPreExecute() {
-
-//waiting dialog
-
-
 
     }
 
@@ -124,6 +131,7 @@ class SplashTask extends AsyncTask<String,String,String>
     @Override
     protected void onPostExecute(String response) {
 
+        progressDialog.cancel();
         //Toast.makeText(ctx,response,Toast.LENGTH_LONG).show();
         Log.e("Response",response);
         try {

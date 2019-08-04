@@ -1,6 +1,7 @@
 package com.sanathls.sdmitplacement;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -80,8 +81,14 @@ public class Otp extends AppCompatActivity {
         if(entered_otp.equals(user_otp))
         {
             //Toast.makeText(this,"matched",Toast.LENGTH_LONG).show();
+
+            ProgressDialog progressDialog=new ProgressDialog(this);
+            progressDialog.setTitle("Verifying...");
+            progressDialog.setMessage("Please Wait");
+            progressDialog.show();
+
             // make as active
-            OtpTask otpTask=new OtpTask(this,this);
+            OtpTask otpTask=new OtpTask(this,this,progressDialog);
             otpTask.execute(user_name,user_email);
         }
         else
@@ -155,12 +162,14 @@ class OtpTask extends AsyncTask<String,String,String>
     Context ctx;
     Activity activity;
     String user_name,user_email;
+    ProgressDialog progressDialog;
     String baseurl="http://192.168.43.85/placement/";
 
-    OtpTask(Context ctx,Activity activity)
+    OtpTask(Context ctx,Activity activity,ProgressDialog progressDialog)
     {
         this.ctx=ctx;
         this.activity=activity;
+        this.progressDialog=progressDialog;
     }
 
 
@@ -216,6 +225,7 @@ class OtpTask extends AsyncTask<String,String,String>
     @Override
     protected void onPostExecute(String response) {
 
+        progressDialog.cancel();
         //Toast.makeText(ctx,response,Toast.LENGTH_LONG).show();
         Log.e("Response",response);
         try {

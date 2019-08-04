@@ -1,6 +1,7 @@
 package com.sanathls.sdmitplacement;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -54,6 +55,7 @@ public class Dashboard extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     TextView tv_name,tv_email;
+    ProgressDialog progressDialog;
 
     ListView listView;
 
@@ -70,7 +72,12 @@ public class Dashboard extends AppCompatActivity
 
         listView=(ListView) findViewById(R.id.list_view);
 
-        NotificationsTask notifications=new NotificationsTask(this,this,listView);
+        progressDialog=new ProgressDialog(this);
+        progressDialog.setTitle("Loading...");
+        progressDialog.setMessage("Please Wait");
+        progressDialog.show();
+
+        NotificationsTask notifications=new NotificationsTask(this,this,listView,progressDialog);
         notifications.execute(user_email);
 
 
@@ -167,12 +174,14 @@ class NotificationsTask extends AsyncTask<String,String,String>
     Context ctx;
     Activity activity;
     ListView listView;
+    ProgressDialog progressDialog;
 
-    NotificationsTask(Context ctx,Activity activity,ListView listView)
+    NotificationsTask(Context ctx,Activity activity,ListView listView,ProgressDialog progressDialog)
     {
         this.ctx=ctx;
         this.activity=activity;
         this.listView=listView;
+        this.progressDialog=progressDialog;
     }
 
 
@@ -232,6 +241,7 @@ class NotificationsTask extends AsyncTask<String,String,String>
     @Override
     protected void onPostExecute(String response) {
 
+        progressDialog.cancel();
         //Toast.makeText(ctx,response,Toast.LENGTH_LONG).show();
         Log.e("Response",response);
         try {
