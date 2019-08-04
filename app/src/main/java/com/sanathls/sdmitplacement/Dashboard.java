@@ -62,6 +62,8 @@ public class Dashboard extends AppCompatActivity
         user_name=bundle.getString("user_name");
         user_email=bundle.getString("user_email");
 
+        Toast.makeText(this,"Welcome "+user_name,Toast.LENGTH_SHORT).show();
+
         listView=(ListView) findViewById(R.id.list_view);
 
         progressDialog=new ProgressDialog(this);
@@ -87,7 +89,7 @@ public class Dashboard extends AppCompatActivity
         View header = navigationView.getHeaderView(0);
        tv_name = (TextView) header.findViewById(R.id.tv_user_name);
         tv_email = (TextView) header.findViewById(R.id.tv_user_email);
-        Toast.makeText(this,user_name,Toast.LENGTH_SHORT).show();
+
         tv_name.setText(user_name);
         tv_email.setText(user_email);
 
