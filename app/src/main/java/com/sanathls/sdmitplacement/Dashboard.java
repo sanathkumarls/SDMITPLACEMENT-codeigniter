@@ -48,7 +48,7 @@ public class Dashboard extends AppCompatActivity
 
     TextView tv_name,tv_email;
     ProgressDialog progressDialog;
-
+    String user_name,user_email;
     ListView listView;
 
     @Override
@@ -59,8 +59,8 @@ public class Dashboard extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         Bundle bundle=getIntent().getExtras();
-        String user_name=bundle.getString("user_name");
-        String user_email=bundle.getString("user_email");
+        user_name=bundle.getString("user_name");
+        user_email=bundle.getString("user_email");
 
         listView=(ListView) findViewById(R.id.list_view);
 
@@ -149,6 +149,8 @@ public class Dashboard extends AppCompatActivity
         } else if (id == R.id.share) {
 
         } else if (id == R.id.logout) {
+            LogoutTask logoutTask=new LogoutTask(this,this,progressDialog);
+            logoutTask.execute(user_email);
 
         }
 
@@ -304,14 +306,12 @@ class LogoutTask extends AsyncTask<String,String,String>
 
     Context ctx;
     Activity activity;
-    ListView listView;
     ProgressDialog progressDialog;
 
     LogoutTask(Context ctx,Activity activity,ProgressDialog progressDialog)
     {
         this.ctx=ctx;
         this.activity=activity;
-        this.listView=listView;
         this.progressDialog=progressDialog;
     }
 
@@ -319,10 +319,6 @@ class LogoutTask extends AsyncTask<String,String,String>
 
     @Override
     protected void onPreExecute() {
-
-//waiting dialog
-
-
 
     }
 
@@ -333,7 +329,7 @@ class LogoutTask extends AsyncTask<String,String,String>
 
 
         try {
-            URL url=new URL(Constants.base_url+"userapi/notifications.php");
+            URL url=new URL(Constants.base_url+"userapi/logout.php");
             HttpURLConnection con=(HttpURLConnection)url.openConnection();
             con.setRequestMethod("POST");
             con.setDoOutput(true);
@@ -386,52 +382,19 @@ class LogoutTask extends AsyncTask<String,String,String>
             }
             else if (result.equals("success"))
             {
-                //Toast.makeText(this,"Login Success.",Toast.LENGTH_SHORT).show();
-                String arraysize=jsonObject.getString("size");
-                int size=Integer.parseInt(arraysize);
-
-                String[] title=new String[size],description = new String[size],link = new String[size];
-
-                for(int i=0;i<size;i++)
-                {
-                    title[i]=jsonObject.getString("title"+i);
-                    description[i]=jsonObject.getString("description"+i);
-                    link[i]=jsonObject.getString("link"+i);
-                }
-
-                final ArrayAdapter<String> titleadapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,title);
-                listView.setAdapter(titleadapter);
-
-                final ArrayAdapter<String> descriptionadapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,description);
-
-                final ArrayAdapter<String> linkadapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,link);
-
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        String current_title=titleadapter.getItem(position);
-                        String current_description=descriptionadapter.getItem(position);
-                        String current_link=linkadapter.getItem(position);
-                        //Toast.makeText(ctx,current_description+"\n"+current_link,Toast.LENGTH_SHORT).show();
-                        Intent intent=new Intent(ctx, Notification.class);
-                        intent.putExtra("current_title",current_title);
-                        intent.putExtra("current_description",current_description);
-                        intent.putExtra("current_link",current_link);
-                        ctx.startActivity(intent);
-
-
-                    }
-                });
-
+                Toast.makeText(ctx,"Logout Success.",Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(ctx,Login.class);
+                ctx.startActivity(intent);
+                activity.finish();
 
             }
             else
             {
-                Toast.makeText(ctx,"No Notifications",Toast.LENGTH_LONG).show();
+                Toast.makeText(ctx,"Logout Failed",Toast.LENGTH_LONG).show();
             }
 
         } catch (JSONException e) {
-            Toast.makeText(ctx,"No Notifications",Toast.LENGTH_LONG).show();
+            Toast.makeText(ctx,"Logout Failed",Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
 
