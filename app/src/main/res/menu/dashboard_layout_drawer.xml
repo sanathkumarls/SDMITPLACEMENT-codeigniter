@@ -9,16 +9,16 @@
             android:icon="@drawable/ic_home_black_24dp"
             android:title="@string/menu_home" />
         <item
-            android:id="@+id/nav_tools"
-            android:icon="@drawable/ic_menu_manage"
+            android:id="@+id/change_password"
+            android:icon="@drawable/ic_lock_black_24dp"
             android:title="Change Password" />
         <item
-            android:id="@+id/nav_share"
+            android:id="@+id/share"
             android:icon="@drawable/ic_menu_share"
             android:title="@string/menu_share" />
         <item
-            android:id="@+id/nav_send"
-            android:icon="@drawable/ic_menu_send"
+            android:id="@+id/logout"
+            android:icon="@drawable/logout"
             android:title="@string/logout" />
     </group>
 

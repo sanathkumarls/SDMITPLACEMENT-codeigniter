@@ -78,21 +78,28 @@ public class Signup extends AppCompatActivity {
 
 
 
-        if(user_password.equals(user_repassword))
+        if(!user_name.equals("") && !user_email.equals("") && !user_usn.equals("") && !user_phone.equals("") && !user_password.equals("") && !user_repassword.equals("") )
         {
-            //Toast.makeText(this,"Name : "+user_name+"\nEmail : "+user_email+"\nUSN : "+user_usn+"\nPhone : "+user_phone+"\nPassword : "+user_password,Toast.LENGTH_LONG).show();
+            if(user_password.equals(user_repassword))
+            {
+                //Toast.makeText(this,"Name : "+user_name+"\nEmail : "+user_email+"\nUSN : "+user_usn+"\nPhone : "+user_phone+"\nPassword : "+user_password,Toast.LENGTH_LONG).show();
 
-            ProgressDialog progressDialog=new ProgressDialog(this);
-            progressDialog.setTitle("Registering...");
-            progressDialog.setMessage("Please Wait");
-            progressDialog.show();
+                ProgressDialog progressDialog=new ProgressDialog(this);
+                progressDialog.setTitle("Registering...");
+                progressDialog.setMessage("Please Wait");
+                progressDialog.show();
 
-            SignupTask signupTask=new SignupTask(this,this,progressDialog);
-            signupTask.execute(user_name,user_email,user_usn,user_phone,user_password,user_token,user_device);
+                SignupTask signupTask=new SignupTask(this,this,progressDialog);
+                signupTask.execute(user_name,user_email,user_usn,user_phone,user_password,user_token,user_device);
+            }
+            else
+            {
+                Toast.makeText(this,"Passwords Not Matching",Toast.LENGTH_LONG).show();
+            }
         }
         else
         {
-            Toast.makeText(this,"Passwords Not Matching",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"All Fields Are Required",Toast.LENGTH_LONG).show();
         }
 
 
@@ -103,9 +110,6 @@ public class Signup extends AppCompatActivity {
 
 class SignupTask extends AsyncTask<String,String,String>
 {
-
-
-    String baseurl="http://192.168.43.85/placement/";
     Context ctx;
     Activity activity;
     ProgressDialog progressDialog;
@@ -138,7 +142,7 @@ class SignupTask extends AsyncTask<String,String,String>
 
 
         try {
-            URL url=new URL(baseurl+"userapi/register.php");
+            URL url=new URL(Constants.base_url+"userapi/register.php");
             HttpURLConnection con=(HttpURLConnection)url.openConnection();
             con.setRequestMethod("POST");
             con.setDoOutput(true);

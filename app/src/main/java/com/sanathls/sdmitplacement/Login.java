@@ -99,9 +99,6 @@ public class Login extends AppCompatActivity {
 
 class LoginTask extends AsyncTask<String,String,String>
 {
-
-
-    String baseurl="http://192.168.43.85/placement/";
     Context ctx;
     Activity activity;
     ProgressDialog progressDialog;
@@ -117,14 +114,6 @@ class LoginTask extends AsyncTask<String,String,String>
 
     @Override
     protected void onPreExecute() {
-
-//waiting dialog
-
-        //progressDialog.setTitle("Logging in");
-        //progressDialog.setMessage("Please Wait");
-        //progressDialog.show();
-
-
     }
 
     @Override
@@ -136,7 +125,7 @@ class LoginTask extends AsyncTask<String,String,String>
 
 
         try {
-            URL url=new URL(baseurl+"userapi/login.php");
+            URL url=new URL(Constants.base_url+"userapi/login.php");
             HttpURLConnection con=(HttpURLConnection)url.openConnection();
             con.setRequestMethod("POST");
             con.setDoOutput(true);

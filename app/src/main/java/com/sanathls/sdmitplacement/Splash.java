@@ -53,9 +53,6 @@ public class Splash extends AppCompatActivity {
 
 class SplashTask extends AsyncTask<String,String,String>
 {
-
-
-    String baseurl="http://192.168.43.85/placement/";
     Context ctx;
     Activity activity;
     ProgressDialog progressDialog;
@@ -82,7 +79,7 @@ class SplashTask extends AsyncTask<String,String,String>
 
 
         try {
-            URL url=new URL(baseurl+"userapi/session.php");
+            URL url=new URL(Constants.base_url+"userapi/session.php");
             HttpURLConnection con=(HttpURLConnection)url.openConnection();
             con.setRequestMethod("POST");
             con.setDoOutput(true);

@@ -163,7 +163,6 @@ class OtpTask extends AsyncTask<String,String,String>
     Activity activity;
     String user_name,user_email;
     ProgressDialog progressDialog;
-    String baseurl="http://192.168.43.85/placement/";
 
     OtpTask(Context ctx,Activity activity,ProgressDialog progressDialog)
     {
@@ -186,7 +185,7 @@ class OtpTask extends AsyncTask<String,String,String>
 
 
         try {
-            URL url=new URL(baseurl+"userapi/activate_user.php");
+            URL url=new URL(Constants.base_url+"userapi/activate_user.php");
             HttpURLConnection con=(HttpURLConnection)url.openConnection();
             con.setRequestMethod("POST");
             con.setDoOutput(true);
