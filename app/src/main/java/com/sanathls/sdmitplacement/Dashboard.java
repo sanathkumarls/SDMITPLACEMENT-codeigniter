@@ -370,7 +370,7 @@ class LogoutTask extends AsyncTask<String,String,String>
             }
             else if (result.equals("success"))
             {
-                Toast.makeText(ctx,"Logout Success.",Toast.LENGTH_SHORT).show();
+                Toast.makeText(ctx,"Logout Successful.",Toast.LENGTH_SHORT).show();
                 Intent intent=new Intent(ctx,Login.class);
                 ctx.startActivity(intent);
                 activity.finish();
