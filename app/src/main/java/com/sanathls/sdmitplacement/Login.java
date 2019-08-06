@@ -58,10 +58,19 @@ public class Login extends AppCompatActivity {
 
         user_email=useremail.getText().toString();
         user_password=userpassword.getText().toString();
-        user_token=FirebaseInstanceId.getInstance().getToken();
+
         //Toast.makeText(this,"Email : "+email+"\nPassword : "+password,Toast.LENGTH_LONG).show();
 
-
+        try
+        {
+            user_token=FirebaseInstanceId.getInstance().getToken();
+            Log.e("login token",user_token);
+        }
+        catch (Exception e)
+        {
+            Log.e("login token error",e.toString());
+            user_token="login";
+        }
 
 
 
@@ -132,7 +141,6 @@ class LoginTask extends AsyncTask<String,String,String>
             con.setDoInput(true);
             OutputStream os=con.getOutputStream();
             BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(os,"UTF-8"));
-            user_token=user_token.substring(0,50);
             String data= URLEncoder.encode("user_email","UTF-8") +"="+URLEncoder.encode(user_email,"UTF-8")+"&"+
                     URLEncoder.encode("user_password","UTF-8")+"="+URLEncoder.encode(user_password,"UTF-8")+"&"+
                     URLEncoder.encode("user_token","UTF-8")+"="+URLEncoder.encode(user_token,"UTF-8");

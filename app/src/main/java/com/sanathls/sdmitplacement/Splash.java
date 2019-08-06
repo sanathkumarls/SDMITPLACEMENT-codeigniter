@@ -1,5 +1,6 @@
 package com.sanathls.sdmitplacement;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -8,10 +9,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,14 +37,27 @@ import java.net.URLEncoder;
 public class Splash extends AppCompatActivity {
 
     ProgressDialog progressDialog;
+    String user_token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_layout);
 
-        String user_token = FirebaseInstanceId.getInstance().getToken();
+
         //Toast.makeText(this,user_token,Toast.LENGTH_LONG).show();
+        try
+        {
+            user_token = FirebaseInstanceId.getInstance().getToken();
+            Log.e("slash token",user_token);
+        }
+        catch (NullPointerException e)
+        {
+            Log.e("slash token error",e.toString());
+            user_token="splash";
+        }
+
+
 
         progressDialog=new ProgressDialog(this);
         progressDialog.setTitle("Loading...");
@@ -86,16 +105,6 @@ class SplashTask extends AsyncTask<String,String,String>
             con.setDoInput(true);
             OutputStream os=con.getOutputStream();
             BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(os,"UTF-8"));
-            try
-            {
-                user_token=user_token.substring(0,50);
-            }
-            catch (Exception e)
-            {
-                Log.e("token error",e.toString());
-                return "failure";
-            }
-
             String data= URLEncoder.encode("user_token","UTF-8") +"="+URLEncoder.encode(user_token,"UTF-8");
             bw.write(data);
             bw.flush();
