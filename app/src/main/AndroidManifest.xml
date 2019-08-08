@@ -15,12 +15,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Notification"></activity>
+        <activity android:name=".OtpChangePassword"></activity>
+        <activity android:name=".ChangePassword" />
+        <activity android:name=".ForgotPassword" />
+        <activity android:name=".Notification" />
         <activity
             android:name=".Dashboard"
             android:label="@string/title_activity_dashboard"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity android:name=".Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,8 +37,7 @@
             android:name=".FirebaseService"
             android:stopWithTask="false">
             <intent-filter>
-            <action
-                android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 

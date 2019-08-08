@@ -1,5 +1,7 @@
 package com.sanathls.sdmitplacement;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -8,12 +10,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,122 +30,95 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-public class Login extends AppCompatActivity {
+public class ForgotPassword extends AppCompatActivity {
 
-    EditText useremail,userpassword;
-    String user_email,user_password,user_token;
+    String user_email;
+    EditText etemail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_layout);
-
-        useremail=(EditText)findViewById(R.id.user_email);
-        userpassword=(EditText)findViewById(R.id.user_pass);
-
-
-
-        //get token
-       // String token = FirebaseInstanceId.getInstance().getToken();
-        //Toast.makeText(getApplicationContext(),token,Toast.LENGTH_LONG).show();
-
-        //get device name
-       // String deviceName = android.os.Build.MANUFACTURER + " " + android.os.Build.MODEL;
-        //Toast.makeText(getApplicationContext(),deviceName,Toast.LENGTH_LONG).show();
+        setContentView(R.layout.forgot_password_layout);
+        etemail=findViewById(R.id.etEmail);
     }
 
-    public void login(View view) {
+    public void go_back_to_login(View view) {
+        Intent intent=new Intent(this,Login.class);
+        startActivity(intent);
+        finish();
+    }
 
-        user_email=useremail.getText().toString();
-        user_password=userpassword.getText().toString();
-
-        //Toast.makeText(this,"Email : "+email+"\nPassword : "+password,Toast.LENGTH_LONG).show();
-
-        try
+    public void submit(View view) {
+        user_email=etemail.getText().toString();
+        if(!user_email.equals(""))
         {
-            user_token=FirebaseInstanceId.getInstance().getToken();
-            Log.e("login token",user_token);
-        }
-        catch (Exception e)
-        {
-            Log.e("login token error",e.toString());
-            user_token="login";
-        }
-
-
-
-        if(!user_email.equals("") && !user_password.equals(""))
-        {
-
             ProgressDialog progressDialog=new ProgressDialog(this);
-            progressDialog.setTitle("Logging in");
+            progressDialog.setTitle("Validating...");
             progressDialog.setMessage("Please Wait");
             progressDialog.show();
 
-            LoginTask loginTask=new LoginTask(this,this,progressDialog);
-            loginTask.execute(user_email,user_password,user_token);
+
+            ForgotPasswordTask forgotPasswordTask=new ForgotPasswordTask(this,this,progressDialog);
+            forgotPasswordTask.execute(user_email);
         }
         else
         {
-            Toast.makeText(this,"Fill All Fields",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"Enter Your Registered Email Id",Toast.LENGTH_LONG).show();
         }
 
-
-
     }
 
-    public void signup(View view) {
-        Intent intent=new Intent(this,Signup.class);
+
+    @Override
+    public void onBackPressed() {
+        Intent intent=new Intent(this,Login.class);
         startActivity(intent);
         finish();
     }
 
-    public void forgotpassword(View view) {
-        Intent intent=new Intent(this,ForgotPassword.class);
-        startActivity(intent);
-        finish();
+    public void verify_otp(View view) {
     }
 }
 
 
-class LoginTask extends AsyncTask<String,String,String>
+class ForgotPasswordTask extends AsyncTask<String,String,String>
 {
     Context ctx;
     Activity activity;
+    String user_email;
     ProgressDialog progressDialog;
+    EditText etemai;
+    Button btnSubmit;
+    LinearLayout otplayout;
 
-    LoginTask(Context ctx,Activity activity,ProgressDialog progressDialog)
+    ForgotPasswordTask(Context ctx,Activity activity,ProgressDialog progressDialog)
     {
         this.ctx=ctx;
         this.activity=activity;
         this.progressDialog=progressDialog;
     }
-    //ProgressDialog progressDialog=new ProgressDialog(ctx);
 
 
     @Override
     protected void onPreExecute() {
+        super.onPreExecute();
     }
 
     @Override
     protected String doInBackground(String... params) {
 
-        String user_email=params[0];
-        String user_password=params[1];
-        String user_token=params[2];
+        user_email=params[0];
 
 
         try {
-            URL url=new URL(Constants.base_url+"userapi/login.php");
+            URL url=new URL(Constants.base_url+"userapi/forgot_password.php");
             HttpURLConnection con=(HttpURLConnection)url.openConnection();
             con.setRequestMethod("POST");
             con.setDoOutput(true);
             con.setDoInput(true);
             OutputStream os=con.getOutputStream();
             BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(os,"UTF-8"));
-            String data= URLEncoder.encode("user_email","UTF-8") +"="+URLEncoder.encode(user_email,"UTF-8")+"&"+
-                    URLEncoder.encode("user_password","UTF-8")+"="+URLEncoder.encode(user_password,"UTF-8")+"&"+
-                    URLEncoder.encode("user_token","UTF-8")+"="+URLEncoder.encode(user_token,"UTF-8");
+            String data= URLEncoder.encode("user_email","UTF-8") +"="+URLEncoder.encode(user_email,"UTF-8");
             bw.write(data);
             bw.flush();
             bw.close();
@@ -171,14 +144,13 @@ class LoginTask extends AsyncTask<String,String,String>
 
         return "failure";
 
-
     }
+
 
     @Override
     protected void onPostExecute(String response) {
 
         progressDialog.cancel();
-
         //Toast.makeText(ctx,response,Toast.LENGTH_LONG).show();
         Log.e("Response",response);
         try {
@@ -192,7 +164,7 @@ class LoginTask extends AsyncTask<String,String,String>
             }
             else if (result.equals("success"))
             {
-                Toast.makeText(ctx,"Login Success.",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(ctx,"Verification Success.",Toast.LENGTH_LONG).show();
                 String id=jsonObject.getString("id");
                 String user_name=jsonObject.getString("user_name");
                 String user_email=jsonObject.getString("user_email");
@@ -202,24 +174,23 @@ class LoginTask extends AsyncTask<String,String,String>
                 String user_token=jsonObject.getString("user_token");
                 String user_device=jsonObject.getString("user_device");
                 String user_otp=jsonObject.getString("user_otp");
-
-                Intent intent=new Intent(ctx,Dashboard.class);
-                intent.putExtra("user_name",user_name);
+                Intent intent=new Intent(ctx,OtpChangePassword.class);
+                intent.putExtra("user_otp",user_otp);
                 intent.putExtra("user_email",user_email);
                 ctx.startActivity(intent);
                 activity.finish();
+
             }
             else
             {
-                Toast.makeText(ctx,"Login Failed ...",Toast.LENGTH_LONG).show();
+                Toast.makeText(ctx,"Validation Failed ...",Toast.LENGTH_LONG).show();
             }
 
         } catch (JSONException e) {
-            Toast.makeText(ctx,"Login Failed ...",Toast.LENGTH_LONG).show();
+            Toast.makeText(ctx,"Validation Failed ...",Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
-
-
-
     }
 }
+
+
