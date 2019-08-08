@@ -44,7 +44,6 @@ public class Login extends AppCompatActivity {
         userpassword=(EditText)findViewById(R.id.user_pass);
 
 
-
         //get token
        // String token = FirebaseInstanceId.getInstance().getToken();
         //Toast.makeText(getApplicationContext(),token,Toast.LENGTH_LONG).show();
