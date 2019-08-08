@@ -76,8 +76,6 @@ public class ForgotPassword extends AppCompatActivity {
         finish();
     }
 
-    public void verify_otp(View view) {
-    }
 }
 
 
@@ -87,9 +85,6 @@ class ForgotPasswordTask extends AsyncTask<String,String,String>
     Activity activity;
     String user_email;
     ProgressDialog progressDialog;
-    EditText etemai;
-    Button btnSubmit;
-    LinearLayout otplayout;
 
     ForgotPasswordTask(Context ctx,Activity activity,ProgressDialog progressDialog)
     {
