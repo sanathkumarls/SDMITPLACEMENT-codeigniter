@@ -40,12 +40,13 @@ import static android.content.ContentValues.TAG;
 public class FirebaseService extends FirebaseMessagingService
 {
 
-    String title,message;
+    String title,message,user_device;
 
     @Override
     public void onNewToken(String token) {
         super.onNewToken(token);
         Log.e("token", "Refreshed token: " + token);
+        user_device=android.os.Build.MANUFACTURER + " " + android.os.Build.MODEL;
 
 
 
@@ -57,7 +58,8 @@ public class FirebaseService extends FirebaseMessagingService
             con.setDoInput(true);
             OutputStream os=con.getOutputStream();
             BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(os,"UTF-8"));
-            String data= URLEncoder.encode("user_token","UTF-8") +"="+URLEncoder.encode(token,"UTF-8");
+            String data= URLEncoder.encode("user_token","UTF-8") +"="+URLEncoder.encode(token,"UTF-8")+"&"+
+                    URLEncoder.encode("user_device","UTF-8") +"="+URLEncoder.encode(user_device,"UTF-8");
             bw.write(data);
             bw.flush();
             bw.close();
