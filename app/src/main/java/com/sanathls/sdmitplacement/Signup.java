@@ -214,6 +214,7 @@ class SignupTask extends AsyncTask<String,String,String>
                 {
                     Toast.makeText(ctx,"Resgistration Success.",Toast.LENGTH_LONG).show();
                     String data=jsonObject.getString("0");
+                    Log.e("0",data);
                     JSONObject jsonDataObject=new JSONObject(data);
                     String id=jsonDataObject.getString("id");
                     String user_name=jsonDataObject.getString("user_name");
@@ -224,6 +225,7 @@ class SignupTask extends AsyncTask<String,String,String>
                     String user_token=jsonDataObject.getString("user_token");
                     String user_device=jsonDataObject.getString("user_device");
                     String user_otp=jsonDataObject.getString("user_otp");
+
 
                     Intent intent=new Intent(ctx,Otp.class);
                     intent.putExtra("user_name",user_name);
