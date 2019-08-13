@@ -153,7 +153,7 @@ class SignupTask extends AsyncTask<String,String,String>
 
 
         try {
-            URL url=new URL(Constants.base_url+"userapi/register.php");
+            URL url=new URL(Constants.base_url+"userapi/register/");
             HttpURLConnection con=(HttpURLConnection)url.openConnection();
             con.setRequestMethod("POST");
             con.setDoOutput(true);
@@ -213,15 +213,17 @@ class SignupTask extends AsyncTask<String,String,String>
                 else if (result.equals("success"))
                 {
                     Toast.makeText(ctx,"Resgistration Success.",Toast.LENGTH_LONG).show();
-                    String id=jsonObject.getString("id");
-                    String user_name=jsonObject.getString("user_name");
-                    String user_email=jsonObject.getString("user_email");
-                    String user_usn=jsonObject.getString("user_usn");
-                    String user_phone=jsonObject.getString("user_phone");
-                    String user_password=jsonObject.getString("user_password");
-                    String user_token=jsonObject.getString("user_token");
-                    String user_device=jsonObject.getString("user_device");
-                    String user_otp=jsonObject.getString("user_otp");
+                    String data=jsonObject.getString("0");
+                    JSONObject jsonanotherObject=new JSONObject(data);
+                    String id=jsonanotherObject.getString("id");
+                    String user_name=jsonanotherObject.getString("user_name");
+                    String user_email=jsonanotherObject.getString("user_email");
+                    String user_usn=jsonanotherObject.getString("user_usn");
+                    String user_phone=jsonanotherObject.getString("user_phone");
+                    String user_password=jsonanotherObject.getString("user_password");
+                    String user_token=jsonanotherObject.getString("user_token");
+                    String user_device=jsonanotherObject.getString("user_device");
+                    String user_otp=jsonanotherObject.getString("user_otp");
 
                     Intent intent=new Intent(ctx,Otp.class);
                     intent.putExtra("user_name",user_name);
