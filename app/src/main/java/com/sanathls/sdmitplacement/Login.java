@@ -135,7 +135,7 @@ class LoginTask extends AsyncTask<String,String,String>
 
 
         try {
-            URL url=new URL(Constants.base_url+"userapi/login.php");
+            URL url=new URL(Constants.base_url+"userapi/login");
             HttpURLConnection con=(HttpURLConnection)url.openConnection();
             con.setRequestMethod("POST");
             con.setDoOutput(true);
@@ -192,15 +192,18 @@ class LoginTask extends AsyncTask<String,String,String>
             else if (result.equals("success"))
             {
                 Toast.makeText(ctx,"Login Success.",Toast.LENGTH_SHORT).show();
-                String id=jsonObject.getString("id");
-                String user_name=jsonObject.getString("user_name");
-                String user_email=jsonObject.getString("user_email");
-                String user_usn=jsonObject.getString("user_usn");
-                String user_phone=jsonObject.getString("user_phone");
-                String user_password=jsonObject.getString("user_password");
-                String user_token=jsonObject.getString("user_token");
-                String user_device=jsonObject.getString("user_device");
-                String user_otp=jsonObject.getString("user_otp");
+                String data=jsonObject.getString("0");
+                Log.e("0",data);
+                JSONObject jsonDataObject=new JSONObject(data);
+                String id=jsonDataObject.getString("id");
+                String user_name=jsonDataObject.getString("user_name");
+                String user_email=jsonDataObject.getString("user_email");
+                String user_usn=jsonDataObject.getString("user_usn");
+                String user_phone=jsonDataObject.getString("user_phone");
+                String user_password=jsonDataObject.getString("user_password");
+                String user_token=jsonDataObject.getString("user_token");
+                String user_device=jsonDataObject.getString("user_device");
+                String user_otp=jsonDataObject.getString("user_otp");
 
                 Intent intent=new Intent(ctx,Dashboard.class);
                 intent.putExtra("user_name",user_name);
