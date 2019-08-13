@@ -51,7 +51,7 @@ public class FirebaseService extends FirebaseMessagingService
 
 
         try {
-            URL url=new URL(Constants.base_url+"userapi/firebase.php");
+            URL url=new URL(Constants.base_url+"userapi/firebase");
             HttpURLConnection con=(HttpURLConnection)url.openConnection();
             con.setRequestMethod("POST");
             con.setDoOutput(true);

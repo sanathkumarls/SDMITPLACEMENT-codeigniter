@@ -317,7 +317,7 @@ class LogoutTask extends AsyncTask<String,String,String>
 
 
         try {
-            URL url=new URL(Constants.base_url+"userapi/logout.php");
+            URL url=new URL(Constants.base_url+"userapi/logout");
             HttpURLConnection con=(HttpURLConnection)url.openConnection();
             con.setRequestMethod("POST");
             con.setDoOutput(true);
