@@ -169,10 +169,6 @@ class NotificationsTask extends AsyncTask<String,String,String>
     @Override
     protected void onPreExecute() {
 
-//waiting dialog
-
-
-
     }
 
     @Override
