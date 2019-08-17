@@ -214,14 +214,11 @@ class SignupTask extends AsyncTask<String,String,String>
 
         } catch (MalformedURLException e) {
             Log.e("malformedurl",e.toString());
+            return "offline";
         } catch (IOException e) {
             Log.e("ioexcetion",e.toString());
+            return "offline";
         }
-
-
-        return "failure";
-
-
     }
 
     @Override
@@ -230,6 +227,28 @@ class SignupTask extends AsyncTask<String,String,String>
             //Toast.makeText(ctx,response,Toast.LENGTH_LONG).show();
             progressDialog.cancel();
             Log.e("Response",response);
+        if(response.equals("offline"))
+        {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctx);
+            //Setting Dialog Title
+            alertDialog.setTitle("Cannot Connect To Server !!!");
+            //Setting Dialog Icon
+            alertDialog.setIcon(R.mipmap.ic_launcher);
+            //Setting Dialog Message
+            alertDialog.setMessage("Check Your Internet Connection Or Try Again Later ...");
+
+            //On Pressing Setting button
+            alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    activity.finishAffinity();
+                }
+            });
+            alertDialog.show();
+        }
+        else
+        {
             try {
                 JSONObject jsonObject=new JSONObject(response);
                 String result=jsonObject.getString("result");
@@ -272,8 +291,7 @@ class SignupTask extends AsyncTask<String,String,String>
                 Toast.makeText(ctx,"Registration Failed ...",Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }
-
-
+        }
 
     }
 }

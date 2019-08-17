@@ -276,12 +276,12 @@ class OtpChangePasswordTask extends AsyncTask<String,String,String>
 
         } catch (MalformedURLException e) {
             Log.e("malformedurl",e.toString());
+            return "offline";
         } catch (IOException e) {
             Log.e("ioexcetion",e.toString());
+            return "offline";
         }
 
-
-        return "failure";
 
     }
 
@@ -292,31 +292,56 @@ class OtpChangePasswordTask extends AsyncTask<String,String,String>
         progressDialog.cancel();
         //Toast.makeText(ctx,response,Toast.LENGTH_LONG).show();
         Log.e("Response",response);
-        try {
-            JSONObject jsonObject=new JSONObject(response);
-            String result=jsonObject.getString("result");
-            if(result.equals("failure"))
-            {
-                String message=jsonObject.getString("message");
-                Log.e("message",message);
-                Toast.makeText(ctx,message,Toast.LENGTH_LONG).show();
-            }
-            else if (result.equals("success"))
-            {
-                Toast.makeText(ctx,"Password Update Success.",Toast.LENGTH_LONG).show();
-                Intent intent=new Intent(ctx,Login.class);
-                ctx.startActivity(intent);
-                activity.finish();
-            }
-            else
-            {
-                Toast.makeText(ctx,"Password Update Failed ...",Toast.LENGTH_LONG).show();
-            }
+        if(response.equals("offline"))
+        {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctx);
+            //Setting Dialog Title
+            alertDialog.setTitle("Cannot Connect To Server !!!");
+            //Setting Dialog Icon
+            alertDialog.setIcon(R.mipmap.ic_launcher);
+            //Setting Dialog Message
+            alertDialog.setMessage("Check Your Internet Connection Or Try Again Later ...");
 
-        } catch (JSONException e) {
-            Toast.makeText(ctx,"Password Update Failed ...",Toast.LENGTH_LONG).show();
-            e.printStackTrace();
+            //On Pressing Setting button
+            alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    activity.finishAffinity();
+                }
+            });
+            alertDialog.show();
         }
+        else
+        {
+            try {
+                JSONObject jsonObject=new JSONObject(response);
+                String result=jsonObject.getString("result");
+                if(result.equals("failure"))
+                {
+                    String message=jsonObject.getString("message");
+                    Log.e("message",message);
+                    Toast.makeText(ctx,message,Toast.LENGTH_LONG).show();
+                }
+                else if (result.equals("success"))
+                {
+                    Toast.makeText(ctx,"Password Update Success.",Toast.LENGTH_LONG).show();
+                    Intent intent=new Intent(ctx,Login.class);
+                    ctx.startActivity(intent);
+                    activity.finish();
+                }
+                else
+                {
+                    Toast.makeText(ctx,"Password Update Failed ...",Toast.LENGTH_LONG).show();
+                }
+
+            } catch (JSONException e) {
+                Toast.makeText(ctx,"Password Update Failed ...",Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            }
+        }
+
+
     }
 }
 

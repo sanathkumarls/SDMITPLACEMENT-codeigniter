@@ -261,12 +261,11 @@ class NotificationsTask extends AsyncTask<String,String,String>
 
         } catch (MalformedURLException e) {
             Log.e("malformedurl",e.toString());
+            return "offline";
         } catch (IOException e) {
             Log.e("ioexcetion",e.toString());
+            return "offline";
         }
-
-
-        return "failure";
 
 
     }
@@ -277,67 +276,88 @@ class NotificationsTask extends AsyncTask<String,String,String>
         progressDialog.cancel();
         //Toast.makeText(ctx,response,Toast.LENGTH_LONG).show();
         Log.e("Response",response);
-        try {
-            JSONObject jsonObject=new JSONObject(response);
-            String result=jsonObject.getString("result");
-            if(result.equals("failure"))
-            {
-                String message=jsonObject.getString("message");
-                Log.e("message",message);
-                Toast.makeText(ctx,message,Toast.LENGTH_LONG).show();
-            }
-            else if (result.equals("success"))
-            {
-                //Toast.makeText(this,"Login Success.",Toast.LENGTH_SHORT).show();
-                String arraysize=jsonObject.getString("size");
-                int size=Integer.parseInt(arraysize);
+        if(response.equals("offline"))
+        {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctx);
+            //Setting Dialog Title
+            alertDialog.setTitle("Cannot Connect To Server !!!");
+            //Setting Dialog Icon
+            alertDialog.setIcon(R.mipmap.ic_launcher);
+            //Setting Dialog Message
+            alertDialog.setMessage("Check Your Internet Connection Or Try Again Later ...");
 
-                String[] title=new String[size],description = new String[size],link = new String[size];
-
-                for(int i=0;i<size;i++)
+            //On Pressing Setting button
+            alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    activity.finishAffinity();
+                }
+            });
+            alertDialog.show();
+        }
+        else
+        {
+            try {
+                JSONObject jsonObject=new JSONObject(response);
+                String result=jsonObject.getString("result");
+                if(result.equals("failure"))
                 {
-                    title[i]=jsonObject.getString("title"+i);
-                    description[i]=jsonObject.getString("description"+i);
-                    link[i]=jsonObject.getString("link"+i);
+                    String message=jsonObject.getString("message");
+                    Log.e("message",message);
+                    Toast.makeText(ctx,message,Toast.LENGTH_LONG).show();
+                }
+                else if (result.equals("success"))
+                {
+                    //Toast.makeText(this,"Login Success.",Toast.LENGTH_SHORT).show();
+                    String arraysize=jsonObject.getString("size");
+                    int size=Integer.parseInt(arraysize);
+
+                    String[] title=new String[size],description = new String[size],link = new String[size];
+
+                    for(int i=0;i<size;i++)
+                    {
+                        title[i]=jsonObject.getString("title"+i);
+                        description[i]=jsonObject.getString("description"+i);
+                        link[i]=jsonObject.getString("link"+i);
+                    }
+
+                    final ArrayAdapter<String> titleadapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,title);
+                    listView.setAdapter(titleadapter);
+
+                    final ArrayAdapter<String> descriptionadapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,description);
+
+                    final ArrayAdapter<String> linkadapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,link);
+
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            String current_title=titleadapter.getItem(position);
+                            String current_description=descriptionadapter.getItem(position);
+                            String current_link=linkadapter.getItem(position);
+                            //Toast.makeText(ctx,current_description+"\n"+current_link,Toast.LENGTH_SHORT).show();
+                            Intent intent=new Intent(ctx, Notification.class);
+                            intent.putExtra("current_title",current_title);
+                            intent.putExtra("current_description",current_description);
+                            intent.putExtra("current_link",current_link);
+                            ctx.startActivity(intent);
+
+
+                        }
+                    });
+
+
+                }
+                else
+                {
+                    Toast.makeText(ctx,"No Notifications",Toast.LENGTH_LONG).show();
                 }
 
-                final ArrayAdapter<String> titleadapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,title);
-                listView.setAdapter(titleadapter);
-
-                final ArrayAdapter<String> descriptionadapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,description);
-
-                final ArrayAdapter<String> linkadapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,link);
-
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        String current_title=titleadapter.getItem(position);
-                        String current_description=descriptionadapter.getItem(position);
-                        String current_link=linkadapter.getItem(position);
-                        //Toast.makeText(ctx,current_description+"\n"+current_link,Toast.LENGTH_SHORT).show();
-                        Intent intent=new Intent(ctx, Notification.class);
-                        intent.putExtra("current_title",current_title);
-                        intent.putExtra("current_description",current_description);
-                        intent.putExtra("current_link",current_link);
-                        ctx.startActivity(intent);
-
-
-                    }
-                });
-
-
-            }
-            else
-            {
+            } catch (JSONException e) {
                 Toast.makeText(ctx,"No Notifications",Toast.LENGTH_LONG).show();
+                e.printStackTrace();
             }
-
-        } catch (JSONException e) {
-            Toast.makeText(ctx,"No Notifications",Toast.LENGTH_LONG).show();
-            e.printStackTrace();
         }
-
-
 
     }
 }
@@ -396,12 +416,11 @@ class LogoutTask extends AsyncTask<String,String,String>
 
         } catch (MalformedURLException e) {
             Log.e("malformedurl",e.toString());
+            return "offline";
         } catch (IOException e) {
             Log.e("ioexcetion",e.toString());
+            return "offline";
         }
-
-
-        return "failure";
 
 
     }
@@ -412,34 +431,55 @@ class LogoutTask extends AsyncTask<String,String,String>
         progressDialog.cancel();
         //Toast.makeText(ctx,response,Toast.LENGTH_LONG).show();
         Log.e("Response",response);
-        try {
-            JSONObject jsonObject=new JSONObject(response);
-            String result=jsonObject.getString("result");
-            if(result.equals("failure"))
-            {
-                String message=jsonObject.getString("message");
-                Log.e("message",message);
-                Toast.makeText(ctx,message,Toast.LENGTH_LONG).show();
-            }
-            else if (result.equals("success"))
-            {
-                Toast.makeText(ctx,"Logout Successful.",Toast.LENGTH_SHORT).show();
-                Intent intent=new Intent(ctx,Login.class);
-                ctx.startActivity(intent);
-                activity.finish();
+        if(response.equals("offline"))
+        {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctx);
+            //Setting Dialog Title
+            alertDialog.setTitle("Cannot Connect To Server !!!");
+            //Setting Dialog Icon
+            alertDialog.setIcon(R.mipmap.ic_launcher);
+            //Setting Dialog Message
+            alertDialog.setMessage("Check Your Internet Connection Or Try Again Later ...");
 
-            }
-            else
-            {
-                Toast.makeText(ctx,"Logout Failed",Toast.LENGTH_LONG).show();
-            }
-
-        } catch (JSONException e) {
-            Toast.makeText(ctx,"Logout Failed",Toast.LENGTH_LONG).show();
-            e.printStackTrace();
+            //On Pressing Setting button
+            alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    activity.finishAffinity();
+                }
+            });
+            alertDialog.show();
         }
+        else
+        {
+            try {
+                JSONObject jsonObject=new JSONObject(response);
+                String result=jsonObject.getString("result");
+                if(result.equals("failure"))
+                {
+                    String message=jsonObject.getString("message");
+                    Log.e("message",message);
+                    Toast.makeText(ctx,message,Toast.LENGTH_LONG).show();
+                }
+                else if (result.equals("success"))
+                {
+                    Toast.makeText(ctx,"Logout Successful.",Toast.LENGTH_SHORT).show();
+                    Intent intent=new Intent(ctx,Login.class);
+                    ctx.startActivity(intent);
+                    activity.finish();
 
+                }
+                else
+                {
+                    Toast.makeText(ctx,"Logout Failed",Toast.LENGTH_LONG).show();
+                }
 
+            } catch (JSONException e) {
+                Toast.makeText(ctx,"Logout Failed",Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            }
+        }
 
     }
 }

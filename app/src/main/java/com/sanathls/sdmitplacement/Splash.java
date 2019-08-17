@@ -160,12 +160,11 @@ class SplashTask extends AsyncTask<String,String,String>
 
         } catch (MalformedURLException e) {
             Log.e("malformedurl",e.toString());
+            return "offline";
         } catch (IOException e) {
             Log.e("ioexcetion",e.toString());
+            return "offline";
         }
-
-
-        return "failure";
 
 
     }
@@ -176,51 +175,78 @@ class SplashTask extends AsyncTask<String,String,String>
         progressDialog.cancel();
         //Toast.makeText(ctx,response,Toast.LENGTH_LONG).show();
         Log.e("Response",response);
-        try {
-            JSONObject jsonObject=new JSONObject(response);
-            String result=jsonObject.getString("result");
-            if(result.equals("failure"))
-            {
-                Intent intent=new Intent(ctx,Login.class);
-                ctx.startActivity(intent);
-                activity.finish();
-            }
-            else if (result.equals("success"))
-            {
 
-                String data=jsonObject.getString("0");
-                Log.e("0",data);
-                JSONObject jsonDataObject=new JSONObject(data);
-                String id=jsonDataObject.getString("id");
-                String user_name=jsonDataObject.getString("user_name");
-                String user_email=jsonDataObject.getString("user_email");
-                String user_usn=jsonDataObject.getString("user_usn");
-                String user_phone=jsonDataObject.getString("user_phone");
-                String user_password=jsonDataObject.getString("user_password");
-                String user_token=jsonDataObject.getString("user_token");
-                String user_device=jsonDataObject.getString("user_device");
-                String user_otp=jsonDataObject.getString("user_otp");
+        if(response.equals("offline"))
+        {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctx);
+            //Setting Dialog Title
+            alertDialog.setTitle("Cannot Connect To Server !!!");
+            //Setting Dialog Icon
+            alertDialog.setIcon(R.mipmap.ic_launcher);
+            //Setting Dialog Message
+            alertDialog.setMessage("Check Your Internet Connection Or Try Again Later ...");
 
-
-                Intent intent=new Intent(ctx,Dashboard.class);
-                intent.putExtra("user_name",user_name);
-                intent.putExtra("user_email",user_email);
-                ctx.startActivity(intent);
-                activity.finish();
-            }
-            else
-            {
-                Intent intent=new Intent(ctx,Login.class);
-                ctx.startActivity(intent);
-                activity.finish();
-            }
-
-        } catch (JSONException e) {
-            Intent intent=new Intent(ctx,Login.class);
-            ctx.startActivity(intent);
-            activity.finish();
-            e.printStackTrace();
+            //On Pressing Setting button
+            alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    activity.finishAffinity();
+                }
+            });
+            alertDialog.show();
         }
+        else
+        {
+            try {
+                JSONObject jsonObject=new JSONObject(response);
+                String result=jsonObject.getString("result");
+                if(result.equals("failure"))
+                {
+                    Intent intent=new Intent(ctx,Login.class);
+                    ctx.startActivity(intent);
+                    activity.finish();
+                }
+                else if (result.equals("success"))
+                {
+
+                    String data=jsonObject.getString("0");
+                    Log.e("0",data);
+                    JSONObject jsonDataObject=new JSONObject(data);
+                    String id=jsonDataObject.getString("id");
+                    String user_name=jsonDataObject.getString("user_name");
+                    String user_email=jsonDataObject.getString("user_email");
+                    String user_usn=jsonDataObject.getString("user_usn");
+                    String user_phone=jsonDataObject.getString("user_phone");
+                    String user_password=jsonDataObject.getString("user_password");
+                    String user_token=jsonDataObject.getString("user_token");
+                    String user_device=jsonDataObject.getString("user_device");
+                    String user_otp=jsonDataObject.getString("user_otp");
+
+
+                    Intent intent=new Intent(ctx,Dashboard.class);
+                    intent.putExtra("user_name",user_name);
+                    intent.putExtra("user_email",user_email);
+                    ctx.startActivity(intent);
+                    activity.finish();
+                }
+                else
+                {
+                    Intent intent=new Intent(ctx,Login.class);
+                    ctx.startActivity(intent);
+                    activity.finish();
+                }
+
+            } catch (JSONException e) {
+                Intent intent=new Intent(ctx,Login.class);
+                ctx.startActivity(intent);
+                activity.finish();
+                e.printStackTrace();
+            }
+        }
+
+
+
 
 
 
