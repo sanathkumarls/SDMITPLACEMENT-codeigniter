@@ -246,10 +246,6 @@ class SplashTask extends AsyncTask<String,String,String>
         }
 
 
-
-
-
-
     }
 }
 
