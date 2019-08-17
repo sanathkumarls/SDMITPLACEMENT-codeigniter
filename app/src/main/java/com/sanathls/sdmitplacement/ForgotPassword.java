@@ -3,8 +3,10 @@ package com.sanathls.sdmitplacement;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -58,8 +60,34 @@ public class ForgotPassword extends AppCompatActivity {
             progressDialog.show();
 
 
-            ForgotPasswordTask forgotPasswordTask=new ForgotPasswordTask(this,this,progressDialog);
-            forgotPasswordTask.execute(user_email);
+            if(Internet.hasInternetAccess(this))
+            {
+                ForgotPasswordTask forgotPasswordTask=new ForgotPasswordTask(this,this,progressDialog);
+                forgotPasswordTask.execute(user_email);
+            }
+            else
+            {
+                progressDialog.cancel();
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+                //Setting Dialog Title
+                alertDialog.setTitle("No Connection !!!");
+                //Setting Dialog Icon
+                alertDialog.setIcon(R.mipmap.ic_launcher);
+                //Setting Dialog Message
+                alertDialog.setMessage("Check Your Internet Connection And Try Again ...");
+
+                //On Pressing Setting button
+                alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        finishAffinity();
+                    }
+                });
+                alertDialog.show();
+            }
+
+
         }
         else
         {
@@ -106,7 +134,7 @@ class ForgotPasswordTask extends AsyncTask<String,String,String>
 
 
         try {
-            URL url=new URL(Constants.base_url+"userapi/forgot_password.php");
+            URL url=new URL(Constants.base_url+"userapi/forgot_password");
             HttpURLConnection con=(HttpURLConnection)url.openConnection();
             con.setRequestMethod("POST");
             con.setDoOutput(true);
@@ -160,15 +188,21 @@ class ForgotPasswordTask extends AsyncTask<String,String,String>
             else if (result.equals("success"))
             {
                 //Toast.makeText(ctx,"Verification Success.",Toast.LENGTH_LONG).show();
-                String id=jsonObject.getString("id");
-                String user_name=jsonObject.getString("user_name");
-                String user_email=jsonObject.getString("user_email");
-                String user_usn=jsonObject.getString("user_usn");
-                String user_phone=jsonObject.getString("user_phone");
-                String user_password=jsonObject.getString("user_password");
-                String user_token=jsonObject.getString("user_token");
-                String user_device=jsonObject.getString("user_device");
-                String user_otp=jsonObject.getString("user_otp");
+                String data=jsonObject.getString("0");
+                Log.e("0",data);
+                JSONObject jsonDataObject=new JSONObject(data);
+                String id=jsonDataObject.getString("id");
+                String user_name=jsonDataObject.getString("user_name");
+                String user_email=jsonDataObject.getString("user_email");
+                String user_usn=jsonDataObject.getString("user_usn");
+                String user_phone=jsonDataObject.getString("user_phone");
+                String user_password=jsonDataObject.getString("user_password");
+                String user_token=jsonDataObject.getString("user_token");
+                String user_device=jsonDataObject.getString("user_device");
+                String user_otp=jsonDataObject.getString("user_otp");
+
+
+
                 Intent intent=new Intent(ctx,OtpChangePassword.class);
                 intent.putExtra("user_otp",user_otp);
                 intent.putExtra("user_email",user_email);

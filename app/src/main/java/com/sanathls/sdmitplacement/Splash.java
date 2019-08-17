@@ -4,9 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -45,6 +49,7 @@ public class Splash extends AppCompatActivity {
         setContentView(R.layout.splash_layout);
 
 
+
         //Toast.makeText(this,user_token,Toast.LENGTH_LONG).show();
         try
         {
@@ -64,8 +69,39 @@ public class Splash extends AppCompatActivity {
         progressDialog.setMessage("Please Wait");
         progressDialog.show();
 
-        SplashTask splashTask=new SplashTask(this,this,progressDialog);
-        splashTask.execute(user_token);
+
+        if(Internet.hasInternetAccess(this))
+        {
+            SplashTask splashTask=new SplashTask(this,this,progressDialog);
+            splashTask.execute(user_token);
+        }
+        else
+        {
+            progressDialog.cancel();
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+            //Setting Dialog Title
+            alertDialog.setTitle("No Connection !!!");
+            //Setting Dialog Icon
+            alertDialog.setIcon(R.mipmap.ic_launcher);
+            //Setting Dialog Message
+            alertDialog.setMessage("Check Your Internet Connection And Try Again ...");
+
+            //On Pressing Setting button
+            alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                finishAffinity();
+                }
+            });
+            alertDialog.show();
+        }
+
+
+
+
+
+
     }
 }
 

@@ -1,8 +1,10 @@
 package com.sanathls.sdmitplacement;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -100,8 +102,35 @@ public class Signup extends AppCompatActivity {
                 progressDialog.setMessage("Please Wait");
                 progressDialog.show();
 
-                SignupTask signupTask=new SignupTask(this,this,progressDialog);
-                signupTask.execute(user_name,user_email,user_usn,user_phone,user_password,user_token,user_device);
+
+                if(Internet.hasInternetAccess(this))
+                {
+                    SignupTask signupTask=new SignupTask(this,this,progressDialog);
+                    signupTask.execute(user_name,user_email,user_usn,user_phone,user_password,user_token,user_device);
+                }
+                else
+                {
+                    progressDialog.cancel();
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+                    //Setting Dialog Title
+                    alertDialog.setTitle("No Connection !!!");
+                    //Setting Dialog Icon
+                    alertDialog.setIcon(R.mipmap.ic_launcher);
+                    //Setting Dialog Message
+                    alertDialog.setMessage("Check Your Internet Connection And Try Again ...");
+
+                    //On Pressing Setting button
+                    alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            finishAffinity();
+                        }
+                    });
+                    alertDialog.show();
+                }
+
+
             }
             else
             {

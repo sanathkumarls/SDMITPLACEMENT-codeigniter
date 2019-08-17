@@ -3,8 +3,10 @@ package com.sanathls.sdmitplacement;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -122,8 +124,33 @@ public class OtpChangePassword extends AppCompatActivity {
                 progressDialog.setMessage("Please Wait");
                 progressDialog.show();
 
-                OtpChangePasswordTask otpChangePasswordTask=new OtpChangePasswordTask(this,this,progressDialog);
-                otpChangePasswordTask.execute(user_email,newpassword);
+
+                if(Internet.hasInternetAccess(this))
+                {
+                    OtpChangePasswordTask otpChangePasswordTask=new OtpChangePasswordTask(this,this,progressDialog);
+                    otpChangePasswordTask.execute(user_email,newpassword);
+                }
+                else
+                {
+                    progressDialog.cancel();
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+                    //Setting Dialog Title
+                    alertDialog.setTitle("No Connection !!!");
+                    //Setting Dialog Icon
+                    alertDialog.setIcon(R.mipmap.ic_launcher);
+                    //Setting Dialog Message
+                    alertDialog.setMessage("Check Your Internet Connection And Try Again ...");
+
+                    //On Pressing Setting button
+                    alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            finishAffinity();
+                        }
+                    });
+                    alertDialog.show();
+                }
 
 
             }
@@ -222,7 +249,7 @@ class OtpChangePasswordTask extends AsyncTask<String,String,String>
         user_password=params[1];
 
         try {
-            URL url=new URL(Constants.base_url+"userapi/update_password.php");
+            URL url=new URL(Constants.base_url+"userapi/update_password");
             HttpURLConnection con=(HttpURLConnection)url.openConnection();
             con.setRequestMethod("POST");
             con.setDoOutput(true);

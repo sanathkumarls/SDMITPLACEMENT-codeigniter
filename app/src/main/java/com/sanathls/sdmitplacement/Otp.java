@@ -1,8 +1,10 @@
 package com.sanathls.sdmitplacement;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -88,8 +90,37 @@ public class Otp extends AppCompatActivity {
             progressDialog.show();
 
             // make as active
-            OtpTask otpTask=new OtpTask(this,this,progressDialog);
-            otpTask.execute(user_name,user_email);
+
+
+            if(Internet.hasInternetAccess(this))
+            {
+                OtpTask otpTask=new OtpTask(this,this,progressDialog);
+                otpTask.execute(user_name,user_email);
+            }
+            else
+            {
+                progressDialog.cancel();
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+                //Setting Dialog Title
+                alertDialog.setTitle("No Connection !!!");
+                //Setting Dialog Icon
+                alertDialog.setIcon(R.mipmap.ic_launcher);
+                //Setting Dialog Message
+                alertDialog.setMessage("Check Your Internet Connection And Try Again ...");
+
+                //On Pressing Setting button
+                alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        finishAffinity();
+                    }
+                });
+                alertDialog.show();
+            }
+
+
+
         }
         else
         {
