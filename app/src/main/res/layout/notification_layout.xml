@@ -14,7 +14,7 @@
         android:layout_height="?attr/actionBarSize"
         tools:context=".Notification"
         android:orientation="horizontal"
-        android:background="@color/colorPrimary">
+        android:background="@color/title">
 
 
 
@@ -36,6 +36,7 @@
             android:textAlignment="center"
             android:textSize="20dp"
             android:layout_marginTop="10dp"
+            android:layout_marginLeft="-30dp"
             android:textColor="@color/white">
 
         </TextView>
@@ -54,34 +55,73 @@
         android:layout_marginTop="?attr/actionBarSize">
 
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_title"
-        android:textColor="#000000"
-        android:textSize="30sp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"/>
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="10dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:outlineAmbientShadowColor="@color/black">
 
-    <TextView
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_title"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:layout_margin="10dp"/>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="10dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:outlineAmbientShadowColor="@color/black">
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_description"
+                android:textSize="20sp"
+                android:layout_margin="10dp"/>
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_description"
-        android:textSize="30sp"
-        android:layout_marginLeft="10dp"
+        app:cardCornerRadius="10dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginLeft="10dp"
+        android:outlineAmbientShadowColor="@color/black">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tv_link"
             android:textColor="@color/skyblue"
-            android:textSize="30sp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="20dp"/>
+            android:textSize="20sp"
+            android:layout_margin="10dp"
+            android:onClick="open_link"/>
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+
 
     </LinearLayout>
 

@@ -6,7 +6,7 @@
     <color name="white">#FFFFFF</color>
     <color name="signupColor">#066e8a</color>
     <color name="gray">#969696</color>
-    <color name="skyblue">#4fc3f7</color>
+    <color name="skyblue">#0645AD</color>
     <color name="red_100">#e90b90</color>
     <color name="red_200">#f40570</color>
     <color name="red_300">#e57373</color>
@@ -17,4 +17,6 @@
     <color name="red_700">#d32f2f</color>
     <color name="red_800">#c62828</color>
     <color name="red_900">#b71c1c</color>
+    <color name="title">#00695c</color>
+    <color name="black">#000000</color>
 </resources>

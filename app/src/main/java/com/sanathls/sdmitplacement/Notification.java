@@ -3,6 +3,8 @@ package com.sanathls.sdmitplacement;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 public class Notification extends AppCompatActivity {
 
     TextView title,description,link;
+    String current_title,current_description,current_link;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,9 +20,9 @@ public class Notification extends AppCompatActivity {
         setContentView(R.layout.notification_layout);
 
         Bundle bundle=getIntent().getExtras();
-        String current_title=bundle.getString("current_title");
-        String current_description=bundle.getString("current_description");
-        String current_link=bundle.getString("current_link");
+        current_title=bundle.getString("current_title");
+        current_description=bundle.getString("current_description");
+        current_link=bundle.getString("current_link");
 
         setTitle(R.string.app_name);
 
@@ -34,5 +37,12 @@ public class Notification extends AppCompatActivity {
 
     public void go_back(View view) {
         super.onBackPressed();
+    }
+
+    public void open_link(View view)
+    {
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(current_link));
+        startActivity(i);
     }
 }
