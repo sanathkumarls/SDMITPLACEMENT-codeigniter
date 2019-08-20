@@ -100,6 +100,7 @@ public class Signup extends AppCompatActivity {
                 ProgressDialog progressDialog=new ProgressDialog(this);
                 progressDialog.setTitle("Registering...");
                 progressDialog.setMessage("Please Wait");
+                progressDialog.setCancelable(false);
                 progressDialog.show();
 
 
@@ -118,6 +119,8 @@ public class Signup extends AppCompatActivity {
                     alertDialog.setIcon(R.mipmap.ic_launcher);
                     //Setting Dialog Message
                     alertDialog.setMessage("Check Your Internet Connection And Try Again ...");
+
+                    alertDialog.setCancelable(false);
 
                     //On Pressing Setting button
                     alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -236,6 +239,8 @@ class SignupTask extends AsyncTask<String,String,String>
             alertDialog.setIcon(R.mipmap.ic_launcher);
             //Setting Dialog Message
             alertDialog.setMessage("Check Your Internet Connection Or Try Again Later ...");
+
+            alertDialog.setCancelable(false);
 
             //On Pressing Setting button
             alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {

@@ -67,6 +67,7 @@ public class Splash extends AppCompatActivity {
         progressDialog=new ProgressDialog(this);
         progressDialog.setTitle("Loading...");
         progressDialog.setMessage("Please Wait");
+        progressDialog.setCancelable(false);
         progressDialog.show();
 
 
@@ -85,6 +86,8 @@ public class Splash extends AppCompatActivity {
             alertDialog.setIcon(R.mipmap.ic_launcher);
             //Setting Dialog Message
             alertDialog.setMessage("Check Your Internet Connection And Try Again ...");
+
+            alertDialog.setCancelable(false);
 
             //On Pressing Setting button
             alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -185,6 +188,8 @@ class SplashTask extends AsyncTask<String,String,String>
             alertDialog.setIcon(R.mipmap.ic_launcher);
             //Setting Dialog Message
             alertDialog.setMessage("Check Your Internet Connection Or Try Again Later ...");
+
+            alertDialog.setCancelable(false);
 
             //On Pressing Setting button
             alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {

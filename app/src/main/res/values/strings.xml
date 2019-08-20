@@ -36,5 +36,12 @@
     <string name="submit">Submit</string>
     <string name="enter_otp">Enter OTP</string>
     <string name="update">Update</string>
+    <string name="logout_msg">Are you sure want to logout?</string>
+    <string name="yes_dialog">Yes!</string>
+    <string name="no_dialog">No</string>
+    <string name="msg_dialog">Are you sure want to close SDMIT Placement ?</string>
+    <string name="change_password">Change Password</string>
+    <string name="new_password">Enter New Password</string>
+    <string name="old_password">Enter Old Password</string>
 
 </resources>

@@ -51,6 +51,8 @@ public class Dashboard extends AppCompatActivity
     ProgressDialog progressDialog;
     String user_name,user_email;
     ListView listView;
+    Context ctx;
+    Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,9 @@ public class Dashboard extends AppCompatActivity
         setContentView(R.layout.dashboard_layout);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        ctx=this;
+        activity=this;
 
         Bundle bundle=getIntent().getExtras();
         user_name=bundle.getString("user_name");
@@ -70,6 +75,7 @@ public class Dashboard extends AppCompatActivity
         progressDialog=new ProgressDialog(this);
         progressDialog.setTitle("Loading...");
         progressDialog.setMessage("Please Wait");
+        progressDialog.setCancelable(false);
         progressDialog.show();
 
         if(Internet.hasInternetAccess(this))
@@ -87,6 +93,8 @@ public class Dashboard extends AppCompatActivity
             alertDialog.setIcon(R.mipmap.ic_launcher);
             //Setting Dialog Message
             alertDialog.setMessage("Check Your Internet Connection And Try Again ...");
+
+            alertDialog.setCancelable(false);
 
             //On Pressing Setting button
             alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -128,10 +136,30 @@ public class Dashboard extends AppCompatActivity
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
+        if (drawer.isDrawerOpen(GravityCompat.START))
+        {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+        }
+        else
+        {
+            new AlertDialog.Builder(this)
+                    .setIcon(R.mipmap.ic_launcher)
+                    .setTitle(getString(R.string.app_name))
+                    .setMessage(getString(R.string.msg_dialog))
+                    .setPositiveButton(getString(R.string.yes_dialog), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            finishAffinity();//changed by sanath from finish
+                        }
+                    })
+                    .setNegativeButton(getString(R.string.no_dialog), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .show();
         }
     }
 
@@ -158,19 +186,14 @@ public class Dashboard extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
-            // Handle the camera action
-        }  else if (id == R.id.change_password) {
-
-        } else if (id == R.id.share) {
-
-        } else if (id == R.id.logout) {
-
+        if (id == R.id.nav_home)
+        {
+            progressDialog.show();
 
             if(Internet.hasInternetAccess(this))
             {
-                LogoutTask logoutTask=new LogoutTask(this,this,progressDialog);
-                logoutTask.execute(user_email);
+                NotificationsTask notifications=new NotificationsTask(this,this,listView,progressDialog);
+                notifications.execute(user_email);
             }
             else
             {
@@ -183,6 +206,8 @@ public class Dashboard extends AppCompatActivity
                 //Setting Dialog Message
                 alertDialog.setMessage("Check Your Internet Connection And Try Again ...");
 
+                alertDialog.setCancelable(false);
+
                 //On Pressing Setting button
                 alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
@@ -193,9 +218,81 @@ public class Dashboard extends AppCompatActivity
                 });
                 alertDialog.show();
             }
+        }
+        else if (id == R.id.change_password)
+        {
+            Intent intent=new Intent(this,ChangePassword.class);
+            intent.putExtra("user_email",user_email);
+            startActivity(intent);
+        }
+        else if (id == R.id.share)
+        {
+            try {
 
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                sharingIntent.putExtra(Intent.EXTRA_TEXT, "Hi! I have had a great experience with SDMIT Placement and highly recommend that you should try this app" + "\n" + " Use App link: https://sdmitcseplacement.cf" );
+                startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.app_name)));
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this,"Opps!! It seems that you have not installed any sharing app.",Toast.LENGTH_LONG).show();
+            }
+        }
+        else if (id == R.id.logout)
+        {
+            progressDialog.cancel();
+           final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+            //Setting Dialog Title
+            alertDialog.setTitle("No Connection !!!");
+            //Setting Dialog Icon
+            alertDialog.setIcon(R.mipmap.ic_launcher);
+            //Setting Dialog Message
+            alertDialog.setMessage("Check Your Internet Connection And Try Again ...");
 
+            alertDialog.setCancelable(false);
 
+            //On Pressing Setting button
+            alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    finishAffinity();
+                }
+            });
+
+            try {
+                new AlertDialog.Builder(this)
+                        .setIcon(R.mipmap.ic_launcher)
+                        .setTitle(getResources().getString(R.string.app_name))
+                        .setMessage(getResources().getString(R.string.logout_msg))
+                        .setCancelable(false)
+                        .setPositiveButton(getResources().getString(R.string.yes_dialog), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                if(Internet.hasInternetAccess(ctx))
+                                {
+                                    LogoutTask logoutTask=new LogoutTask(ctx,activity,progressDialog);
+                                    logoutTask.execute(user_email);
+                                }
+                                else
+                                {
+
+                                    alertDialog.show();
+                                }
+                            }
+                        })
+                        .setNegativeButton(getResources().getString(R.string.no_dialog), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         }
 
@@ -285,6 +382,8 @@ class NotificationsTask extends AsyncTask<String,String,String>
             alertDialog.setIcon(R.mipmap.ic_launcher);
             //Setting Dialog Message
             alertDialog.setMessage("Check Your Internet Connection Or Try Again Later ...");
+
+            alertDialog.setCancelable(false);
 
             //On Pressing Setting button
             alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -440,6 +539,8 @@ class LogoutTask extends AsyncTask<String,String,String>
             alertDialog.setIcon(R.mipmap.ic_launcher);
             //Setting Dialog Message
             alertDialog.setMessage("Check Your Internet Connection Or Try Again Later ...");
+
+            alertDialog.setCancelable(false);
 
             //On Pressing Setting button
             alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {

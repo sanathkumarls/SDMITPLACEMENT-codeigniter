@@ -81,6 +81,7 @@ public class Login extends AppCompatActivity {
             ProgressDialog progressDialog=new ProgressDialog(this);
             progressDialog.setTitle("Logging in");
             progressDialog.setMessage("Please Wait");
+            progressDialog.setCancelable(false);
             progressDialog.show();
 
 
@@ -99,6 +100,8 @@ public class Login extends AppCompatActivity {
                 alertDialog.setIcon(R.mipmap.ic_launcher);
                 //Setting Dialog Message
                 alertDialog.setMessage("Check Your Internet Connection And Try Again ...");
+
+                alertDialog.setCancelable(false);
 
                 //On Pressing Setting button
                 alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -131,6 +134,31 @@ public class Login extends AppCompatActivity {
         Intent intent=new Intent(this,ForgotPassword.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+
+        new AlertDialog.Builder(this)
+                .setIcon(R.mipmap.ic_launcher)
+                .setTitle(getString(R.string.app_name))
+                .setMessage(getString(R.string.msg_dialog))
+                .setPositiveButton(getString(R.string.yes_dialog), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        finishAffinity();//changed by sanath from finish
+                    }
+                })
+                .setNegativeButton(getString(R.string.no_dialog), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+
     }
 }
 
@@ -216,6 +244,8 @@ class LoginTask extends AsyncTask<String,String,String>
             alertDialog.setIcon(R.mipmap.ic_launcher);
             //Setting Dialog Message
             alertDialog.setMessage("Check Your Internet Connection Or Try Again Later ...");
+
+            alertDialog.setCancelable(false);
 
             //On Pressing Setting button
             alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
