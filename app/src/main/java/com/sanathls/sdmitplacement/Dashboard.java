@@ -323,7 +323,9 @@ public class Dashboard extends AppCompatActivity
         {
             //Toast.makeText(this,"send ",Toast.LENGTH_LONG).show();
             Intent intent=new Intent(this,SendNotification.class);
+            intent.putExtra("user_name",user_name);
             intent.putExtra("user_email",user_email);
+            intent.putExtra("user_role",user_role);
             startActivity(intent);
         }
         else if(id == R.id.education_details)
