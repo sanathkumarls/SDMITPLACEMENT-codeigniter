@@ -13,6 +13,15 @@
             android:icon="@drawable/ic_lock_black_24dp"
             android:title="Change Password" />
         <item
+            android:id="@+id/education_details"
+            android:icon="@drawable/ic_book_black_24dp"
+            android:title="@string/education_details" />
+        <item
+            android:id="@+id/send_notification"
+            android:icon="@drawable/ic_menu_send"
+            android:title="@string/send_notification"
+            android:visible="false"/>
+        <item
             android:id="@+id/share"
             android:icon="@drawable/ic_menu_share"
             android:title="@string/menu_share" />

@@ -45,5 +45,8 @@
     <string name="old_password">Enter Old Password</string>
     <string name="admin">Admin</string>
     <string name="student">Student</string>
+    <string name="education_details">Education Details</string>
+    <string name="send_notification">Send Notification</string>
+    <string name="send">Send</string>
 
 </resources>

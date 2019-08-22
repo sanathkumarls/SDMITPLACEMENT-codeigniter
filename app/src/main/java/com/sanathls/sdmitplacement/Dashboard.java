@@ -10,6 +10,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 
 import androidx.core.view.GravityCompat;
@@ -53,6 +55,7 @@ public class Dashboard extends AppCompatActivity
     ListView listView;
     Context ctx;
     Activity activity;
+    Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +63,8 @@ public class Dashboard extends AppCompatActivity
         setContentView(R.layout.dashboard_layout);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
 
         ctx=this;
         activity=this;
@@ -69,10 +74,14 @@ public class Dashboard extends AppCompatActivity
         user_email=bundle.getString("user_email");
         user_role=bundle.getString("user_role");
 
-        if(user_role.equals("1"))
-        {
 
-        }
+        //        sendNotification= menu.findItem(R.id.send_notification);
+//        if(user_role.equals("1"))
+//        {
+//            sendNotification.setVisible(true);
+//        }
+
+
 
         Toast.makeText(this,"Welcome "+user_name,Toast.LENGTH_SHORT).show();
 
@@ -135,6 +144,16 @@ public class Dashboard extends AppCompatActivity
         tv_email.setText(user_email);
 
 
+        if(user_role.equals("1"))
+        {
+            menu=navigationView.getMenu();
+            if(menu!= null)
+            {
+                menu.findItem(R.id.send_notification).setVisible(true);
+                menu.findItem(R.id.education_details).setVisible(false);
+            }
+        }
+
 
 
     }
@@ -168,7 +187,6 @@ public class Dashboard extends AppCompatActivity
                     .show();
         }
     }
-
 
 
     @Override
@@ -300,6 +318,20 @@ public class Dashboard extends AppCompatActivity
                 e.printStackTrace();
             }
 
+        }
+        else if(id == R.id.send_notification)
+        {
+            //Toast.makeText(this,"send ",Toast.LENGTH_LONG).show();
+            Intent intent=new Intent(this,SendNotification.class);
+            intent.putExtra("user_email",user_email);
+            startActivity(intent);
+        }
+        else if(id == R.id.education_details)
+        {
+            //Toast.makeText(this,"education ",Toast.LENGTH_LONG).show();
+            Intent intent=new Intent(this,EducationDetails.class);
+            intent.putExtra("user_email",user_email);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
