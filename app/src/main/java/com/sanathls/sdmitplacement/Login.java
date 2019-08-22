@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,7 +37,7 @@ import java.net.URLEncoder;
 public class Login extends AppCompatActivity {
 
     EditText useremail,userpassword;
-    String user_email,user_password,user_token;
+    String user_email,user_password,user_token,role;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +46,6 @@ public class Login extends AppCompatActivity {
 
         useremail=(EditText)findViewById(R.id.user_email);
         userpassword=(EditText)findViewById(R.id.user_pass);
-
 
         //get token
        // String token = FirebaseInstanceId.getInstance().getToken();
@@ -59,6 +60,9 @@ public class Login extends AppCompatActivity {
 
         user_email=useremail.getText().toString();
         user_password=userpassword.getText().toString();
+
+
+        //Toast.makeText(this,role,Toast.LENGTH_SHORT).show();
 
         //Toast.makeText(this,"Email : "+email+"\nPassword : "+password,Toast.LENGTH_LONG).show();
 
@@ -85,34 +89,36 @@ public class Login extends AppCompatActivity {
             progressDialog.show();
 
 
-            if(Internet.hasInternetAccess(this))
-            {
+//            if(Internet.hasInternetAccess(this))
+//            {
+
                 LoginTask loginTask=new LoginTask(this,this,progressDialog);
                 loginTask.execute(user_email,user_password,user_token);
-            }
-            else
-            {
-                progressDialog.cancel();
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-                //Setting Dialog Title
-                alertDialog.setTitle("No Connection !!!");
-                //Setting Dialog Icon
-                alertDialog.setIcon(R.mipmap.ic_launcher);
-                //Setting Dialog Message
-                alertDialog.setMessage("Check Your Internet Connection And Try Again ...");
 
-                alertDialog.setCancelable(false);
-
-                //On Pressing Setting button
-                alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        finishAffinity();
-                    }
-                });
-                alertDialog.show();
-            }
+//            }
+//            else
+//            {
+//                progressDialog.cancel();
+//                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+//                //Setting Dialog Title
+//                alertDialog.setTitle("No Connection !!!");
+//                //Setting Dialog Icon
+//                alertDialog.setIcon(R.mipmap.ic_launcher);
+//                //Setting Dialog Message
+//                alertDialog.setMessage("Check Your Internet Connection And Try Again ...");
+//
+//                alertDialog.setCancelable(false);
+//
+//                //On Pressing Setting button
+//                alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.dismiss();
+//                        finishAffinity();
+//                    }
+//                });
+//                alertDialog.show();
+//            }
 
         }
         else
@@ -235,30 +241,7 @@ class LoginTask extends AsyncTask<String,String,String>
         //Toast.makeText(ctx,response,Toast.LENGTH_LONG).show();
         Log.e("Response",response);
 
-        if(response.equals("offline"))
-        {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctx);
-            //Setting Dialog Title
-            alertDialog.setTitle("Cannot Connect To Server !!!");
-            //Setting Dialog Icon
-            alertDialog.setIcon(R.mipmap.ic_launcher);
-            //Setting Dialog Message
-            alertDialog.setMessage("Check Your Internet Connection Or Try Again Later ...");
 
-            alertDialog.setCancelable(false);
-
-            //On Pressing Setting button
-            alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    activity.finishAffinity();
-                }
-            });
-            alertDialog.show();
-        }
-        else
-        {
             try {
                 JSONObject jsonObject=new JSONObject(response);
                 String result=jsonObject.getString("result");
@@ -283,10 +266,12 @@ class LoginTask extends AsyncTask<String,String,String>
                     String user_token=jsonDataObject.getString("user_token");
                     String user_device=jsonDataObject.getString("user_device");
                     String user_otp=jsonDataObject.getString("user_otp");
+                    String user_role=jsonDataObject.getString("user_role");
 
                     Intent intent=new Intent(ctx,Dashboard.class);
                     intent.putExtra("user_name",user_name);
                     intent.putExtra("user_email",user_email);
+                    intent.putExtra("user_role",user_role);
                     ctx.startActivity(intent);
                     activity.finish();
                 }
@@ -296,10 +281,27 @@ class LoginTask extends AsyncTask<String,String,String>
                 }
 
             } catch (JSONException e) {
-                Toast.makeText(ctx,"Login Failed ...",Toast.LENGTH_LONG).show();
-                e.printStackTrace();
+
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctx);
+                //Setting Dialog Title
+                alertDialog.setTitle("Cannot Connect To Server !!!");
+                //Setting Dialog Icon
+                alertDialog.setIcon(R.mipmap.ic_launcher);
+                //Setting Dialog Message
+                alertDialog.setMessage("Check Your Internet Connection Or Try Again Later ...");
+
+                alertDialog.setCancelable(false);
+
+                //On Pressing Setting button
+                alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        activity.finishAffinity();
+                    }
+                });
+                alertDialog.show();
             }
-        }
 
     }
 }

@@ -93,34 +93,34 @@ public class Otp extends AppCompatActivity {
             // make as active
 
 
-            if(Internet.hasInternetAccess(this))
-            {
+//            if(Internet.hasInternetAccess(this))
+//            {
                 OtpTask otpTask=new OtpTask(this,this,progressDialog);
                 otpTask.execute(user_name,user_email);
-            }
-            else
-            {
-                progressDialog.cancel();
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-                //Setting Dialog Title
-                alertDialog.setTitle("No Connection !!!");
-                //Setting Dialog Icon
-                alertDialog.setIcon(R.mipmap.ic_launcher);
-                //Setting Dialog Message
-                alertDialog.setMessage("Check Your Internet Connection And Try Again ...");
-
-                alertDialog.setCancelable(false);
-
-                //On Pressing Setting button
-                alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        finishAffinity();
-                    }
-                });
-                alertDialog.show();
-            }
+//            }
+//            else
+//            {
+//                progressDialog.cancel();
+//                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+//                //Setting Dialog Title
+//                alertDialog.setTitle("No Connection !!!");
+//                //Setting Dialog Icon
+//                alertDialog.setIcon(R.mipmap.ic_launcher);
+//                //Setting Dialog Message
+//                alertDialog.setMessage("Check Your Internet Connection And Try Again ...");
+//
+//                alertDialog.setCancelable(false);
+//
+//                //On Pressing Setting button
+//                alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.dismiss();
+//                        finishAffinity();
+//                    }
+//                });
+//                alertDialog.show();
+//            }
 
 
 
@@ -260,30 +260,7 @@ class OtpTask extends AsyncTask<String,String,String>
         progressDialog.cancel();
         //Toast.makeText(ctx,response,Toast.LENGTH_LONG).show();
         Log.e("Response",response);
-        if(response.equals("offline"))
-        {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctx);
-            //Setting Dialog Title
-            alertDialog.setTitle("Cannot Connect To Server !!!");
-            //Setting Dialog Icon
-            alertDialog.setIcon(R.mipmap.ic_launcher);
-            //Setting Dialog Message
-            alertDialog.setMessage("Check Your Internet Connection Or Try Again Later ...");
 
-            alertDialog.setCancelable(false);
-
-            //On Pressing Setting button
-            alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    activity.finishAffinity();
-                }
-            });
-            alertDialog.show();
-        }
-        else
-        {
             try {
                 JSONObject jsonObject=new JSONObject(response);
                 String result=jsonObject.getString("result");
@@ -305,11 +282,29 @@ class OtpTask extends AsyncTask<String,String,String>
                     Toast.makeText(ctx,"Verification Failed ...",Toast.LENGTH_LONG).show();
                 }
 
-            } catch (JSONException e) {
-                Toast.makeText(ctx,"Verification Failed ...",Toast.LENGTH_LONG).show();
-                e.printStackTrace();
+            } catch (JSONException e)
+            {
+
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctx);
+                //Setting Dialog Title
+                alertDialog.setTitle("Cannot Connect To Server !!!");
+                //Setting Dialog Icon
+                alertDialog.setIcon(R.mipmap.ic_launcher);
+                //Setting Dialog Message
+                alertDialog.setMessage("Check Your Internet Connection Or Try Again Later ...");
+
+                alertDialog.setCancelable(false);
+
+                //On Pressing Setting button
+                alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        activity.finishAffinity();
+                    }
+                });
+                alertDialog.show();
             }
-        }
 
 
     }

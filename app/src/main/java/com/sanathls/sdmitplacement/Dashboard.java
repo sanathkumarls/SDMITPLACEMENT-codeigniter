@@ -49,7 +49,7 @@ public class Dashboard extends AppCompatActivity
 
     TextView tv_name,tv_email;
     ProgressDialog progressDialog;
-    String user_name,user_email;
+    String user_name,user_email,user_role;
     ListView listView;
     Context ctx;
     Activity activity;
@@ -67,6 +67,12 @@ public class Dashboard extends AppCompatActivity
         Bundle bundle=getIntent().getExtras();
         user_name=bundle.getString("user_name");
         user_email=bundle.getString("user_email");
+        user_role=bundle.getString("user_role");
+
+        if(user_role.equals("1"))
+        {
+
+        }
 
         Toast.makeText(this,"Welcome "+user_name,Toast.LENGTH_SHORT).show();
 
@@ -78,34 +84,34 @@ public class Dashboard extends AppCompatActivity
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-        if(Internet.hasInternetAccess(this))
-        {
+//        if(Internet.hasInternetAccess(this))
+//        {
             NotificationsTask notifications=new NotificationsTask(this,this,listView,progressDialog);
             notifications.execute(user_email);
-        }
-        else
-        {
-            progressDialog.cancel();
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-            //Setting Dialog Title
-            alertDialog.setTitle("No Connection !!!");
-            //Setting Dialog Icon
-            alertDialog.setIcon(R.mipmap.ic_launcher);
-            //Setting Dialog Message
-            alertDialog.setMessage("Check Your Internet Connection And Try Again ...");
-
-            alertDialog.setCancelable(false);
-
-            //On Pressing Setting button
-            alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    finishAffinity();
-                }
-            });
-            alertDialog.show();
-        }
+//        }
+//        else
+//        {
+//            progressDialog.cancel();
+//            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+//            //Setting Dialog Title
+//            alertDialog.setTitle("No Connection !!!");
+//            //Setting Dialog Icon
+//            alertDialog.setIcon(R.mipmap.ic_launcher);
+//            //Setting Dialog Message
+//            alertDialog.setMessage("Check Your Internet Connection And Try Again ...");
+//
+//            alertDialog.setCancelable(false);
+//
+//            //On Pressing Setting button
+//            alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                    dialog.dismiss();
+//                    finishAffinity();
+//                }
+//            });
+//            alertDialog.show();
+//        }
 
 
 
@@ -190,34 +196,34 @@ public class Dashboard extends AppCompatActivity
         {
             progressDialog.show();
 
-            if(Internet.hasInternetAccess(this))
-            {
+//            if(Internet.hasInternetAccess(this))
+//            {
                 NotificationsTask notifications=new NotificationsTask(this,this,listView,progressDialog);
                 notifications.execute(user_email);
-            }
-            else
-            {
-                progressDialog.cancel();
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-                //Setting Dialog Title
-                alertDialog.setTitle("No Connection !!!");
-                //Setting Dialog Icon
-                alertDialog.setIcon(R.mipmap.ic_launcher);
-                //Setting Dialog Message
-                alertDialog.setMessage("Check Your Internet Connection And Try Again ...");
-
-                alertDialog.setCancelable(false);
-
-                //On Pressing Setting button
-                alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        finishAffinity();
-                    }
-                });
-                alertDialog.show();
-            }
+//            }
+//            else
+//            {
+//                progressDialog.cancel();
+//                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+//                //Setting Dialog Title
+//                alertDialog.setTitle("No Connection !!!");
+//                //Setting Dialog Icon
+//                alertDialog.setIcon(R.mipmap.ic_launcher);
+//                //Setting Dialog Message
+//                alertDialog.setMessage("Check Your Internet Connection And Try Again ...");
+//
+//                alertDialog.setCancelable(false);
+//
+//                //On Pressing Setting button
+//                alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.dismiss();
+//                        finishAffinity();
+//                    }
+//                });
+//                alertDialog.show();
+//            }
         }
         else if (id == R.id.change_password)
         {
@@ -270,16 +276,16 @@ public class Dashboard extends AppCompatActivity
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
-                                if(Internet.hasInternetAccess(ctx))
-                                {
+//                                if(Internet.hasInternetAccess(ctx))
+//                                {
                                     LogoutTask logoutTask=new LogoutTask(ctx,activity,progressDialog);
                                     logoutTask.execute(user_email);
-                                }
-                                else
-                                {
-
-                                    alertDialog.show();
-                                }
+//                                }
+//                                else
+//                                {
+//
+//                                    alertDialog.show();
+//                                }
                             }
                         })
                         .setNegativeButton(getResources().getString(R.string.no_dialog), new DialogInterface.OnClickListener() {
@@ -373,30 +379,7 @@ class NotificationsTask extends AsyncTask<String,String,String>
         progressDialog.cancel();
         //Toast.makeText(ctx,response,Toast.LENGTH_LONG).show();
         Log.e("Response",response);
-        if(response.equals("offline"))
-        {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctx);
-            //Setting Dialog Title
-            alertDialog.setTitle("Cannot Connect To Server !!!");
-            //Setting Dialog Icon
-            alertDialog.setIcon(R.mipmap.ic_launcher);
-            //Setting Dialog Message
-            alertDialog.setMessage("Check Your Internet Connection Or Try Again Later ...");
 
-            alertDialog.setCancelable(false);
-
-            //On Pressing Setting button
-            alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    activity.finishAffinity();
-                }
-            });
-            alertDialog.show();
-        }
-        else
-        {
             try {
                 JSONObject jsonObject=new JSONObject(response);
                 String result=jsonObject.getString("result");
@@ -453,10 +436,27 @@ class NotificationsTask extends AsyncTask<String,String,String>
                 }
 
             } catch (JSONException e) {
-                Toast.makeText(ctx,"No Notifications",Toast.LENGTH_LONG).show();
-                e.printStackTrace();
+
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctx);
+                //Setting Dialog Title
+                alertDialog.setTitle("Cannot Connect To Server !!!");
+                //Setting Dialog Icon
+                alertDialog.setIcon(R.mipmap.ic_launcher);
+                //Setting Dialog Message
+                alertDialog.setMessage("Check Your Internet Connection Or Try Again Later ...");
+
+                alertDialog.setCancelable(false);
+
+                //On Pressing Setting button
+                alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        activity.finishAffinity();
+                    }
+                });
+                alertDialog.show();
             }
-        }
 
     }
 }
@@ -530,30 +530,8 @@ class LogoutTask extends AsyncTask<String,String,String>
         progressDialog.cancel();
         //Toast.makeText(ctx,response,Toast.LENGTH_LONG).show();
         Log.e("Response",response);
-        if(response.equals("offline"))
-        {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctx);
-            //Setting Dialog Title
-            alertDialog.setTitle("Cannot Connect To Server !!!");
-            //Setting Dialog Icon
-            alertDialog.setIcon(R.mipmap.ic_launcher);
-            //Setting Dialog Message
-            alertDialog.setMessage("Check Your Internet Connection Or Try Again Later ...");
 
-            alertDialog.setCancelable(false);
 
-            //On Pressing Setting button
-            alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    activity.finishAffinity();
-                }
-            });
-            alertDialog.show();
-        }
-        else
-        {
             try {
                 JSONObject jsonObject=new JSONObject(response);
                 String result=jsonObject.getString("result");
@@ -577,10 +555,27 @@ class LogoutTask extends AsyncTask<String,String,String>
                 }
 
             } catch (JSONException e) {
-                Toast.makeText(ctx,"Logout Failed",Toast.LENGTH_LONG).show();
-                e.printStackTrace();
+
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctx);
+                //Setting Dialog Title
+                alertDialog.setTitle("Cannot Connect To Server !!!");
+                //Setting Dialog Icon
+                alertDialog.setIcon(R.mipmap.ic_launcher);
+                //Setting Dialog Message
+                alertDialog.setMessage("Check Your Internet Connection Or Try Again Later ...");
+
+                alertDialog.setCancelable(false);
+
+                //On Pressing Setting button
+                alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        activity.finishAffinity();
+                    }
+                });
+                alertDialog.show();
             }
-        }
 
     }
 }
