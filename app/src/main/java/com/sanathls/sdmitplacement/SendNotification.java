@@ -66,7 +66,7 @@ public class SendNotification extends AppCompatActivity {
         if(!title.equals("") && !descrition.equals("") && !web_link.equals(""))
         {
             ProgressDialog progressDialog=new ProgressDialog(this);
-            progressDialog.setTitle("Verifying...");
+            progressDialog.setTitle("Sending...");
             progressDialog.setMessage("Please Wait");
             progressDialog.setCancelable(false);
             progressDialog.show();
