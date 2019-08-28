@@ -75,11 +75,6 @@ public class Dashboard extends AppCompatActivity
         user_role=bundle.getString("user_role");
 
 
-        //        sendNotification= menu.findItem(R.id.send_notification);
-//        if(user_role.equals("1"))
-//        {
-//            sendNotification.setVisible(true);
-//        }
 
 
 
@@ -566,51 +561,54 @@ class LogoutTask extends AsyncTask<String,String,String>
         Log.e("Response",response);
 
 
-            try {
-                JSONObject jsonObject=new JSONObject(response);
-                String result=jsonObject.getString("result");
-                if(result.equals("failure"))
-                {
-                    String message=jsonObject.getString("message");
-                    Log.e("message",message);
-                    Toast.makeText(ctx,message,Toast.LENGTH_LONG).show();
-                }
-                else if (result.equals("success"))
-                {
-                    Toast.makeText(ctx,"Logout Successful.",Toast.LENGTH_SHORT).show();
-                    Intent intent=new Intent(ctx,Login.class);
-                    ctx.startActivity(intent);
-                    activity.finish();
-
-                }
-                else
-                {
-                    Toast.makeText(ctx,"Logout Failed",Toast.LENGTH_LONG).show();
-                }
-
-            } catch (JSONException e) {
-
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctx);
-                //Setting Dialog Title
-                alertDialog.setTitle("Cannot Connect To Server !!!");
-                //Setting Dialog Icon
-                alertDialog.setIcon(R.mipmap.ic_launcher);
-                //Setting Dialog Message
-                alertDialog.setMessage("Check Your Internet Connection Or Try Again Later ...");
-
-                alertDialog.setCancelable(false);
-
-                //On Pressing Setting button
-                alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        activity.finishAffinity();
-                    }
-                });
-                alertDialog.show();
+        try {
+            JSONObject jsonObject=new JSONObject(response);
+            String result=jsonObject.getString("result");
+            if(result.equals("failure"))
+            {
+                String message=jsonObject.getString("message");
+                Log.e("message",message);
+                Toast.makeText(ctx,message,Toast.LENGTH_LONG).show();
             }
+            else if (result.equals("success"))
+            {
+                Toast.makeText(ctx,"Logout Successful.",Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(ctx,Login.class);
+                ctx.startActivity(intent);
+                activity.finish();
+
+            }
+            else
+            {
+                Toast.makeText(ctx,"Logout Failed",Toast.LENGTH_LONG).show();
+            }
+
+        } catch (JSONException e) {
+
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctx);
+            //Setting Dialog Title
+            alertDialog.setTitle("Cannot Connect To Server !!!");
+            //Setting Dialog Icon
+            alertDialog.setIcon(R.mipmap.ic_launcher);
+            //Setting Dialog Message
+            alertDialog.setMessage("Check Your Internet Connection Or Try Again Later ...");
+
+            alertDialog.setCancelable(false);
+
+            //On Pressing Setting button
+            alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    activity.finishAffinity();
+                }
+            });
+            alertDialog.show();
+        }
 
     }
 }
+
+
+
 

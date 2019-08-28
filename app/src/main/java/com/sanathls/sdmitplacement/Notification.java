@@ -6,8 +6,10 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Notification extends AppCompatActivity {
 
@@ -30,6 +32,11 @@ public class Notification extends AppCompatActivity {
         description=findViewById(R.id.tv_description);
         link=findViewById(R.id.tv_link);
 
+
+        //int versionCode = BuildConfig.VERSION_CODE;
+        //Toast.makeText(this,String.valueOf(versionCode),Toast.LENGTH_LONG).show();
+        //Log.e("version",versionCode);
+
         title.setText(current_title);
         description.setText(current_description);
         link.setText(current_link);
@@ -41,8 +48,17 @@ public class Notification extends AppCompatActivity {
 
     public void open_link(View view)
     {
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(current_link));
-        startActivity(i);
+        try
+        {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(current_link));
+            startActivity(i);
+        }
+        catch (Exception e)
+        {
+            Log.e("intent",e.toString());
+            Toast.makeText(this,"Invalid Link",Toast.LENGTH_LONG).show();
+        }
+
     }
 }
