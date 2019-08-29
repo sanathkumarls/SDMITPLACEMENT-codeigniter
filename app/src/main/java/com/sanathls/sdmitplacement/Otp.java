@@ -134,6 +134,11 @@ public class Otp extends AppCompatActivity {
         }
     }
 
+    public void go_back(View view)
+    {
+        super.onBackPressed();
+    }
+
 
     /**
      * automatic moving text on verification

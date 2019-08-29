@@ -48,5 +48,16 @@
     <string name="education_details">Education Details</string>
     <string name="send_notification">Send Notification</string>
     <string name="send">Send</string>
+    <string name="sslc">SSLC (%)</string>
+    <string name="cgpa">CGPA</string>
+    <string name="sem_8">SEM 8 (SGPA)</string>
+    <string name="sem_7_sgpa">SEM 7 (SGPA)</string>
+    <string name="sem_6_sgpa">SEM 6 (SGPA)</string>
+    <string name="sem_5_sgpa">SEM 5 (SGPA)</string>
+    <string name="sem_4_sgpa">SEM 4 (SGPA)</string>
+    <string name="sem_3_sgpa">SEM 3 (SGPA)</string>
+    <string name="sem_2_sgpa">SEM 2 (SGPA)</string>
+    <string name="sem_1_sgpa">SEM 1 (SGPA)</string>
+    <string name="puc">PUC (%)</string>
 
 </resources>
