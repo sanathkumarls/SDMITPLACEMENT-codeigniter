@@ -32,6 +32,7 @@ import java.net.URLEncoder;
 public class Internet {
 
 
+
     protected static boolean hasInternetAccess(Context context)
     {
         boolean isConnect = false;
