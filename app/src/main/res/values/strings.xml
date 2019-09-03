@@ -59,5 +59,6 @@
     <string name="sem_2_sgpa">SEM 2 (SGPA)</string>
     <string name="sem_1_sgpa">SEM 1 (SGPA)</string>
     <string name="puc">PUC (%)</string>
+    <string name="education_details_edit">Education Details Edit</string>
 
 </resources>

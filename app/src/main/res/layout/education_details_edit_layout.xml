@@ -1,9 +1,236 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".EducationDetailsEdit">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <RelativeLayout
+        android:id="@+id/action_bar_menus"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@drawable/backgroundbg"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:id="@+id/llBack"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:padding="10dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_left_arrow"
+                android:textColor="@color/white"
+                android:onClick="go_back_to_education_details"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/education_details_edit"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+    </RelativeLayout>
+
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+            <LinearLayout android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="20dp"
+                android:orientation="vertical"
+                android:visibility="visible"
+                android:id="@+id/password_layout">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/name" />
+
+                <EditText
+                    android:id="@+id/Etname"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:inputType="text" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/USN" />
+
+                <EditText
+                    android:id="@+id/Etusn"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:inputType="text" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/sslc" />
+
+                <EditText
+                    android:id="@+id/Etsslc"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:inputType="number|numberDecimal"
+                    android:maxLength="5"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/puc" />
+
+                <EditText
+                    android:id="@+id/Etpuc"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:inputType="number|numberDecimal"
+                    android:maxLength="5"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/sem_1_sgpa" />
+
+                <EditText
+                    android:id="@+id/Etsem1"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:inputType="number|numberDecimal"
+                    android:maxLength="4"/>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/sem_2_sgpa" />
+
+                <EditText
+                    android:id="@+id/Etsem2"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:inputType="number|numberDecimal"
+                    android:maxLength="4"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/sem_3_sgpa" />
+
+                <EditText
+                    android:id="@+id/Etsem3"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:inputType="number|numberDecimal"
+                    android:maxLength="4"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/sem_4_sgpa" />
+
+                <EditText
+                    android:id="@+id/Etsem4"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:inputType="number|numberDecimal"
+                    android:maxLength="4"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/sem_5_sgpa" />
+
+                <EditText
+                    android:id="@+id/Etsem5"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:inputType="number|numberDecimal"
+                    android:maxLength="4"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/sem_6_sgpa" />
+
+                <EditText
+                    android:id="@+id/Etsem6"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:inputType="number|numberDecimal"
+                    android:maxLength="4"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/sem_7_sgpa" />
+
+                <EditText
+                    android:id="@+id/Etsem7"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:inputType="number|numberDecimal"
+                    android:maxLength="4"/>
+
+
+                <Button
+                    android:id="@+id/BtnUpdate"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/button_selector_app"
+                    android:text="@string/update"
+                    android:textColor="@color/white"
+                    android:onClick="update_marks"/>
+
+            </LinearLayout>
+
+
+
+
+        </ScrollView>
+
+    </LinearLayout>
+
+
+</LinearLayout>
