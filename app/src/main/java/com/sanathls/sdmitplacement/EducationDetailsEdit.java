@@ -2,11 +2,34 @@ package com.sanathls.sdmitplacement;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 
 public class EducationDetailsEdit extends AppCompatActivity {
 
@@ -68,12 +91,18 @@ public class EducationDetailsEdit extends AppCompatActivity {
 
     public void go_back_to_education_details(View view)
     {
+        Intent intent=new Intent(this,EducationDetails.class);
+        intent.putExtra("user_email",user_email);
+        startActivity(intent);
         finish();
     }
 
     @Override
     public void onBackPressed()
     {
+        Intent intent=new Intent(this,EducationDetails.class);
+        intent.putExtra("user_email",user_email);
+        startActivity(intent);
         finish();
     }
 
@@ -128,25 +157,186 @@ public class EducationDetailsEdit extends AppCompatActivity {
                 {
                     total=Msem1+Msem2+Msem3+Msem4+Msem5+Msem6;
                     Mcgpa=total/6;
-                    cgpa=String.format("%.2f",Mcgpa);
                 }
                 else
                 {
                     total=Msem1+Msem2+Msem3+Msem4+Msem5+Msem6+Msem7;
                     Mcgpa=total/7;
-                    cgpa=String.format("%.2f",Mcgpa);
                 }
+
+                sslc=String.format("%.2f",Msslc);
+                puc=String.format("%.2f",Mpuc);
+
+                sem1=String.format("%.2f",Msem1);
+                sem2=String.format("%.2f",Msem2);
+                sem3=String.format("%.2f",Msem3);
+                sem4=String.format("%.2f",Msem4);
+                sem5=String.format("%.2f",Msem5);
+                sem6=String.format("%.2f",Msem6);
+                sem7=String.format("%.2f",Msem7);
+
+                cgpa=String.format("%.2f",Mcgpa);
+
                 //Toast.makeText(this,"TOTAL "+total+"\nCGPA "+cgpa,Toast.LENGTH_LONG).show();
 
+                ProgressDialog progressDialog=new ProgressDialog(this);
+                progressDialog.setTitle("Updating Marks...");
+                progressDialog.setMessage("Please Wait");
+                progressDialog.setCancelable(false);
+                progressDialog.show();
+
+                EducationDetailsEditTask educationDetailsEditTask=new EducationDetailsEditTask(this,this,progressDialog);
+                educationDetailsEditTask.execute(user_email,user_name,user_usn,sslc,puc,sem1,sem2,sem3,sem4,sem5,sem6,sem7,cgpa);
 
             }
 
 
 
         }
+    }
+}
 
 
+class EducationDetailsEditTask extends AsyncTask<String,String,String>
+{
+    Context ctx;
+    Activity activity;
+    String user_email,user_name,user_usn,sslc,puc,sem1,sem2,sem3,sem4,sem5,sem6,sem7,cgpa;
+    ProgressDialog progressDialog;
+
+    EducationDetailsEditTask(Context ctx,Activity activity,ProgressDialog progressDialog)
+    {
+        this.ctx=ctx;
+        this.activity=activity;
+        this.progressDialog=progressDialog;
+    }
+
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+    }
+
+    @Override
+    protected String doInBackground(String... params) {
+
+
+        user_email=params[0];
+        user_name=params[1];
+        user_usn=params[2];
+        sslc=params[3];
+        puc=params[4];
+        sem1=params[5];
+        sem2=params[6];
+        sem3=params[7];
+        sem4=params[8];
+        sem5=params[9];
+        sem6=params[10];
+        sem7=params[11];
+        cgpa=params[12];
+
+        try {
+            URL url=new URL(Constants.base_url+"userapi/update_marks_and_name");
+            HttpURLConnection con=(HttpURLConnection)url.openConnection();
+            con.setRequestMethod("POST");
+            con.setDoOutput(true);
+            con.setDoInput(true);
+            OutputStream os=con.getOutputStream();
+            BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(os,"UTF-8"));
+            String data= URLEncoder.encode("user_email","UTF-8") +"="+URLEncoder.encode(user_email,"UTF-8")+"&"+
+                    URLEncoder.encode("user_name","UTF-8") +"="+URLEncoder.encode(user_name,"UTF-8")+"&"+
+                    URLEncoder.encode("user_usn","UTF-8") +"="+URLEncoder.encode(user_usn,"UTF-8")+"&"+
+                    URLEncoder.encode("sslc","UTF-8") +"="+URLEncoder.encode(sslc,"UTF-8")+"&"+
+                    URLEncoder.encode("puc","UTF-8") +"="+URLEncoder.encode(puc,"UTF-8")+"&"+
+                    URLEncoder.encode("sem1","UTF-8") +"="+URLEncoder.encode(sem1,"UTF-8")+"&"+
+                    URLEncoder.encode("sem2","UTF-8") +"="+URLEncoder.encode(sem2,"UTF-8")+"&"+
+                    URLEncoder.encode("sem3","UTF-8") +"="+URLEncoder.encode(sem3,"UTF-8")+"&"+
+                    URLEncoder.encode("sem4","UTF-8") +"="+URLEncoder.encode(sem4,"UTF-8")+"&"+
+                    URLEncoder.encode("sem5","UTF-8") +"="+URLEncoder.encode(sem5,"UTF-8")+"&"+
+                    URLEncoder.encode("sem6","UTF-8") +"="+URLEncoder.encode(sem6,"UTF-8")+"&"+
+                    URLEncoder.encode("sem7","UTF-8") +"="+URLEncoder.encode(sem7,"UTF-8")+"&"+
+                    URLEncoder.encode("cgpa","UTF-8") +"="+URLEncoder.encode(cgpa,"UTF-8");
+            bw.write(data);
+            bw.flush();
+            bw.close();
+            os.close();
+            InputStream is=con.getInputStream();
+            BufferedReader br=new BufferedReader(new InputStreamReader(is,"iso-8859-1"));
+            String response="",line="";
+            while((line=br.readLine()) != null)
+            {
+                response+=line;
+            }
+            br.close();
+            is.close();
+            con.disconnect();
+            return response;
+
+        } catch (MalformedURLException e) {
+            Log.e("malformedurl",e.toString());
+            return "offline";
+        } catch (IOException e) {
+            Log.e("ioexcetion",e.toString());
+            return "offline";
+        }
+
+
+    }
+
+
+    @Override
+    protected void onPostExecute(String response) {
+
+        progressDialog.cancel();
+        //Toast.makeText(ctx,response,Toast.LENGTH_LONG).show();
+        Log.e("Response",response);
+
+        try {
+            JSONObject jsonObject=new JSONObject(response);
+            String result=jsonObject.getString("result");
+            if(result.equals("failure"))
+            {
+                String message=jsonObject.getString("message");
+                Log.e("message",message);
+                Toast.makeText(ctx,message,Toast.LENGTH_LONG).show();
+            }
+            else if (result.equals("success"))
+            {
+                Toast.makeText(ctx,"Details Update Success.",Toast.LENGTH_LONG).show();
+                Intent intent=new Intent(ctx,EducationDetails.class);
+                intent.putExtra("user_email",user_email);
+                ctx.startActivity(intent);
+                activity.finish();
+            }
+            else
+            {
+                Toast.makeText(ctx,"Details Update Failed ...",Toast.LENGTH_LONG).show();
+            }
+
+        } catch (JSONException e) {
+
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctx);
+            //Setting Dialog Title
+            alertDialog.setTitle("Cannot Connect To Server !!!");
+            //Setting Dialog Icon
+            alertDialog.setIcon(R.mipmap.ic_launcher);
+            //Setting Dialog Message
+            alertDialog.setMessage("Check Your Internet Connection Or Try Again Later ...");
+
+            alertDialog.setCancelable(false);
+
+            //On Pressing Setting button
+            alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    activity.finishAffinity();
+                }
+            });
+            alertDialog.show();
+        }
 
 
     }
 }
+

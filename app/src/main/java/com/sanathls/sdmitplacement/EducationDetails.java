@@ -119,6 +119,7 @@ public class EducationDetails extends AppCompatActivity {
         i.putExtra("sem7",values[11]);
         i.putExtra("cgpa",values[12]);
         startActivity(i);
+        finish();
     }
 }
 
