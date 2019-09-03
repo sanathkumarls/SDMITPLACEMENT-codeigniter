@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 public class EducationDetailsEdit extends AppCompatActivity {
 
-
+    String user_email,user_name,user_usn,sslc,puc,sem1,sem2,sem3,sem4,sem5,sem6,sem7,cgpa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,9 +16,23 @@ public class EducationDetailsEdit extends AppCompatActivity {
         setContentView(R.layout.education_details_edit_layout);
 
         Bundle bundle=getIntent().getExtras();
-        String sem1=bundle.getString("sem1");
+        user_email=bundle.getString("user_email");
+        user_name=bundle.getString("user_name");
+        user_usn=bundle.getString("user_usn");
+        sslc=bundle.getString("sslc");
+        puc=bundle.getString("puc");
+        sem1=bundle.getString("sem1");
+        sem2=bundle.getString("sem2");
+        sem3=bundle.getString("sem3");
+        sem4=bundle.getString("sem4");
+        sem5=bundle.getString("sem5");
+        sem6=bundle.getString("sem6");
+        sem7=bundle.getString("sem7");
+        cgpa=bundle.getString("cgpa");
 
-        Toast.makeText(this,sem1,Toast.LENGTH_LONG).show();
+        String received=user_email+"\n"+user_name+"\n"+user_usn+"\n"+sslc+"\n"+puc+"\n"+sem1+"\n"+sem2+"\n"+sem3+"\n"+sem4+"\n"+sem5+"\n"+sem6+"\n"+sem7+"\n"+cgpa;
+
+        Toast.makeText(this,received,Toast.LENGTH_LONG).show();
 
     }
 }

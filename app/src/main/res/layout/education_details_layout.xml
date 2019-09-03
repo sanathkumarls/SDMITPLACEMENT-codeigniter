@@ -406,38 +406,12 @@
 
                     </LinearLayout>
 
+
                     <LinearLayout
                         android:id="@+id/LL12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/LL11"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/tvSem8"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight=".5"
-                            android:text="@string/sem_8"
-                            android:textColor="@color/black"
-                            android:textSize="20sp" />
-
-                        <TextView
-                            android:id="@+id/tvSem8Value"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight=".5"
-                            android:text=""
-                            android:textColor="@color/black"
-                            android:textSize="20sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/LL13"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/LL12"
                         android:orientation="horizontal">
 
                         <TextView

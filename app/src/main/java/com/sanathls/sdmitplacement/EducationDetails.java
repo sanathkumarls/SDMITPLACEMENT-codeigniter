@@ -33,11 +33,11 @@ import java.net.URLEncoder;
 public class EducationDetails extends AppCompatActivity {
 
     TextView tvEmail,tvNameValue,tvUsnValue,tvSslcValue,tvPucValue;
-    TextView tvSem1Value,tvSem2Value,tvSem3Value,tvSem4Value,tvSem5Value,tvSem6Value,tvSem7Value,tvSem8Value;
+    TextView tvSem1Value,tvSem2Value,tvSem3Value,tvSem4Value,tvSem5Value,tvSem6Value,tvSem7Value;
     TextView tvCgpaValue;
 
-    String user_email,user_name,user_usn,sslc,puc,sem1,sem2,sem3,sem4,sem5,sem6,sem7,sem8,cgpa;
-    String values[]=new String[]{user_email,user_name,user_usn,sslc,puc,sem1,sem2,sem3,sem4,sem5,sem6,sem7,sem8,cgpa};
+    String user_email,user_name,user_usn,sslc,puc,sem1,sem2,sem3,sem4,sem5,sem6,sem7,cgpa;
+    String values[]=new String[]{user_email,user_name,user_usn,sslc,puc,sem1,sem2,sem3,sem4,sem5,sem6,sem7,cgpa};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,13 +60,12 @@ public class EducationDetails extends AppCompatActivity {
         tvSem5Value=findViewById(R.id.tvSem5Value);
         tvSem6Value=findViewById(R.id.tvSem6Value);
         tvSem7Value=findViewById(R.id.tvSem7Value);
-        tvSem8Value=findViewById(R.id.tvSem8Value);
 
 
         tvCgpaValue=findViewById(R.id.tvCgpaValue);
 
 
-        TextView textViews[]=new TextView[14];
+        TextView textViews[]=new TextView[13];
 
         textViews[0]=tvEmail;
         textViews[1]=tvNameValue;
@@ -82,10 +81,9 @@ public class EducationDetails extends AppCompatActivity {
         textViews[9]=tvSem5Value;
         textViews[10]=tvSem6Value;
         textViews[11]=tvSem7Value;
-        textViews[12]=tvSem8Value;
 
 
-        textViews[13]=tvCgpaValue;
+        textViews[12]=tvCgpaValue;
 
         ProgressDialog progressDialog=new ProgressDialog(this);
         progressDialog.setTitle("Fetching Data...");
@@ -108,6 +106,8 @@ public class EducationDetails extends AppCompatActivity {
     public void edit(View view) {
         Intent i=new Intent(this,EducationDetailsEdit.class);
         i.putExtra("user_email",user_email);
+        i.putExtra("user_name",values[1]);
+        i.putExtra("user_usn",values[2]);
         i.putExtra("sslc",values[3]);
         i.putExtra("puc",values[4]);
         i.putExtra("sem1",values[5]);
@@ -117,7 +117,7 @@ public class EducationDetails extends AppCompatActivity {
         i.putExtra("sem5",values[9]);
         i.putExtra("sem6",values[10]);
         i.putExtra("sem7",values[11]);
-        i.putExtra("sem8",values[12]);
+        i.putExtra("cgpa",values[12]);
         startActivity(i);
     }
 }
@@ -230,7 +230,6 @@ class EducationDetailsTask extends AsyncTask<String,String,String>
                 String sem5=jsonDataObject.getString("sem5");
                 String sem6=jsonDataObject.getString("sem6");
                 String sem7=jsonDataObject.getString("sem7");
-                String sem8=jsonDataObject.getString("sem8");
                 String cgpa=jsonDataObject.getString("cgpa");
                 String last_updated=jsonDataObject.getString("updated_at");
 
@@ -247,8 +246,7 @@ class EducationDetailsTask extends AsyncTask<String,String,String>
                 values[9]=sem5;
                 values[10]=sem6;
                 values[11]=sem7;
-                values[12]=sem8;
-                values[13]=cgpa;
+                values[12]=cgpa;
 
 
                 for (int i=0;i<textViews.length;i++)
