@@ -61,5 +61,8 @@
     <string name="puc">PUC (%)</string>
     <string name="education_details_edit">Education Details Edit</string>
     <string name="users">Users</string>
+    <string name="filter_users">Filter Users</string>
+    <string name="add_filter">Add Filter</string>
+    <string name="view_all_users">View All Users</string>
 
 </resources>
