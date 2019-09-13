@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -119,7 +120,8 @@ public class Dashboard extends AppCompatActivity
 
 
 
-
+        VersionTask versionTask=new VersionTask(this,this);
+        versionTask.execute();
 
 
 
@@ -145,6 +147,7 @@ public class Dashboard extends AppCompatActivity
             if(menu!= null)
             {
                 menu.findItem(R.id.send_notification).setVisible(true);
+                menu.findItem(R.id.users).setVisible(true);
                 menu.findItem(R.id.education_details).setVisible(false);
             }
         }
@@ -321,6 +324,13 @@ public class Dashboard extends AppCompatActivity
             intent.putExtra("user_name",user_name);
             intent.putExtra("user_email",user_email);
             intent.putExtra("user_role",user_role);
+            startActivity(intent);
+        }
+        else if(id == R.id.users)
+        {
+            //Toast.makeText(this,"filter ",Toast.LENGTH_LONG).show();
+            Intent intent=new Intent(this,FilterUsers.class);
+            intent.putExtra("user_email",user_email);
             startActivity(intent);
         }
         else if(id == R.id.education_details)
@@ -604,6 +614,113 @@ class LogoutTask extends AsyncTask<String,String,String>
                 }
             });
             alertDialog.show();
+        }
+
+    }
+}
+
+
+class VersionTask extends AsyncTask<String,String,String>
+{
+
+    Context ctx;
+    Activity activity;
+
+    VersionTask(Context ctx,Activity activity)
+    {
+        this.ctx=ctx;
+        this.activity=activity;
+    }
+
+
+
+    @Override
+    protected void onPreExecute() {
+
+    }
+
+    @Override
+    protected String doInBackground(String... params) {
+
+
+
+        try {
+            URL url=new URL(Constants.base_url+"adminapi/version");
+            HttpURLConnection con=(HttpURLConnection)url.openConnection();
+            con.setRequestMethod("POST");
+            con.setDoOutput(true);
+            con.setDoInput(true);
+            OutputStream os=con.getOutputStream();
+            BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(os,"UTF-8"));
+            bw.write("");
+            bw.flush();
+            bw.close();
+            os.close();
+            InputStream is=con.getInputStream();
+            BufferedReader br=new BufferedReader(new InputStreamReader(is,"iso-8859-1"));
+            String response="",line="";
+            while((line=br.readLine()) != null)
+            {
+                response+=line;
+            }
+            br.close();
+            is.close();
+            con.disconnect();
+            return response;
+
+        } catch (MalformedURLException e) {
+            Log.e("malformedurl",e.toString());
+            return "";
+        } catch (IOException e) {
+            Log.e("ioexcetion",e.toString());
+            return "";
+        }
+
+
+    }
+
+    @Override
+    protected void onPostExecute(String response) {
+
+
+        //Toast.makeText(ctx,response,Toast.LENGTH_LONG).show();
+        Log.e("Response",response);
+
+
+        try {
+            JSONObject jsonObject=new JSONObject(response);
+            int newver=Integer.parseInt(jsonObject.getString("versioncode"));
+            int presentver= BuildConfig.VERSION_CODE;
+            if( presentver < newver)
+            {
+                android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(ctx);
+                //Setting Dialog Title
+                alertDialog.setTitle(R.string.app_name);
+                //Setting Dialog Icon
+                alertDialog.setIcon(R.mipmap.ic_launcher);
+                //Setting Dialog Message
+                alertDialog.setMessage("New App Update Available. Please Update The App To Continue");
+
+                alertDialog.setCancelable(false);
+
+                //On Pressing Setting button
+                alertDialog.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setData(Uri.parse(Constants.base_url));
+                        ctx.startActivity(i);
+                        activity.finishAffinity();
+                    }
+                });
+                alertDialog.show();
+            }
+
+        } catch (JSONException e)
+        {
+
+
         }
 
     }

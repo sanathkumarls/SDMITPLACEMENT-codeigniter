@@ -22,6 +22,11 @@
             android:title="@string/send_notification"
             android:visible="false"/>
         <item
+            android:id="@+id/users"
+            android:icon="@drawable/ic_person_black_24dp"
+            android:title="@string/users"
+            android:visible="false"/>
+        <item
             android:id="@+id/share"
             android:icon="@drawable/ic_menu_share"
             android:title="@string/menu_share" />
