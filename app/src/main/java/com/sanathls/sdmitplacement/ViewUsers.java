@@ -64,7 +64,7 @@ public class ViewUsers extends AppCompatActivity {
 
         //Toast.makeText(this,"mail : "+admin_email+"\nsslc : "+sslc+" sslc score : "+sslc_score+"\npuc : "+puc+" puc score : "+puc_score+"\ncgpa : "+cgpa+" cgpa score : "+cgpa_score,Toast.LENGTH_LONG).show();
 
-        listView=(ListView) findViewById(R.id.list_view);
+        listView=(ListView) findViewById(R.id.list_view_users);
 
         progressDialog=new ProgressDialog(this);
         progressDialog.setTitle("Loading...");
