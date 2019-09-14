@@ -64,5 +64,7 @@
     <string name="filter_users">Filter Users</string>
     <string name="add_filter">Add Filter</string>
     <string name="view_all_users">View All Users</string>
+    <string name="user_details">User Details</string>
+    <string name="Device">Device</string>
 
 </resources>

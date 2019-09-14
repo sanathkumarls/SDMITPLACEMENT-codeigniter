@@ -137,6 +137,7 @@
                         android:id="@+id/LL2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
                         android:layout_below="@+id/LL1"
                         android:orientation="horizontal">
 
@@ -161,12 +162,41 @@
 
                     </LinearLayout>
 
-
                     <LinearLayout
                         android:id="@+id/LL3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
                         android:layout_below="@+id/LL2"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="@string/Phone"
+                            android:textColor="@color/black"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/tvPhoneValue"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text=""
+                            android:textColor="@color/black"
+                            android:textSize="20sp" />
+
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/LL4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:layout_below="@+id/LL3"
                         android:orientation="horizontal">
 
                         <TextView
@@ -190,10 +220,11 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/LL4"
+                        android:id="@+id/LL5"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/LL3"
+                        android:layout_marginTop="6dp"
+                        android:layout_below="@+id/LL4"
                         android:orientation="horizontal">
 
                         <TextView
@@ -217,10 +248,11 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/LL5"
+                        android:id="@+id/LL6"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/LL4"
+                        android:layout_marginTop="6dp"
+                        android:layout_below="@+id/LL5"
                         android:orientation="horizontal">
 
                         <TextView
@@ -244,10 +276,11 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/LL6"
+                        android:id="@+id/LL7"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/LL5"
+                        android:layout_marginTop="6dp"
+                        android:layout_below="@+id/LL6"
                         android:orientation="horizontal">
 
                         <TextView
@@ -272,10 +305,11 @@
 
 
                     <LinearLayout
-                        android:id="@+id/LL7"
+                        android:id="@+id/LL8"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/LL6"
+                        android:layout_marginTop="6dp"
+                        android:layout_below="@+id/LL7"
                         android:orientation="horizontal">
 
                         <TextView
@@ -299,10 +333,11 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/LL8"
+                        android:id="@+id/LL9"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/LL7"
+                        android:layout_marginTop="6dp"
+                        android:layout_below="@+id/LL8"
                         android:orientation="horizontal">
 
                         <TextView
@@ -326,10 +361,11 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/LL9"
+                        android:id="@+id/LL10"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/LL8"
+                        android:layout_marginTop="6dp"
+                        android:layout_below="@+id/LL9"
                         android:orientation="horizontal">
 
                         <TextView
@@ -353,10 +389,11 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/LL10"
+                        android:id="@+id/LL11"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/LL9"
+                        android:layout_marginTop="6dp"
+                        android:layout_below="@+id/LL10"
                         android:orientation="horizontal">
 
                         <TextView
@@ -380,10 +417,11 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/LL11"
+                        android:id="@+id/LL12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/LL10"
+                        android:layout_marginTop="6dp"
+                        android:layout_below="@+id/LL11"
                         android:orientation="horizontal">
 
                         <TextView
@@ -408,10 +446,11 @@
 
 
                     <LinearLayout
-                        android:id="@+id/LL12"
+                        android:id="@+id/LL13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/LL11"
+                        android:layout_marginTop="6dp"
+                        android:layout_below="@+id/LL12"
                         android:orientation="horizontal">
 
                         <TextView

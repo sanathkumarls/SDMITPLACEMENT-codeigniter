@@ -34,10 +34,10 @@ public class EducationDetails extends AppCompatActivity {
 
     TextView tvEmail,tvNameValue,tvUsnValue,tvSslcValue,tvPucValue;
     TextView tvSem1Value,tvSem2Value,tvSem3Value,tvSem4Value,tvSem5Value,tvSem6Value,tvSem7Value;
-    TextView tvCgpaValue;
+    TextView tvCgpaValue,tvPhoneValue;
 
-    String user_email,user_name,user_usn,sslc,puc,sem1,sem2,sem3,sem4,sem5,sem6,sem7,cgpa;
-    String values[]=new String[]{user_email,user_name,user_usn,sslc,puc,sem1,sem2,sem3,sem4,sem5,sem6,sem7,cgpa};
+    String user_email,user_name,user_usn,sslc,puc,sem1,sem2,sem3,sem4,sem5,sem6,sem7,cgpa,phone;
+    String values[]=new String[]{user_email,user_name,user_usn,sslc,puc,sem1,sem2,sem3,sem4,sem5,sem6,sem7,cgpa,phone};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +49,7 @@ public class EducationDetails extends AppCompatActivity {
         tvEmail=findViewById(R.id.tvEmail);
         tvNameValue=findViewById(R.id.tvNameValue);
         tvUsnValue=findViewById(R.id.tvUsnValue);
+        tvPhoneValue=findViewById(R.id.tvPhoneValue);
         tvSslcValue=findViewById(R.id.tvSslcValue);
         tvPucValue=findViewById(R.id.tvPucValue);
 
@@ -65,7 +66,7 @@ public class EducationDetails extends AppCompatActivity {
         tvCgpaValue=findViewById(R.id.tvCgpaValue);
 
 
-        TextView textViews[]=new TextView[13];
+        TextView textViews[]=new TextView[14];
 
         textViews[0]=tvEmail;
         textViews[1]=tvNameValue;
@@ -84,6 +85,8 @@ public class EducationDetails extends AppCompatActivity {
 
 
         textViews[12]=tvCgpaValue;
+
+        textViews[13]=tvPhoneValue;
 
         ProgressDialog progressDialog=new ProgressDialog(this);
         progressDialog.setTitle("Fetching Data...");
@@ -118,6 +121,7 @@ public class EducationDetails extends AppCompatActivity {
         i.putExtra("sem6",values[10]);
         i.putExtra("sem7",values[11]);
         i.putExtra("cgpa",values[12]);
+        i.putExtra("phone",values[13]);
         startActivity(i);
         finish();
     }
@@ -248,6 +252,7 @@ class EducationDetailsTask extends AsyncTask<String,String,String>
                 values[10]=sem6;
                 values[11]=sem7;
                 values[12]=cgpa;
+                values[13]=user_phone;
 
 
                 for (int i=0;i<textViews.length;i++)
