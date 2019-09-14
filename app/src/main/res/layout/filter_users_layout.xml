@@ -81,7 +81,8 @@
                     android:buttonTint="@color/black"
                     android:checked="false"
                     android:text="@string/add_filter"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:onClick="enable_disable_sslc"/>
 
                 <EditText
                     android:id="@+id/Etsslc_filter"
@@ -90,7 +91,9 @@
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
                     android:hint="@string/sslc"
-                    android:enabled="false"/>
+                    android:maxLength="5"
+                    android:enabled="false"
+                    android:inputType="number|numberDecimal"/>
 
             </LinearLayout>
         </LinearLayout>
@@ -123,7 +126,8 @@
                     android:buttonTint="@color/black"
                     android:checked="false"
                     android:text="@string/add_filter"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:onClick="enable_disable_puc"/>
 
                 <EditText
                     android:id="@+id/Etpuc_filter"
@@ -132,7 +136,9 @@
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
                     android:hint="@string/puc"
-                    android:enabled="false"/>
+                    android:maxLength="5"
+                    android:enabled="false"
+                    android:inputType="number|numberDecimal"/>
 
             </LinearLayout>
         </LinearLayout>
@@ -166,7 +172,8 @@
                     android:buttonTint="@color/black"
                     android:checked="false"
                     android:text="@string/add_filter"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:onClick="enable_disable_cgpa"/>
 
                 <EditText
                     android:id="@+id/Etcgpa_filter"
@@ -175,7 +182,9 @@
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
                     android:hint="@string/cgpa"
-                    android:enabled="false"/>
+                    android:maxLength="4"
+                    android:enabled="false"
+                    android:inputType="number|numberDecimal"/>
 
             </LinearLayout>
         </LinearLayout>
