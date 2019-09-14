@@ -49,6 +49,10 @@ public class FilterUsers extends AppCompatActivity {
         if(Cb_sslc_filter.isChecked())
         {
             sslc="yes";
+            if(!Cb_puc_filter.isChecked())
+                puc="no";
+            if(!Cb_cgpa_filter.isChecked())
+                cgpa="no";
             sslc_score=Etsslc_filter.getText().toString();
             if(!sslc_score.equals(""))
             {
@@ -68,6 +72,10 @@ public class FilterUsers extends AppCompatActivity {
         if(Cb_puc_filter.isChecked())
         {
             puc="yes";
+            if(!Cb_sslc_filter.isChecked())
+                sslc="no";
+            if(!Cb_cgpa_filter.isChecked())
+                cgpa="no";
             puc_score=Etpuc_filter.getText().toString();
             if(!puc_score.equals(""))
             {
@@ -87,6 +95,10 @@ public class FilterUsers extends AppCompatActivity {
         if(Cb_cgpa_filter.isChecked())
         {
             cgpa="yes";
+            if(!Cb_sslc_filter.isChecked())
+                sslc="no";
+            if(!Cb_puc_filter.isChecked())
+                puc="no";
             cgpa_score=Etcgpa_filter.getText().toString();
             if(!cgpa_score.equals(""))
             {
@@ -117,11 +129,6 @@ public class FilterUsers extends AppCompatActivity {
             i.putExtra("cgpa_score",cgpa_score);
             startActivity(i);
         }
-
-
-
-
-
 
     }
 

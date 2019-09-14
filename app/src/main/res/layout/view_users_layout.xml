@@ -45,6 +45,26 @@
 
     </RelativeLayout>
 
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp">
+
+        <ListView
+            android:id="@+id/list_view_users"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:divider="@color/cardview_dark_background"
+            android:dividerHeight="2dp">
+
+        </ListView>
+
+    </androidx.cardview.widget.CardView>
+
 
 
 
