@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ViewUsers"></activity>
+        <activity android:name=".ViewUsersFull"></activity>
+        <activity android:name=".ViewUsers" />
         <activity android:name=".FilterUsers" />
         <activity android:name=".EducationDetailsEdit" />
         <activity android:name=".EducationDetails" />
@@ -43,9 +44,9 @@
             </intent-filter>
         </service>
     </application>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
 </manifest>

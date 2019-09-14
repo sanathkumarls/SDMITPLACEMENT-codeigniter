@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -37,6 +38,7 @@ public class ViewUsers extends AppCompatActivity {
     String admin_email,sslc,sslc_score="null",puc,puc_score="null",cgpa,cgpa_score="null";
     ListView listView;
     ProgressDialog progressDialog;
+    TextView tvUsers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,7 @@ public class ViewUsers extends AppCompatActivity {
         //Toast.makeText(this,"mail : "+admin_email+"\nsslc : "+sslc+" sslc score : "+sslc_score+"\npuc : "+puc+" puc score : "+puc_score+"\ncgpa : "+cgpa+" cgpa score : "+cgpa_score,Toast.LENGTH_LONG).show();
 
         listView=(ListView) findViewById(R.id.list_view_users);
+        tvUsers=findViewById(R.id.tvUsers);
 
         progressDialog=new ProgressDialog(this);
         progressDialog.setTitle("Loading...");
@@ -72,7 +75,7 @@ public class ViewUsers extends AppCompatActivity {
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-        ViewUsersTask viewUsersTask=new ViewUsersTask(this,this,listView,progressDialog);
+        ViewUsersTask viewUsersTask=new ViewUsersTask(this,this,listView,progressDialog,tvUsers);
         viewUsersTask.execute(admin_email,sslc,sslc_score,puc,puc_score,cgpa,cgpa_score);
 
     }
@@ -90,14 +93,16 @@ class ViewUsersTask extends AsyncTask<String,String,String>
     Context ctx;
     Activity activity;
     ListView listView;
+    TextView tvUsers;
     ProgressDialog progressDialog;
 
-    ViewUsersTask(Context ctx,Activity activity,ListView listView,ProgressDialog progressDialog)
+    ViewUsersTask(Context ctx,Activity activity,ListView listView,ProgressDialog progressDialog,TextView tvUsers)
     {
         this.ctx=ctx;
         this.activity=activity;
         this.listView=listView;
         this.progressDialog=progressDialog;
+        this.tvUsers=tvUsers;
     }
 
 
@@ -183,7 +188,14 @@ class ViewUsersTask extends AsyncTask<String,String,String>
                 String arraysize=jsonObject.getString("size");
                 int size=Integer.parseInt(arraysize);
 
-                String[] user_name=new String[size],user_email = new String[size],user_usn = new String[size],user_phone=new String[size];
+                tvUsers.setText("Users ( "+size+" )");
+
+                if(size == 0)
+                {
+                    Toast.makeText(ctx,"No Users Available",Toast.LENGTH_LONG).show();
+                }
+
+                String[] user_name=new String[size],user_email = new String[size],user_usn = new String[size],user_phone=new String[size],view=new String[size];
                 String[] user_device=new String[size],sslc=new String[size],puc=new String[size],sem1=new String[size],sem2=new String[size];
                 String[] sem3=new String[size],sem4=new String[size],sem5=new String[size],sem6=new String[size],sem7=new String[size],cgpa=new String[size];
 
@@ -204,26 +216,78 @@ class ViewUsersTask extends AsyncTask<String,String,String>
                     sem6[i]=jsonObject.getString("sem6"+i);
                     sem7[i]=jsonObject.getString("sem7"+i);
                     cgpa[i]=jsonObject.getString("cgpa"+i);
+                    view[i]=user_name[i]+" ( "+user_usn[i]+" )\nSSLC : "+sslc[i]+"%  PUC : "+puc[i]+"%  CGPA : "+cgpa[i];
                 }
 
-                final ArrayAdapter<String> titleadapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,user_name);
-                listView.setAdapter(titleadapter);
+                final ArrayAdapter<String> view_adapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,view);
+                listView.setAdapter(view_adapter);
 
-                final ArrayAdapter<String> descriptionadapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,user_email);
+                final ArrayAdapter<String> user_name_adapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,user_name);
 
-                final ArrayAdapter<String> linkadapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,user_usn);
+                final ArrayAdapter<String> user_email_adapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,user_email);
+
+                final ArrayAdapter<String> user_usn_adapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,user_usn);
+
+                final ArrayAdapter<String> user_phone_adapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,user_phone);
+
+                final ArrayAdapter<String> user_device_adapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,user_device);
+
+                final ArrayAdapter<String> sslc_adapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,sslc);
+
+                final ArrayAdapter<String> puc_adapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,puc);
+
+                final ArrayAdapter<String> sem1_adapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,sem1);
+
+                final ArrayAdapter<String> sem2_adapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,sem2);
+
+                final ArrayAdapter<String> sem3_adapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,sem3);
+
+                final ArrayAdapter<String> sem4_adapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,sem4);
+
+                final ArrayAdapter<String> sem5_adapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,sem5);
+
+                final ArrayAdapter<String> sem6_adapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,sem6);
+
+                final ArrayAdapter<String> sem7_adapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,sem7);
+
+                final ArrayAdapter<String> cgpa_adapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,cgpa);
 
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        String current_title=titleadapter.getItem(position);
-                        String current_description=descriptionadapter.getItem(position);
-                        String current_link=linkadapter.getItem(position);
+                        String current_user_name=user_name_adapter.getItem(position);
+                        String current_user_email=user_email_adapter.getItem(position);
+                        String current_user_usn=user_usn_adapter.getItem(position);
+                        String current_user_phone=user_phone_adapter.getItem(position);
+                        String current_user_device=user_device_adapter.getItem(position);
+                        String current_sslc=sslc_adapter.getItem(position);
+                        String current_puc=puc_adapter.getItem(position);
+                        String current_sem1=sem1_adapter.getItem(position);
+                        String current_sem2=sem2_adapter.getItem(position);
+                        String current_sem3=sem3_adapter.getItem(position);
+                        String current_sem4=sem4_adapter.getItem(position);
+                        String current_sem5=sem5_adapter.getItem(position);
+                        String current_sem6=sem6_adapter.getItem(position);
+                        String current_sem7=sem7_adapter.getItem(position);
+                        String current_cgpa=cgpa_adapter.getItem(position);
+
                         //Toast.makeText(ctx,current_description+"\n"+current_link,Toast.LENGTH_SHORT).show();
-                        Intent intent=new Intent(ctx, Notification.class);
-                        intent.putExtra("current_title",current_title);
-                        intent.putExtra("current_description",current_description);
-                        intent.putExtra("current_link",current_link);
+                        Intent intent=new Intent(ctx, ViewUsersFull.class);
+                        intent.putExtra("current_user_name",current_user_name);
+                        intent.putExtra("current_user_email",current_user_email);
+                        intent.putExtra("current_user_usn",current_user_usn);
+                        intent.putExtra("current_user_phone",current_user_phone);
+                        intent.putExtra("current_user_device",current_user_device);
+                        intent.putExtra("current_sslc",current_sslc);
+                        intent.putExtra("current_puc",current_puc);
+                        intent.putExtra("current_sem1",current_sem1);
+                        intent.putExtra("current_sem2",current_sem2);
+                        intent.putExtra("current_sem3",current_sem3);
+                        intent.putExtra("current_sem4",current_sem4);
+                        intent.putExtra("current_sem5",current_sem5);
+                        intent.putExtra("current_sem6",current_sem6);
+                        intent.putExtra("current_sem7",current_sem7);
+                        intent.putExtra("current_cgpa",current_cgpa);
                         ctx.startActivity(intent);
 
 
