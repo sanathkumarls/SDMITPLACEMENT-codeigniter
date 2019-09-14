@@ -33,8 +33,8 @@ import java.net.URLEncoder;
 
 public class EducationDetailsEdit extends AppCompatActivity {
 
-    String user_email,user_name,user_usn,sslc,puc,sem1,sem2,sem3,sem4,sem5,sem6,sem7,cgpa;
-    EditText Etuser_name,Etuser_usn,Etsslc,Etpuc,Etsem1,Etsem2,Etsem3,Etsem4,Etsem5,Etsem6,Etsem7;
+    String user_email,user_name,user_usn,sslc,puc,sem1,sem2,sem3,sem4,sem5,sem6,sem7,cgpa,phone;
+    EditText Etuser_name,Etuser_usn,Etsslc,Etpuc,Etsem1,Etsem2,Etsem3,Etsem4,Etsem5,Etsem6,Etsem7,Etphone;
     Float Msslc,Mpuc,Msem1,Msem2,Msem3,Msem4,Msem5,Msem6,Msem7=Float.valueOf(0),total,Mcgpa;
 
     @Override
@@ -56,6 +56,8 @@ public class EducationDetailsEdit extends AppCompatActivity {
         sem6=bundle.getString("sem6");
         sem7=bundle.getString("sem7");
 
+        phone=bundle.getString("phone");
+
         //String received=user_email+"\n"+user_name+"\n"+user_usn+"\n"+sslc+"\n"+puc+"\n"+sem1+"\n"+sem2+"\n"+sem3+"\n"+sem4+"\n"+sem5+"\n"+sem6+"\n"+sem7+"\n"+cgpa;
 
         //Toast.makeText(this,received,Toast.LENGTH_LONG).show();
@@ -71,6 +73,7 @@ public class EducationDetailsEdit extends AppCompatActivity {
         Etsem5=findViewById(R.id.Etsem5);
         Etsem6=findViewById(R.id.Etsem6);
         Etsem7=findViewById(R.id.Etsem7);
+        Etphone=findViewById(R.id.Etphone);
 
 
 
@@ -85,6 +88,7 @@ public class EducationDetailsEdit extends AppCompatActivity {
         Etsem5.setText(sem5);
         Etsem6.setText(sem6);
         Etsem7.setText(sem7);
+        Etphone.setText(phone);
 
 
     }
@@ -110,6 +114,7 @@ public class EducationDetailsEdit extends AppCompatActivity {
     {
         user_name=Etuser_name.getText().toString();
         user_usn=Etuser_usn.getText().toString();
+        phone=Etphone.getText().toString();
 
         sslc=Etsslc.getText().toString();
         puc=Etpuc.getText().toString();
@@ -122,7 +127,7 @@ public class EducationDetailsEdit extends AppCompatActivity {
         sem6=Etsem6.getText().toString();
         sem7=Etsem7.getText().toString();
 
-        if(user_name.equals("") || user_usn.equals("") || sslc.equals("") || puc.equals("") || sem1.equals("") || sem2.equals("") || sem3.equals("") || sem4.equals("") || sem5.equals("") || sem6.equals(""))
+        if(user_name.equals("") || user_usn.equals("") || sslc.equals("") || puc.equals("") || sem1.equals("") || sem2.equals("") || sem3.equals("") || sem4.equals("") || sem5.equals("") || sem6.equals("") || phone.equals(""))
         {
             Toast.makeText(this,"All Fields Are Mandatory Except Sem 7 CGPA ",Toast.LENGTH_LONG).show();
         }
@@ -186,7 +191,7 @@ public class EducationDetailsEdit extends AppCompatActivity {
                 progressDialog.show();
 
                 EducationDetailsEditTask educationDetailsEditTask=new EducationDetailsEditTask(this,this,progressDialog);
-                educationDetailsEditTask.execute(user_email,user_name,user_usn,sslc,puc,sem1,sem2,sem3,sem4,sem5,sem6,sem7,cgpa);
+                educationDetailsEditTask.execute(user_email,user_name,user_usn,sslc,puc,sem1,sem2,sem3,sem4,sem5,sem6,sem7,cgpa,phone);
 
             }
 
@@ -201,7 +206,7 @@ class EducationDetailsEditTask extends AsyncTask<String,String,String>
 {
     Context ctx;
     Activity activity;
-    String user_email,user_name,user_usn,sslc,puc,sem1,sem2,sem3,sem4,sem5,sem6,sem7,cgpa;
+    String user_email,user_name,user_usn,sslc,puc,sem1,sem2,sem3,sem4,sem5,sem6,sem7,cgpa,phone;
     ProgressDialog progressDialog;
 
     EducationDetailsEditTask(Context ctx,Activity activity,ProgressDialog progressDialog)
@@ -234,6 +239,7 @@ class EducationDetailsEditTask extends AsyncTask<String,String,String>
         sem6=params[10];
         sem7=params[11];
         cgpa=params[12];
+        phone=params[13];
 
         try {
             URL url=new URL(Constants.base_url+"userapi/update_marks_and_name");
@@ -255,7 +261,8 @@ class EducationDetailsEditTask extends AsyncTask<String,String,String>
                     URLEncoder.encode("sem5","UTF-8") +"="+URLEncoder.encode(sem5,"UTF-8")+"&"+
                     URLEncoder.encode("sem6","UTF-8") +"="+URLEncoder.encode(sem6,"UTF-8")+"&"+
                     URLEncoder.encode("sem7","UTF-8") +"="+URLEncoder.encode(sem7,"UTF-8")+"&"+
-                    URLEncoder.encode("cgpa","UTF-8") +"="+URLEncoder.encode(cgpa,"UTF-8");
+                    URLEncoder.encode("cgpa","UTF-8") +"="+URLEncoder.encode(cgpa,"UTF-8")+"&"+
+                    URLEncoder.encode("phone","UTF-8") +"="+URLEncoder.encode(phone,"UTF-8");
             bw.write(data);
             bw.flush();
             bw.close();
