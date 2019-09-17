@@ -52,7 +52,7 @@ public class Dashboard extends AppCompatActivity
 
     TextView tv_name,tv_email;
     ProgressDialog progressDialog;
-    String user_name,user_email,user_role;
+    String user_name,user_email,user_role,user_display;
     ListView listView;
     Context ctx;
     Activity activity;
@@ -74,12 +74,18 @@ public class Dashboard extends AppCompatActivity
         user_name=bundle.getString("user_name");
         user_email=bundle.getString("user_email");
         user_role=bundle.getString("user_role");
+        user_display=bundle.getString("user_display");
+        if(!user_display.equals("0"))
+            Toast.makeText(this,"Welcome "+user_name,Toast.LENGTH_SHORT).show();
+//        try
+//        {
+//            user_display=bundle.getString("user_display");
+//        }
+//        catch (Exception e)
+//        {
+//            Toast.makeText(this,"Welcome "+user_name,Toast.LENGTH_SHORT).show();
+//        }
 
-
-
-
-
-        Toast.makeText(this,"Welcome "+user_name,Toast.LENGTH_SHORT).show();
 
         listView=(ListView) findViewById(R.id.list_view);
 
@@ -92,7 +98,7 @@ public class Dashboard extends AppCompatActivity
 //        if(Internet.hasInternetAccess(this))
 //        {
             NotificationsTask notifications=new NotificationsTask(this,this,listView,progressDialog);
-            notifications.execute(user_email);
+            notifications.execute(user_name,user_email,user_role);
 //        }
 //        else
 //        {
@@ -215,7 +221,7 @@ public class Dashboard extends AppCompatActivity
 //            if(Internet.hasInternetAccess(this))
 //            {
                 NotificationsTask notifications=new NotificationsTask(this,this,listView,progressDialog);
-                notifications.execute(user_email);
+                notifications.execute(user_name,user_email,user_role);
 //            }
 //            else
 //            {
@@ -354,6 +360,7 @@ class NotificationsTask extends AsyncTask<String,String,String>
     Activity activity;
     ListView listView;
     ProgressDialog progressDialog;
+    String user_name,user_email,user_role;
 
     NotificationsTask(Context ctx,Activity activity,ListView listView,ProgressDialog progressDialog)
     {
@@ -373,7 +380,9 @@ class NotificationsTask extends AsyncTask<String,String,String>
     @Override
     protected String doInBackground(String... params) {
 
-        String user_email=params[0];
+        user_name=params[0];
+        user_email=params[1];
+        user_role=params[2];
 
 
         try {
@@ -432,16 +441,17 @@ class NotificationsTask extends AsyncTask<String,String,String>
                 {
                     //Toast.makeText(this,"Login Success.",Toast.LENGTH_SHORT).show();
                     String arraysize=jsonObject.getString("size");
-                    final String user_role=jsonObject.getString("user_role");
+
                     int size=Integer.parseInt(arraysize);
 
-                    String[] title=new String[size],description = new String[size],link = new String[size];
+                    String[] title=new String[size],description = new String[size],link = new String[size],id=new String[size];
 
                     for(int i=0;i<size;i++)
                     {
                         title[i]=jsonObject.getString("title"+i);
                         description[i]=jsonObject.getString("description"+i);
                         link[i]=jsonObject.getString("link"+i);
+                        id[i]=jsonObject.getString("id"+i);
                     }
 
                     final ArrayAdapter<String> titleadapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,title);
@@ -451,17 +461,23 @@ class NotificationsTask extends AsyncTask<String,String,String>
 
                     final ArrayAdapter<String> linkadapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,link);
 
+                    final ArrayAdapter<String> idadapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,id);
+
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             String current_title=titleadapter.getItem(position);
                             String current_description=descriptionadapter.getItem(position);
                             String current_link=linkadapter.getItem(position);
+                            String current_id=idadapter.getItem(position);
                             //Toast.makeText(ctx,current_description+"\n"+current_link,Toast.LENGTH_SHORT).show();
                             Intent intent=new Intent(ctx, Notification.class);
                             intent.putExtra("current_title",current_title);
                             intent.putExtra("current_description",current_description);
                             intent.putExtra("current_link",current_link);
+                            intent.putExtra("id",current_id);
+                            intent.putExtra("user_name",user_name);
+                            intent.putExtra("user_email",user_email);
                             intent.putExtra("user_role",user_role);
                             ctx.startActivity(intent);
 

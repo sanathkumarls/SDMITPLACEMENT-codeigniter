@@ -211,6 +211,7 @@ class SplashTask extends AsyncTask<String,String,String>
                     intent.putExtra("user_name",user_name);
                     intent.putExtra("user_email",user_email);
                     intent.putExtra("user_role",user_role);
+                    intent.putExtra("user_display","1");
                     ctx.startActivity(intent);
                     activity.finish();
                 }
