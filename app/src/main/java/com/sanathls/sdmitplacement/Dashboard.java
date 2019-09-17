@@ -346,11 +346,19 @@ public class Dashboard extends AppCompatActivity
             intent.putExtra("user_email",user_email);
             startActivity(intent);
         }
+        else if(id == R.id.visit_blog)
+        {
+            //Toast.makeText(this,"visit blog ",Toast.LENGTH_LONG).show();
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse("https://plctsdmitcse.blogspot.com/"));
+            startActivity(i);
+        }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }
 
 class NotificationsTask extends AsyncTask<String,String,String>
