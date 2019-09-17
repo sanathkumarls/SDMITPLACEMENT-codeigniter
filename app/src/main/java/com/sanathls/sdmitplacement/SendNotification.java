@@ -72,7 +72,7 @@ public class SendNotification extends AppCompatActivity {
             progressDialog.show();
 
             SendNotificationTask sendNotificationTask=new SendNotificationTask(this,this,progressDialog);
-            sendNotificationTask.execute(user_email,title,descrition,web_link);
+            sendNotificationTask.execute(user_email,title,descrition,web_link,user_name,user_role);
         }
         else
         {
@@ -86,7 +86,7 @@ public class SendNotification extends AppCompatActivity {
 class SendNotificationTask extends AsyncTask<String,String,String> {
     Context ctx;
     Activity activity;
-    String user_email, title,description,link;
+    String user_email, title,description,link,user_name,user_role;
     ProgressDialog progressDialog;
 
     SendNotificationTask(Context ctx, Activity activity, ProgressDialog progressDialog) {
@@ -109,6 +109,9 @@ class SendNotificationTask extends AsyncTask<String,String,String> {
         title = params[1];
         description = params[2];
         link = params[3];
+        user_name=params[4];
+        user_role=params[5];
+
 
         try {
             URL url = new URL(Constants.base_url + "adminapi/send_notification");
@@ -165,9 +168,15 @@ class SendNotificationTask extends AsyncTask<String,String,String> {
                 Toast.makeText(ctx, message, Toast.LENGTH_LONG).show();
             } else if (result.equals("success")) {
                 Toast.makeText(ctx, "Notification Sent Successfully.", Toast.LENGTH_LONG).show();
+                Intent intent=new Intent(ctx,Dashboard.class);
+                intent.putExtra("user_name",user_name);
+                intent.putExtra("user_email",user_email);
+                intent.putExtra("user_role",user_role);
+                intent.putExtra("user_display","0");
+                ctx.startActivity(intent);
                 activity.finish();
             } else {
-                Toast.makeText(ctx, "Password Update Failed ...", Toast.LENGTH_LONG).show();
+                Toast.makeText(ctx, "Notification Sending Failed ...", Toast.LENGTH_LONG).show();
             }
 
         } catch (JSONException e) {

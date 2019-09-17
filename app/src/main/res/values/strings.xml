@@ -32,7 +32,7 @@
     <string name="menu_send">Send</string>
     <string name="title_activity_dashboard">Dashboard</string>
     <string name="visit_blog">Visit Blog</string>
-    <string name="email_id">EMail Id</string>
+    <string name="email_id">Email Id</string>
     <string name="submit">Submit</string>
     <string name="enter_otp">Enter OTP</string>
     <string name="update">Update</string>
