@@ -432,6 +432,7 @@ class NotificationsTask extends AsyncTask<String,String,String>
                 {
                     //Toast.makeText(this,"Login Success.",Toast.LENGTH_SHORT).show();
                     String arraysize=jsonObject.getString("size");
+                    final String user_role=jsonObject.getString("user_role");
                     int size=Integer.parseInt(arraysize);
 
                     String[] title=new String[size],description = new String[size],link = new String[size];
@@ -461,6 +462,7 @@ class NotificationsTask extends AsyncTask<String,String,String>
                             intent.putExtra("current_title",current_title);
                             intent.putExtra("current_description",current_description);
                             intent.putExtra("current_link",current_link);
+                            intent.putExtra("user_role",user_role);
                             ctx.startActivity(intent);
 
 
