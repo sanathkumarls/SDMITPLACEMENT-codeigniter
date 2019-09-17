@@ -67,5 +67,6 @@
     <string name="user_details">User Details</string>
     <string name="Device">Device</string>
     <string name="visit_placement_blog">Visit Placement Blog</string>
+    <string name="notification_delete">Are You Sure To Delete ?</string>
 
 </resources>

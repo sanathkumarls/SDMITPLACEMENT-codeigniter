@@ -38,6 +38,8 @@ public class Notification extends AppCompatActivity {
     String current_title,current_description,current_link,user_name,user_email,user_role,id;
     ImageView ImgDelete;
     ProgressDialog progressDialog;
+    Context ctx=this;
+    Activity activity=this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,14 +101,33 @@ public class Notification extends AppCompatActivity {
 
     public void delete(View view)
     {
-        progressDialog=new ProgressDialog(this);
-        progressDialog.setTitle("Loading...");
-        progressDialog.setMessage("Please Wait");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
+        new AlertDialog.Builder(this)
+                .setIcon(R.mipmap.ic_launcher)
+                .setTitle(getString(R.string.app_name))
+                .setMessage(getString(R.string.notification_delete))
+                .setPositiveButton(getString(R.string.yes_dialog), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        progressDialog=new ProgressDialog(ctx);
+                        progressDialog.setTitle("Loading...");
+                        progressDialog.setMessage("Please Wait");
+                        progressDialog.setCancelable(false);
+                        progressDialog.show();
 
-        DeleteNotificationTask deleteNotificationTask=new DeleteNotificationTask(this,this,progressDialog);
-        deleteNotificationTask.execute(user_name,user_email,user_role,id);
+                        DeleteNotificationTask deleteNotificationTask=new DeleteNotificationTask(ctx,activity,progressDialog);
+                        deleteNotificationTask.execute(user_name,user_email,user_role,id);
+                    }
+                })
+                .setNegativeButton(getString(R.string.no_dialog), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+
+
     }
 }
 
