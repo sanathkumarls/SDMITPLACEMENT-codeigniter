@@ -69,4 +69,14 @@
     <string name="visit_placement_blog">Visit Placement Blog</string>
     <string name="notification_delete">Are You Sure To Delete ?</string>
 
-</resources>
+    <string name="app_id">ca-app-pub-9931840634396279~7188282195</string>
+    <!-- release -->
+
+    <string name="ad_id">ca-app-pub-9931840634396279/6582132751</string>
+
+    <!-- debug -->
+    <!--
+        <string name="ad_id">ca-app-pub-3940256099942544/6300978111</string>
+    -->
+
+    </resources>

@@ -67,51 +67,6 @@
         </LinearLayout>
 
 
-
-        <!--
-        <LinearLayout
-            android:id="@+id/llBack"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:gravity="center"
-            android:padding="10dp">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_left_arrow"
-                android:textColor="@color/white"
-                android:onClick="go_back_to_dashboard"/>
-        </LinearLayout>
-
-
-
-        <TextView
-            android:id="@+id/tvUsers"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:text="@string/users"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
-
-
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:src="@drawable/ic_left_arrow"
-            android:textColor="@color/white"
-            android:onClick="go_back_to_dashboard"/>
-
--->
-
-
-
     </RelativeLayout>
 
     <androidx.cardview.widget.CardView
@@ -134,7 +89,19 @@
 
     </androidx.cardview.widget.CardView>
 
-
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/ad_id">
+    </com.google.android.gms.ads.AdView>
 
 
 
