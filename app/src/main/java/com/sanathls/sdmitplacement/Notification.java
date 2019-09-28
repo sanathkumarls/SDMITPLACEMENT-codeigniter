@@ -1,6 +1,7 @@
 package com.sanathls.sdmitplacement;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -46,6 +47,7 @@ public class Notification extends AppCompatActivity {
     ProgressDialog progressDialog;
     Context ctx=this;
     Activity activity=this;
+    CardView link_card;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +93,12 @@ public class Notification extends AppCompatActivity {
 
         title.setText(current_title);
         description.setText(current_description);
-        link.setText(current_link);
+
+        link_card=findViewById(R.id.link_card);
+        if(current_link.equals("0"))
+            link_card.setVisibility(View.GONE);
+
+        link.setText("Click Here To Register");
     }
 
     public void go_back(View view) {
