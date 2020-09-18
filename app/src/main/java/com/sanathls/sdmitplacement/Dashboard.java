@@ -373,6 +373,10 @@ public class Dashboard extends AppCompatActivity
         return true;
     }
 
+    public void change_image(View view) {
+
+        Toast.makeText(ctx,"change image",Toast.LENGTH_LONG).show();
+    }
 }
 
 class NotificationsTask extends AsyncTask<String,String,String>
@@ -484,6 +488,7 @@ class NotificationsTask extends AsyncTask<String,String,String>
                     final ArrayAdapter<String> linkadapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,link);
 
                     final ArrayAdapter<String> idadapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,id);
+
 
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
