@@ -207,6 +207,7 @@ class SplashTask extends AsyncTask<String,String,String>
                     String user_role=jsonDataObject.getString("user_role");
 
 
+
                     Intent intent=new Intent(ctx,Dashboard.class);
                     intent.putExtra("user_name",user_name);
                     intent.putExtra("user_email",user_email);

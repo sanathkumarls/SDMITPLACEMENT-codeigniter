@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:backgroundTint="@color/colorPrimaryDark"
-            android:hint="Link"
+            android:hint="Link ( If no link then fill with 0 )"
             android:inputType="text" />
 
 
@@ -117,7 +117,7 @@
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
             ads:adSize="BANNER"
-            ads:adUnitId="@string/ad_id">
+            ads:adUnitId="@string/ad_banner_id">
         </com.google.android.gms.ads.AdView>
 
     </LinearLayout>

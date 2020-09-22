@@ -2,9 +2,14 @@ package com.sanathls.sdmitplacement;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -12,11 +17,17 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 public class ViewUsersFull extends AppCompatActivity {
 
     String current_user_name,current_user_email,current_user_usn,current_user_phone,current_user_device,current_sslc,current_puc;
     String current_sem1,current_sem2,current_sem3,current_sem4,current_sem5,current_sem6,current_sem7,current_cgpa;
 
+    ImageView iv_user_download;
     TextView tvUser_name,tvUser_email,tvUser_usn,tvUser_phone,tvUser_device,tvUser_sslc,tvUser_puc,tvUser_sem1,tvUser_sem2,tvUser_sem3,tvUser_sem4,tvUser_sem5,tvUser_sem6,tvUser_sem7,tvUser_cgpa;
 
     @Override
@@ -68,6 +79,7 @@ public class ViewUsersFull extends AppCompatActivity {
         tvUser_sem6=findViewById(R.id.tvUser_sem6);
         tvUser_sem7=findViewById(R.id.tvUser_sem7);
         tvUser_cgpa=findViewById(R.id.tvUser_cgpa);
+        iv_user_download = findViewById(R.id.ivUserDownload);
 
 
         tvUser_name.setText(current_user_name);
@@ -86,10 +98,49 @@ public class ViewUsersFull extends AppCompatActivity {
         tvUser_sem7.setText(current_sem7);
         tvUser_cgpa.setText(current_cgpa);
 
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Loading...");
+        progressDialog.setMessage("Please Wait.. Profile photo is loading...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        GetImageTask getImageTask = new GetImageTask(this,this,iv_user_download,progressDialog);
+        getImageTask.execute(current_user_email);
+
     }
 
     public void go_back(View view)
     {
         finish();
+    }
+
+    public void download_image(View view) {
+
+
+        String appName = getString(R.string.app_name);
+        File filepath = Environment.getExternalStorageDirectory();
+        File dir = new File(filepath.getAbsolutePath()+"/"+appName+"/");
+        dir.mkdir();
+
+        File file = new File(dir,current_user_usn+"-"+System.currentTimeMillis()+".jpg");
+        FileOutputStream outputStream;
+        try {
+            iv_user_download.buildDrawingCache();
+            Bitmap bitmap = iv_user_download.getDrawingCache();
+            outputStream = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG,100,outputStream);
+            try {
+                outputStream.flush();
+                Toast.makeText(this,"Photo Stored In "+file.toString(),Toast.LENGTH_LONG).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

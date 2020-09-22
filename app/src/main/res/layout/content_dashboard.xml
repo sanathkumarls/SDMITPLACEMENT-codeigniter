@@ -10,47 +10,41 @@
     android:layout_marginLeft="7dp"
     android:outlineAmbientShadowColor="@color/black">
 
-<LinearLayout
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="10dp">
+
 
         <ListView
             android:id="@+id/list_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
-            android:divider="@color/gray"
-            android:dividerHeight="2dp"
-            android:listSelector="@drawable/rounded_corner_list_item">
+            android:divider="@null"
+            android:dividerHeight="0dp">
 
         </ListView>
-
-    </androidx.cardview.widget.CardView>
 
     <com.google.android.gms.ads.AdView
         xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:id="@+id/adView"
-        android:layout_gravity="bottom"
-        android:layout_marginLeft="35dp"
+        android:layout_gravity="end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         ads:adSize="BANNER"
-        ads:adUnitId="@string/ad_id">
+        ads:adUnitId="@string/ad_banner_id">
     </com.google.android.gms.ads.AdView>
 
 
-</LinearLayout>
+
+</RelativeLayout>
 
 
 

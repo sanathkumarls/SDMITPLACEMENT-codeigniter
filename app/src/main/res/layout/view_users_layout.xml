@@ -69,11 +69,9 @@
 
     </RelativeLayout>
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="10dp">
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
         <ListView
             android:id="@+id/list_view_users"
             android:layout_width="match_parent"
@@ -82,16 +80,16 @@
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
-            android:divider="@color/cardview_dark_background"
-            android:dividerHeight="2dp">
+            android:divider="@null"
+            android:dividerHeight="0dp">
 
         </ListView>
 
-    </androidx.cardview.widget.CardView>
 
     <com.google.android.gms.ads.AdView
         xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:id="@+id/adView"
+        android:layout_below="@+id/list_view_users"
         android:layout_gravity="bottom"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="30dp"
@@ -100,9 +98,10 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         ads:adSize="BANNER"
-        ads:adUnitId="@string/ad_id">
+        ads:adUnitId="@string/ad_banner_id">
     </com.google.android.gms.ads.AdView>
 
+</RelativeLayout>
 
 
 </LinearLayout>

@@ -71,9 +71,55 @@
                     android:layout_margin="10dp"
                     android:orientation="vertical">
 
+
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:elevation="12dp"
+                            android:id="@+id/cardView2"
+                            app:cardCornerRadius="70dp"
+                            android:layout_centerHorizontal="true">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true">
+                                <ImageView
+                                    android:layout_width="140dp"
+                                    android:layout_height="140dp"
+                                    android:id="@+id/ivUserDownload"
+                                    android:src="@drawable/profile"
+                                    android:layout_gravity="center"
+                                    android:scaleType="centerCrop"
+                                    android:layout_centerInParent="true"
+                                    android:onClick="download_image"/>
+                                <TextView
+                                    android:id="@+id/myImageViewText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_margin="1dp"
+                                    android:gravity="bottom"
+                                    android:text="Download"
+                                    android:textColor="#000000"
+                                    android:background="@color/gray"
+                                    android:layout_alignBottom="@id/ivUserDownload"/>
+                            </RelativeLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                    </RelativeLayout>
+
+
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp">
 
                         <ImageView
                             android:id="@+id/ivUser"
@@ -490,7 +536,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_alignParentBottom="true"
                         ads:adSize="BANNER"
-                        ads:adUnitId="@string/ad_id">
+                        ads:adUnitId="@string/ad_banner_id">
                     </com.google.android.gms.ads.AdView>
 
                 </LinearLayout>

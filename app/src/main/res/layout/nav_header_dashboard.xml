@@ -22,10 +22,21 @@
         android:textSize="20dp"
         android:textAlignment="center"/>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="12dp"
+            android:id="@+id/cardView2"
+            app:cardCornerRadius="70dp"
+            android:layout_centerHorizontal="true">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true">
         <ImageView
             android:layout_width="140dp"
             android:layout_height="140dp"
@@ -35,7 +46,7 @@
             android:scaleType="centerCrop"
             android:layout_centerInParent="true"
             android:onClick="change_image"/>
-        <TextView
+            <TextView
             android:id="@+id/myImageViewText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -46,7 +57,12 @@
             android:textColor="#000000"
             android:background="@color/gray"
             android:layout_alignBottom="@id/ivUser"/>
-    </RelativeLayout>
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
+
 
     <TextView
         android:id="@+id/tv_user_name"

@@ -250,38 +250,38 @@ class ViewUsersTask extends AsyncTask<String,String,String>
                     view[i]=user_name[i]+" ( "+user_usn[i]+" )\nSSLC : "+sslc[i]+"%  PUC : "+puc[i]+"%  CGPA : "+cgpa[i];
                 }
 
-                final ArrayAdapter<String> view_adapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,view);
+                final ArrayAdapter<String> view_adapter=new ArrayAdapter<String>(ctx,R.layout.list_view_item,android.R.id.text1,view);
                 listView.setAdapter(view_adapter);
 
-                final ArrayAdapter<String> user_name_adapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,user_name);
+                final ArrayAdapter<String> user_name_adapter=new ArrayAdapter<String>(ctx,R.layout.list_view_item,android.R.id.text1,user_name);
 
-                final ArrayAdapter<String> user_email_adapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,user_email);
+                final ArrayAdapter<String> user_email_adapter=new ArrayAdapter<String>(ctx,R.layout.list_view_item,android.R.id.text1,user_email);
 
-                final ArrayAdapter<String> user_usn_adapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,user_usn);
+                final ArrayAdapter<String> user_usn_adapter=new ArrayAdapter<String>(ctx,R.layout.list_view_item,android.R.id.text1,user_usn);
 
-                final ArrayAdapter<String> user_phone_adapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,user_phone);
+                final ArrayAdapter<String> user_phone_adapter=new ArrayAdapter<String>(ctx,R.layout.list_view_item,android.R.id.text1,user_phone);
 
-                final ArrayAdapter<String> user_device_adapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,user_device);
+                final ArrayAdapter<String> user_device_adapter=new ArrayAdapter<String>(ctx,R.layout.list_view_item,android.R.id.text1,user_device);
 
-                final ArrayAdapter<String> sslc_adapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,sslc);
+                final ArrayAdapter<String> sslc_adapter=new ArrayAdapter<String>(ctx,R.layout.list_view_item,android.R.id.text1,sslc);
 
-                final ArrayAdapter<String> puc_adapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,puc);
+                final ArrayAdapter<String> puc_adapter=new ArrayAdapter<String>(ctx,R.layout.list_view_item,android.R.id.text1,puc);
 
-                final ArrayAdapter<String> sem1_adapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,sem1);
+                final ArrayAdapter<String> sem1_adapter=new ArrayAdapter<String>(ctx,R.layout.list_view_item,android.R.id.text1,sem1);
 
-                final ArrayAdapter<String> sem2_adapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,sem2);
+                final ArrayAdapter<String> sem2_adapter=new ArrayAdapter<String>(ctx,R.layout.list_view_item,android.R.id.text1,sem2);
 
-                final ArrayAdapter<String> sem3_adapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,sem3);
+                final ArrayAdapter<String> sem3_adapter=new ArrayAdapter<String>(ctx,R.layout.list_view_item,android.R.id.text1,sem3);
 
-                final ArrayAdapter<String> sem4_adapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,sem4);
+                final ArrayAdapter<String> sem4_adapter=new ArrayAdapter<String>(ctx,R.layout.list_view_item,android.R.id.text1,sem4);
 
-                final ArrayAdapter<String> sem5_adapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,sem5);
+                final ArrayAdapter<String> sem5_adapter=new ArrayAdapter<String>(ctx,R.layout.list_view_item,android.R.id.text1,sem5);
 
-                final ArrayAdapter<String> sem6_adapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,sem6);
+                final ArrayAdapter<String> sem6_adapter=new ArrayAdapter<String>(ctx,R.layout.list_view_item,android.R.id.text1,sem6);
 
-                final ArrayAdapter<String> sem7_adapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,sem7);
+                final ArrayAdapter<String> sem7_adapter=new ArrayAdapter<String>(ctx,R.layout.list_view_item,android.R.id.text1,sem7);
 
-                final ArrayAdapter<String> cgpa_adapter=new ArrayAdapter<String>(ctx,android.R.layout.simple_list_item_1,android.R.id.text1,cgpa);
+                final ArrayAdapter<String> cgpa_adapter=new ArrayAdapter<String>(ctx,R.layout.list_view_item,android.R.id.text1,cgpa);
 
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
