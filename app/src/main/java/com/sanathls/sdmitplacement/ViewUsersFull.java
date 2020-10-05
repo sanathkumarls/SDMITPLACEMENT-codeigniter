@@ -3,9 +3,11 @@ package com.sanathls.sdmitplacement;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -117,8 +119,14 @@ public class ViewUsersFull extends AppCompatActivity {
 
 
         String appName = getString(R.string.app_name);
-        File filepath = Environment.getExternalStorageDirectory();
-        File dir = new File(filepath.getAbsolutePath()+"/"+appName+"/");
+        String filepath = this.getExternalFilesDir("").getAbsolutePath();
+        String extraPortion = "Android/data/" + BuildConfig.APPLICATION_ID
+                + File.separator + "files";
+        // Remove extraPortion
+        filepath = filepath.replace(extraPortion, "");
+        Log.e("path",filepath);
+        File dir = new File(filepath+appName+"/");
+        Log.e("final path",dir.toString());
         dir.mkdir();
 
         File file = new File(dir,current_user_usn+"-"+System.currentTimeMillis()+".jpg");
@@ -132,15 +140,37 @@ public class ViewUsersFull extends AppCompatActivity {
                 outputStream.flush();
                 Toast.makeText(this,"Photo Stored In "+file.toString(),Toast.LENGTH_LONG).show();
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.e("IOException",e.toString());
             }
             try {
                 outputStream.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.e("IOException",e.toString());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("Exception",e.toString());
         }
+    }
+
+    public void edit(View view)
+    {
+        Intent i=new Intent(this,EducationDetailsEdit.class);
+        i.putExtra("user_email",current_user_email);
+        i.putExtra("user_name",current_user_name);
+        i.putExtra("user_usn",current_user_usn);
+        i.putExtra("sslc",current_sslc);
+        i.putExtra("puc",current_puc);
+        i.putExtra("sem1",current_sem1);
+        i.putExtra("sem2",current_sem2);
+        i.putExtra("sem3",current_sem3);
+        i.putExtra("sem4",current_sem4);
+        i.putExtra("sem5",current_sem5);
+        i.putExtra("sem6",current_sem6);
+        i.putExtra("sem7",current_sem7);
+        i.putExtra("cgpa",current_cgpa);
+        i.putExtra("phone",current_user_phone);
+        i.putExtra("user_role","1");
+        startActivity(i);
+        finish();
     }
 }

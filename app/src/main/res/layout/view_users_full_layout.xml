@@ -139,6 +139,15 @@
                             android:textColor="@color/colorPrimary"
                             android:textSize="18sp" />
 
+                        <ImageView
+                            android:id="@+id/ivEditSelfAdmmin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_edit_black_24dp"
+                            android:onClick="edit"/>
+
 
                     </RelativeLayout>
 

@@ -42,7 +42,7 @@ import java.net.URLEncoder;
 public class Notification extends AppCompatActivity {
 
     TextView title,description,link;
-    String current_title,current_description,current_link,user_name,user_email,user_role,id;
+    String current_title,current_description,current_link,user_name,user_email,user_role,id,cgpa;
     ImageView ImgDelete;
     ProgressDialog progressDialog;
     Context ctx=this;
@@ -70,6 +70,7 @@ public class Notification extends AppCompatActivity {
         user_name=bundle.getString("user_name");
         user_email=bundle.getString("user_email");
         user_role=bundle.getString("user_role");
+        cgpa=bundle.getString("cgpa");
         id=bundle.getString("id");
 
 
@@ -138,7 +139,7 @@ public class Notification extends AppCompatActivity {
                         progressDialog.show();
 
                         DeleteNotificationTask deleteNotificationTask=new DeleteNotificationTask(ctx,activity,progressDialog);
-                        deleteNotificationTask.execute(user_name,user_email,user_role,id);
+                        deleteNotificationTask.execute(user_name,user_email,user_role,id,cgpa);
                     }
                 })
                 .setNegativeButton(getString(R.string.no_dialog), new DialogInterface.OnClickListener() {
@@ -158,7 +159,7 @@ class DeleteNotificationTask extends AsyncTask<String,String,String>
 {
     Context ctx;
     Activity activity;
-    String user_name,user_email,user_role,id;
+    String user_name,user_email,user_role,id,cgpa;
     ProgressDialog progressDialog;
 
     DeleteNotificationTask(Context ctx,Activity activity,ProgressDialog progressDialog)
@@ -181,6 +182,7 @@ class DeleteNotificationTask extends AsyncTask<String,String,String>
         user_email=params[1];
         user_role=params[2];
         id=params[3];
+        cgpa=params[4];
 
 
         try {
@@ -243,6 +245,7 @@ class DeleteNotificationTask extends AsyncTask<String,String,String>
                 intent.putExtra("user_email",user_email);
                 intent.putExtra("user_role",user_role);
                 intent.putExtra("user_display","0");
+                intent.putExtra("cgpa",cgpa);
                 ctx.startActivity(intent);
                 activity.finish();
             }

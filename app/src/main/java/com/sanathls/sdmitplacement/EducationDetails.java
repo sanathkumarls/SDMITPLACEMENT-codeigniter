@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +42,7 @@ public class EducationDetails extends AppCompatActivity {
     TextView tvEmail,tvNameValue,tvUsnValue,tvSslcValue,tvPucValue;
     TextView tvSem1Value,tvSem2Value,tvSem3Value,tvSem4Value,tvSem5Value,tvSem6Value,tvSem7Value;
     TextView tvCgpaValue,tvPhoneValue;
+    ImageView ivEditSelf;
 
     String user_email,user_name,user_usn,sslc,puc,sem1,sem2,sem3,sem4,sem5,sem6,sem7,cgpa,phone;
     String values[]=new String[]{user_email,user_name,user_usn,sslc,puc,sem1,sem2,sem3,sem4,sem5,sem6,sem7,cgpa,phone};
@@ -80,6 +82,8 @@ public class EducationDetails extends AppCompatActivity {
 
         tvCgpaValue=findViewById(R.id.tvCgpaValue);
 
+        ivEditSelf = findViewById(R.id.ivEditSelf);
+
 
         TextView textViews[]=new TextView[14];
 
@@ -111,7 +115,7 @@ public class EducationDetails extends AppCompatActivity {
 
 
 
-        EducationDetailsTask educationDetailsTask=new EducationDetailsTask(this,this,progressDialog,textViews,values);
+        EducationDetailsTask educationDetailsTask=new EducationDetailsTask(this,this,progressDialog,textViews,values,ivEditSelf);
         educationDetailsTask.execute(user_email);
 
     }
@@ -137,6 +141,7 @@ public class EducationDetails extends AppCompatActivity {
         i.putExtra("sem7",values[11]);
         i.putExtra("cgpa",values[12]);
         i.putExtra("phone",values[13]);
+        i.putExtra("user_role","0");
         startActivity(i);
         finish();
     }
@@ -150,14 +155,16 @@ class EducationDetailsTask extends AsyncTask<String,String,String>
     ProgressDialog progressDialog;
     TextView[] textViews;
     String[] values;
+    ImageView ivEditSelf;
 
-    EducationDetailsTask(Context ctx,Activity activity,ProgressDialog progressDialog,TextView[] textViews,String[] values)
+    EducationDetailsTask(Context ctx,Activity activity,ProgressDialog progressDialog,TextView[] textViews,String[] values, ImageView ivEditSelf)
     {
         this.ctx=ctx;
         this.activity=activity;
         this.progressDialog=progressDialog;
         this.textViews=textViews;
         this.values=values;
+        this.ivEditSelf = ivEditSelf;
     }
 
 
@@ -252,6 +259,22 @@ class EducationDetailsTask extends AsyncTask<String,String,String>
                 String sem7=jsonDataObject.getString("sem7");
                 String cgpa=jsonDataObject.getString("cgpa");
                 String last_updated=jsonDataObject.getString("updated_at");
+
+
+                float f;
+                try
+                {
+                    f=Float.parseFloat(cgpa);
+                }
+                catch (Exception e)
+                {
+                    f = 0;
+                }
+
+                if(f <= 0)
+                {
+                    ivEditSelf.setVisibility(View.VISIBLE);
+                }
 
 
                 values[0]=user_email;

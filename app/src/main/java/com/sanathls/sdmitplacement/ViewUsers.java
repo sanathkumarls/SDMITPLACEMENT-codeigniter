@@ -320,7 +320,7 @@ class ViewUsersTask extends AsyncTask<String,String,String>
                         intent.putExtra("current_sem7",current_sem7);
                         intent.putExtra("current_cgpa",current_cgpa);
                         ctx.startActivity(intent);
-
+                        activity.finish();
 
                     }
                 });

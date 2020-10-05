@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -71,12 +72,14 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 
+import javax.net.ssl.HttpsURLConnection;
+
 public class Dashboard extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, RewardedVideoAdListener {
 
     TextView tv_name,tv_email;
     ProgressDialog progressDialog;
-    String user_name,user_email,user_role,user_display;
+    String user_name,user_email,user_role,user_display,cgpa;
     ListView listView;
     Context ctx;
     Activity activity;
@@ -127,6 +130,7 @@ public class Dashboard extends AppCompatActivity
         user_email=bundle.getString("user_email");
         user_role=bundle.getString("user_role");
         user_display=bundle.getString("user_display");
+        cgpa=bundle.getString("cgpa");
         if(!user_display.equals("0"))
             Toast.makeText(this,"Welcome "+user_name,Toast.LENGTH_SHORT).show();
 //        try
@@ -155,7 +159,7 @@ public class Dashboard extends AppCompatActivity
 
 
             NotificationsTask notifications=new NotificationsTask(this,this,listView,progressDialog);
-            notifications.execute(user_name,user_email,user_role);
+            notifications.execute(user_name,user_email,user_role,cgpa);
 //        }
 //        else
 //        {
@@ -201,6 +205,7 @@ public class Dashboard extends AppCompatActivity
         tv_email = (TextView) header.findViewById(R.id.tv_user_email);
         iv_user = (ImageView) header.findViewById(R.id.ivUser);
 
+        progressDialog=new ProgressDialog(this);
         progressDialog.setTitle("Loading...");
         progressDialog.setMessage("Please Wait.. Your Profile photo is loading...");
         progressDialog.setCancelable(false);
@@ -227,6 +232,47 @@ public class Dashboard extends AppCompatActivity
         }
         else
         {
+            float f;
+            try
+            {
+                f=Float.parseFloat(cgpa);
+            }
+            catch (Exception e)
+            {
+                f = 0;
+            }
+
+            if(f <= 0)
+            {
+//                Toast.makeText(ctx,"flloat"+f,Toast.LENGTH_LONG).show();
+                try {
+                    new AlertDialog.Builder(this)
+                            .setIcon(R.mipmap.ic_launcher)
+                            .setTitle(getResources().getString(R.string.app_name))
+                            .setMessage("Please Fill Your Education Details")
+                            .setCancelable(false)
+                            .setPositiveButton(getResources().getString(R.string.yes_dialog), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    Intent intent=new Intent(ctx,EducationDetails.class);
+                                    intent.putExtra("user_email",user_email);
+                                    startActivity(intent);
+                                }
+                            })
+                            .setNegativeButton(getResources().getString(R.string.no_dialog), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    activity.finishAffinity();
+                                }
+                            })
+                            .show();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
             Log.e("delay","yes 1");
             delay();
         }
@@ -382,7 +428,7 @@ public class Dashboard extends AppCompatActivity
 //            if(Internet.hasInternetAccess(this))
 //            {
                 NotificationsTask notifications=new NotificationsTask(this,this,listView,progressDialog);
-                notifications.execute(user_name,user_email,user_role);
+                notifications.execute(user_name,user_email,user_role,cgpa);
 //            }
 //            else
 //            {
@@ -491,6 +537,7 @@ public class Dashboard extends AppCompatActivity
             intent.putExtra("user_name",user_name);
             intent.putExtra("user_email",user_email);
             intent.putExtra("user_role",user_role);
+            intent.putExtra("cgpa",cgpa);
             startActivity(intent);
         }
         else if(id == R.id.users)
@@ -569,17 +616,32 @@ public class Dashboard extends AppCompatActivity
                         long fileSizeinKB = fileSizeinBytes/1024;
                         Log.e("file Size",fileSizeinKB+" KB");
 
+                        //new
+                        int width = bitmap.getWidth();
+                        int height = bitmap.getHeight();
+                        Log.e("width",""+width);
+                        Log.e("height",""+height);
+
+                        if(width > height)
+                        {
+                            Matrix matrix = new Matrix();
+                            matrix.postRotate(90);
+                            bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+                        }
+
 
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 65, stream);
                         byte[] imageInByte = stream.toByteArray();
+                        //end
 
-                        if(fileSizeinKB <= 55)
+
+                        if(fileSizeinKB <= 4096)
                         {
                             //upload to server
 
                             String photo = Base64.encodeToString(imageInByte,Base64.DEFAULT);
-                            //Log.e("image in bytes", photo);
+                            Log.e("image in bytes", photo);
                             progressDialog.setTitle("Uploading...");
                             progressDialog.setMessage("Image is being Uploaded Please Wait...");
                             progressDialog.show();
@@ -590,7 +652,7 @@ public class Dashboard extends AppCompatActivity
                         }
                         else
                         {
-                            Toast.makeText(ctx,"Image Size must be less than 50Kb",Toast.LENGTH_LONG).show();
+                            Toast.makeText(ctx,"Image Size must be less than 4 MB",Toast.LENGTH_LONG).show();
                         }
 
 
@@ -673,6 +735,8 @@ class ChangeImageTask extends AsyncTask<String,String,String>
 
         user_email=params[0];
         photo=params[1];
+
+
 
         try {
             URL url=new URL(Constants.base_url+"userapi/change_image");
@@ -911,7 +975,7 @@ class NotificationsTask extends AsyncTask<String,String,String>
     Activity activity;
     ListView listView;
     ProgressDialog progressDialog;
-    String user_name,user_email,user_role;
+    String user_name,user_email,user_role,cgpa;
 
     NotificationsTask(Context ctx,Activity activity,ListView listView,ProgressDialog progressDialog)
     {
@@ -934,6 +998,7 @@ class NotificationsTask extends AsyncTask<String,String,String>
         user_name=params[0];
         user_email=params[1];
         user_role=params[2];
+        cgpa=params[3];
 
 
         try {
@@ -1031,6 +1096,7 @@ class NotificationsTask extends AsyncTask<String,String,String>
                             intent.putExtra("user_name",user_name);
                             intent.putExtra("user_email",user_email);
                             intent.putExtra("user_role",user_role);
+                            intent.putExtra("cgpa",cgpa);
                             ctx.startActivity(intent);
 
 
@@ -1279,7 +1345,7 @@ class VersionTask extends AsyncTask<String,String,String>
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         Intent i = new Intent(Intent.ACTION_VIEW);
-                        i.setData(Uri.parse(Constants.base_url));
+                        i.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.sanathls.sdmitplacement"));
                         ctx.startActivity(i);
                         activity.finishAffinity();
                     }

@@ -39,7 +39,7 @@ import java.net.URLEncoder;
 
 public class EducationDetailsEdit extends AppCompatActivity {
 
-    String user_email,user_name,user_usn,sslc,puc,sem1,sem2,sem3,sem4,sem5,sem6,sem7,cgpa,phone;
+    String user_email,user_name,user_usn,sslc,puc,sem1,sem2,sem3,sem4,sem5,sem6,sem7,cgpa,phone,user_role;
     EditText Etuser_name,Etuser_usn,Etsslc,Etpuc,Etsem1,Etsem2,Etsem3,Etsem4,Etsem5,Etsem6,Etsem7,Etphone;
     Float Msslc,Mpuc,Msem1,Msem2,Msem3,Msem4,Msem5,Msem6,Msem7=Float.valueOf(0),total,Mcgpa;
 
@@ -72,6 +72,7 @@ public class EducationDetailsEdit extends AppCompatActivity {
         sem7=bundle.getString("sem7");
 
         phone=bundle.getString("phone");
+        user_role=bundle.getString("user_role");
 
         //String received=user_email+"\n"+user_name+"\n"+user_usn+"\n"+sslc+"\n"+puc+"\n"+sem1+"\n"+sem2+"\n"+sem3+"\n"+sem4+"\n"+sem5+"\n"+sem6+"\n"+sem7+"\n"+cgpa;
 
@@ -110,19 +111,67 @@ public class EducationDetailsEdit extends AppCompatActivity {
 
     public void go_back_to_education_details(View view)
     {
-        Intent intent=new Intent(this,EducationDetails.class);
-        intent.putExtra("user_email",user_email);
-        startActivity(intent);
-        finish();
+        if(user_role.equals("1"))
+        {
+            Intent intent=new Intent(this, ViewUsersFull.class);
+            intent.putExtra("current_user_name",user_name);
+            intent.putExtra("current_user_email",user_email);
+            intent.putExtra("current_user_usn",user_usn);
+            intent.putExtra("current_user_phone",phone);
+            intent.putExtra("current_user_device",android.os.Build.MANUFACTURER + " " + android.os.Build.MODEL);
+            intent.putExtra("current_sslc",sslc);
+            intent.putExtra("current_puc",puc);
+            intent.putExtra("current_sem1",sem1);
+            intent.putExtra("current_sem2",sem2);
+            intent.putExtra("current_sem3",sem3);
+            intent.putExtra("current_sem4",sem4);
+            intent.putExtra("current_sem5",sem5);
+            intent.putExtra("current_sem6",sem6);
+            intent.putExtra("current_sem7",sem7);
+            intent.putExtra("current_cgpa",cgpa);
+            startActivity(intent);
+            finish();
+        }
+        else
+        {
+            Intent intent=new Intent(this,EducationDetails.class);
+            intent.putExtra("user_email",user_email);
+            startActivity(intent);
+            finish();
+        }
     }
 
     @Override
     public void onBackPressed()
     {
-        Intent intent=new Intent(this,EducationDetails.class);
-        intent.putExtra("user_email",user_email);
-        startActivity(intent);
-        finish();
+        if(user_role.equals("1"))
+        {
+            Intent intent=new Intent(this, ViewUsersFull.class);
+            intent.putExtra("current_user_name",user_name);
+            intent.putExtra("current_user_email",user_email);
+            intent.putExtra("current_user_usn",user_usn);
+            intent.putExtra("current_user_phone",phone);
+            intent.putExtra("current_user_device",android.os.Build.MANUFACTURER + " " + android.os.Build.MODEL);
+            intent.putExtra("current_sslc",sslc);
+            intent.putExtra("current_puc",puc);
+            intent.putExtra("current_sem1",sem1);
+            intent.putExtra("current_sem2",sem2);
+            intent.putExtra("current_sem3",sem3);
+            intent.putExtra("current_sem4",sem4);
+            intent.putExtra("current_sem5",sem5);
+            intent.putExtra("current_sem6",sem6);
+            intent.putExtra("current_sem7",sem7);
+            intent.putExtra("current_cgpa",cgpa);
+            startActivity(intent);
+            finish();
+        }
+        else
+        {
+            Intent intent=new Intent(this,EducationDetails.class);
+            intent.putExtra("user_email",user_email);
+            startActivity(intent);
+            finish();
+        }
     }
 
     public void update_marks(View view)
@@ -206,7 +255,7 @@ public class EducationDetailsEdit extends AppCompatActivity {
                 progressDialog.show();
 
                 EducationDetailsEditTask educationDetailsEditTask=new EducationDetailsEditTask(this,this,progressDialog);
-                educationDetailsEditTask.execute(user_email,user_name,user_usn,sslc,puc,sem1,sem2,sem3,sem4,sem5,sem6,sem7,cgpa,phone);
+                educationDetailsEditTask.execute(user_email,user_name,user_usn,sslc,puc,sem1,sem2,sem3,sem4,sem5,sem6,sem7,cgpa,phone,user_role);
 
             }
 
@@ -221,7 +270,7 @@ class EducationDetailsEditTask extends AsyncTask<String,String,String>
 {
     Context ctx;
     Activity activity;
-    String user_email,user_name,user_usn,sslc,puc,sem1,sem2,sem3,sem4,sem5,sem6,sem7,cgpa,phone;
+    String user_email,user_name,user_usn,sslc,puc,sem1,sem2,sem3,sem4,sem5,sem6,sem7,cgpa,phone,user_role;
     ProgressDialog progressDialog;
 
     EducationDetailsEditTask(Context ctx,Activity activity,ProgressDialog progressDialog)
@@ -255,6 +304,8 @@ class EducationDetailsEditTask extends AsyncTask<String,String,String>
         sem7=params[11];
         cgpa=params[12];
         phone=params[13];
+        user_role=params[14];
+
 
         try {
             URL url=new URL(Constants.base_url+"userapi/update_marks_and_name");
@@ -325,10 +376,35 @@ class EducationDetailsEditTask extends AsyncTask<String,String,String>
             else if (result.equals("success"))
             {
                 Toast.makeText(ctx,"Details Update Success.",Toast.LENGTH_LONG).show();
-                Intent intent=new Intent(ctx,EducationDetails.class);
-                intent.putExtra("user_email",user_email);
-                ctx.startActivity(intent);
-                activity.finish();
+                if(user_role.equals("1"))
+                {
+                    Intent intent=new Intent(ctx, ViewUsersFull.class);
+                    intent.putExtra("current_user_name",user_name);
+                    intent.putExtra("current_user_email",user_email);
+                    intent.putExtra("current_user_usn",user_usn);
+                    intent.putExtra("current_user_phone",phone);
+                    intent.putExtra("current_user_device",android.os.Build.MANUFACTURER + " " + android.os.Build.MODEL);
+                    intent.putExtra("current_sslc",sslc);
+                    intent.putExtra("current_puc",puc);
+                    intent.putExtra("current_sem1",sem1);
+                    intent.putExtra("current_sem2",sem2);
+                    intent.putExtra("current_sem3",sem3);
+                    intent.putExtra("current_sem4",sem4);
+                    intent.putExtra("current_sem5",sem5);
+                    intent.putExtra("current_sem6",sem6);
+                    intent.putExtra("current_sem7",sem7);
+                    intent.putExtra("current_cgpa",cgpa);
+                    ctx.startActivity(intent);
+                    activity.finish();
+                }
+                else
+                {
+                    Intent intent=new Intent(ctx,EducationDetails.class);
+                    intent.putExtra("user_email",user_email);
+                    ctx.startActivity(intent);
+                    activity.finish();
+                }
+
             }
             else
             {

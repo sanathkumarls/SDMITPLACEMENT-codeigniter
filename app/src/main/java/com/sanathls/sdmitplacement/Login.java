@@ -281,12 +281,14 @@ class LoginTask extends AsyncTask<String,String,String>
                     String user_device=jsonDataObject.getString("user_device");
                     String user_otp=jsonDataObject.getString("user_otp");
                     String user_role=jsonDataObject.getString("user_role");
+                    String cgpa=jsonDataObject.getString("cgpa");
 
                     Intent intent=new Intent(ctx,Dashboard.class);
                     intent.putExtra("user_name",user_name);
                     intent.putExtra("user_email",user_email);
                     intent.putExtra("user_role",user_role);
                     intent.putExtra("user_display","1");
+                    intent.putExtra("cgpa",cgpa);
                     ctx.startActivity(intent);
                     activity.finish();
                 }
